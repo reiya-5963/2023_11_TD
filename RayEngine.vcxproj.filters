@@ -1,0 +1,356 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="ソース ファイル">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="ヘッダー ファイル">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="リソース ファイル">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="ImGui">
+      <UniqueIdentifier>{d8680f63-46d4-4176-b95a-c30c31e67d3f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\RayEngine">
+      <UniqueIdentifier>{4befd709-4f59-4eef-bbcb-c562e0fba9ad}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\App">
+      <UniqueIdentifier>{3c9d194d-eb66-409b-8b36-90f66710605f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\App\Character">
+      <UniqueIdentifier>{65e78cf7-ab84-4e58-b00b-720cc9fbc2d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\App\Scene">
+      <UniqueIdentifier>{31d815e2-589d-47bb-a0be-86ddf179cd07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ソース ファイル\App\Camera">
+      <UniqueIdentifier>{e74c563f-1c6d-47ff-ba96-e53e315ba841}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\App">
+      <UniqueIdentifier>{13b1aad5-7a37-471c-b7a4-69df1e0bf328}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\RayEngine">
+      <UniqueIdentifier>{5dac0323-ae21-4db6-9609-e422e12d7361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\App\Character">
+      <UniqueIdentifier>{91fc0059-3618-4fa0-bd3f-0d5e6ea44548}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\App\Scene">
+      <UniqueIdentifier>{b43c205a-b588-4ba1-b4a5-fcc49f7ce6f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\RayEngine\2d">
+      <UniqueIdentifier>{251cca14-0b70-4345-b1bd-fad92662c4f0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\RayEngine\3d">
+      <UniqueIdentifier>{1c143c16-31bb-4c74-8e62-c81face1fc96}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DIrectXGame\main.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\MyGame.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_demo.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_draw.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_impl_dx12.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_impl_win32.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_tables.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="Externals\imgui\imgui_widgets.cpp">
+      <Filter>ImGui</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Audio\audio.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Scene\BaseScene.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Collision\Collider.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Collision\CollisionManager.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\DirectionalLight.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\DXCManager.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\DXCommon.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Framework\Framework.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\GlobalVariables.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\ImGuiManager.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Input\Input.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\LightGroup.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Material.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix3x3.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Matrix4x4.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Model.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Mesh.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\MyD3D12Create.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\MyLog.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\R_Math.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneFactory.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneManager.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\2d\Sprite.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\TextureManager.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Transform.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\Triangle.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector2.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector3.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Math\Vector4.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\viewProjection.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\Base\WinApp.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\RayEngine\3d\WorldTransform.cpp">
+      <Filter>ソース ファイル\RayEngine</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Character\BaseCharacter.cpp">
+      <Filter>ソース ファイル\App\Character</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Scene\GameScene.cpp">
+      <Filter>ソース ファイル\App\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Scene\TitleScene.cpp">
+      <Filter>ソース ファイル\App\Scene</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
+      <Filter>ソース ファイル\App\Camera</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Externals\imgui\imconfig.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui_impl_dx12.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui_impl_win32.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imgui_internal.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imstb_rectpack.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imstb_textedit.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="Externals\imgui\imstb_truetype.h">
+      <Filter>ImGui</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\AbstractSceneFactory.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Audio\audio.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\BaseScene.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Collision\Collider.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Collision\CollisionConfig.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Collision\CollisionManager.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\DirectionalLight.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\DXCManager.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\DXCommon.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Framework\Framework.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\WorldTransform.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\WinApp.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\viewProjection.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector4.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector3.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Triangle.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Vector2.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Transform.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\TextureManager.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\2d\Sprite.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\SceneManager.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Scene\SceneFactory.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\SafeDelete.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\R_Math.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyStruct.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyLog.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\MyD3D12Create.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Model.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Mesh.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix4x4.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\Material.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\3d\LightGroup.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Input\Input.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\Base\ImGuiManager.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\RayEngine\GlobalVariables.h">
+      <Filter>ヘッダー ファイル\RayEngine</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\MyGame.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Character\BaseCharacter.h">
+      <Filter>ヘッダー ファイル\App\Scene</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Scene\GameScene.h">
+      <Filter>ヘッダー ファイル\App\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Scene\TitleScene.h">
+      <Filter>ヘッダー ファイル\App\Character</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h">
+      <Filter>ヘッダー ファイル\App</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Externals\imgui\LICENSE.txt">
+      <Filter>ImGui</Filter>
+    </Text>
+  </ItemGroup>
+</Project>
