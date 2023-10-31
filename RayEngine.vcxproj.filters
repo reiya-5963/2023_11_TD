@@ -138,10 +138,10 @@
     <ClCompile Include="DIrectXGame\RayEngine\Math\R_Math.cpp">
       <Filter>ソース ファイル\RayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\RayEngine\2d\Particle.cpp">
+    <ClCompile Include="DIrectXGame\Particle.cpp">
       <Filter>ソース ファイル\RayEngine</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\RayEngine\ParticleManager.cpp">
+    <ClCompile Include="DIrectXGame\ParticleManager.cpp">
       <Filter>ソース ファイル\RayEngine</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneFactory.cpp">
@@ -191,6 +191,9 @@
     </ClCompile>
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
       <Filter>ソース ファイル\App\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="SRVManager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -290,10 +293,10 @@
     <ClInclude Include="DIrectXGame\RayEngine\Math\R_Math.h">
       <Filter>ヘッダー ファイル\RayEngine</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\RayEngine\ParticleManager.h">
+    <ClInclude Include="DIrectXGame\ParticleManager.h">
       <Filter>ヘッダー ファイル\RayEngine</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\RayEngine\2d\Particle.h">
+    <ClInclude Include="DIrectXGame\Particle.h">
       <Filter>ヘッダー ファイル\RayEngine</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\RayEngine\Base\MyStruct.h">
@@ -329,7 +332,7 @@
     <ClInclude Include="DIrectXGame\RayEngine\Base\ImGuiManager.h">
       <Filter>ヘッダー ファイル\RayEngine</Filter>
     </ClInclude>
-    <ClInclude Include="DIrectXGame\RayEngine\GlobalVariables.h">
+    <ClInclude Include="DIrectXGame\GlobalVariables.h">
       <Filter>ヘッダー ファイル\RayEngine</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\MyGame.h">
@@ -347,10 +350,21 @@
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h">
       <Filter>ヘッダー ファイル\App</Filter>
     </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="SRVManager.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt">
       <Filter>ImGui</Filter>
     </Text>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="RayEngine.rc">
+      <Filter>リソース ファイル</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

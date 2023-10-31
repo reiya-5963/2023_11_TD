@@ -19,6 +19,7 @@ void Framework::Initialize() {
 
 	// DXC生成
 	DXCManager::GetInstance()->CreateDXC();
+	SRVManager::GetInstance()->Initialize(dxCommon_->GetDevice(), true);
 
  #pragma region 機能の初期化
 
@@ -54,7 +55,7 @@ void Framework::Initialize() {
 	// 3dモデルの静的初期化
 	Model::StaticInitialize();
 
-	//ParticleManager::StaticInitialize(WinApp::kWindowWidth, WinApp::kWindowHeight);
+	ParticleManager::StaticInitialize(WinApp::kWindowWidth, WinApp::kWindowHeight);
  #pragma endregion
 
  #pragma endregion

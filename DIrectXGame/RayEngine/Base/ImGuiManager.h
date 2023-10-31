@@ -3,7 +3,7 @@
 #include "DXCommon.h"
 #include "WinApp.h"
 #include "imgui.h"
-
+#include "SRVManager.h"
 /// <summary>
 /// ImGuiマネージャ
 /// </summary>
@@ -43,7 +43,7 @@ public:
 	void Draw();
 private:
 	DirectXCommon* dxCommon_ = nullptr;
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> srvHeap_;
+	ID3D12DescriptorHeap* srvHeap_;
 
 private:
 	ImGuiManager() = default;

@@ -5,6 +5,7 @@
 //	return pos;
 //}
 
+StructuredBuffer<TransformationMat> gTransformationMatrices : register(t1);
 
 struct VertexShaderInput {
 	float32_t4 position : POSITION0;
@@ -13,7 +14,7 @@ struct VertexShaderInput {
 
 VertexShaderOutput main(VertexShaderInput input, uint32_t instanceId : SV_InstanceID) {
 	VertexShaderOutput output;
-    output.position = mul(input.position, gTransformationMatrix[instanceId].mat);
+    output.position = mul(input.position, gTransformationMatrices[instanceId].mat);
 	output.uv = input.uv;
 	return output;
 }

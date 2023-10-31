@@ -56,5 +56,8 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
+
+	ParticleManager::PreDraw(commandList);
+	ParticleManager::PostDraw();
 }
 

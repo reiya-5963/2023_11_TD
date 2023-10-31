@@ -7,7 +7,7 @@
 #include "TextureManager.h"
 #include "DXCManager.h"
 #include "GlobalVariables.h"
-
+#include "SRVManager.h"
 
 #include "Sprite.h"
 #include "Triangle.h"

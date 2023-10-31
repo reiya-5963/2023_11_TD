@@ -5,6 +5,7 @@
 #include "MyLog.h"
 #include "R_Math.h"
 #include <wrl.h>
+#include "SRVManager.h"
 
 /// <summary>
 /// テクスチャマネージャ
@@ -84,7 +85,7 @@ private:
 
 	std::string directoryPath_;
 
-	Microsoft::WRL::ComPtr<ID3D12DescriptorHeap> descriptorHeap_;
+	ID3D12DescriptorHeap* descriptorHeap_;
 
 	uint32_t indexNextDescriptorHeap_ = 0u;
 

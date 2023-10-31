@@ -3,7 +3,6 @@
 #include <cassert>
 #include "MyLog.h"
 #include "MyD3D12Create.h"
-
 using namespace DirectX;
 
 uint32_t TextureManager::Load(const std::string& fileName) {
@@ -32,14 +31,9 @@ void TextureManager::Initialize(ID3D12Device* device, std::string directoryPath)
 }
 
 void TextureManager::ResetAll() {
-	HRESULT result = S_FALSE;
+	//HRESULT result = S_FALSE;
 
-	D3D12_DESCRIPTOR_HEAP_DESC descHeapDesc = {};
-	descHeapDesc.Type = D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV;
-	descHeapDesc.Flags = D3D12_DESCRIPTOR_HEAP_FLAG_SHADER_VISIBLE;
-	descHeapDesc.NumDescriptors = kNumDescriptors;
-	result = device_->CreateDescriptorHeap(&descHeapDesc, IID_PPV_ARGS(&descriptorHeap_));
-	assert(SUCCEEDED(result));
+	descriptorHeap_ = SRVManager::GetInstance()->GetSRVDescHeap();
 
 	indexNextDescriptorHeap_ = 0;
 
@@ -60,7 +54,7 @@ const D3D12_RESOURCE_DESC TextureManager::GetResourceDesc(uint32_t textureHandle
 void TextureManager::SetGraphicsRootDescriptorTable(
 	ID3D12GraphicsCommandList* commandList, UINT rootParamIndex, uint32_t textureHandle) {
 	assert(textureHandle < textures_.size());
-	ID3D12DescriptorHeap* ppHeaps[] = { descriptorHeap_.Get() };
+	ID3D12DescriptorHeap* ppHeaps[] = { descriptorHeap_ };
 	commandList->SetDescriptorHeaps(_countof(ppHeaps), ppHeaps);
 
 	commandList->SetGraphicsRootDescriptorTable(
@@ -112,10 +106,10 @@ uint32_t TextureManager::WriteInternal(Vector4* imageData, const int textureWidt
 
 
 	texture.cpuDescriptorHandleSRV = MyCreate::GetCPUDescriptorHandle(
-		descriptorHeap_.Get(), handle, sDescriptorHandleIncrementSize_);
+		descriptorHeap_, handle, sDescriptorHandleIncrementSize_);
 
 	texture.gpuDescriptorHandleSRV = MyCreate::GetGPUDescriptorHandle(
-		descriptorHeap_.Get(), handle, sDescriptorHandleIncrementSize_);
+		descriptorHeap_, handle, sDescriptorHandleIncrementSize_);
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	D3D12_RESOURCE_DESC resDesc = texture.resource->GetDesc();
@@ -224,10 +218,10 @@ uint32_t TextureManager::LoadInternal(const std::string& fileName) {
 	}
 
 	texture.cpuDescriptorHandleSRV = MyCreate::GetCPUDescriptorHandle(
-		descriptorHeap_.Get(), handle, sDescriptorHandleIncrementSize_);
+		descriptorHeap_, handle, sDescriptorHandleIncrementSize_);
 
 	texture.gpuDescriptorHandleSRV = MyCreate::GetGPUDescriptorHandle(
-		descriptorHeap_.Get(), handle, sDescriptorHandleIncrementSize_);
+		descriptorHeap_, handle, sDescriptorHandleIncrementSize_);
 
 	D3D12_SHADER_RESOURCE_VIEW_DESC srvDesc{};
 	D3D12_RESOURCE_DESC resDesc = texture.resource->GetDesc();

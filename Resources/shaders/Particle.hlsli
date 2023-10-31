@@ -8,4 +8,3 @@ struct VertexShaderOutput {
 	float32_t4x4 mat;
 };
 
-StructuredBuffer<TransformationMat> gTransformationMatrices : register(t0);
