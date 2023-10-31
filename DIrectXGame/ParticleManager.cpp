@@ -47,7 +47,7 @@ void ParticleManager::StaticInitialize(int windowWidth, int windowHeight, const 
 #pragma region インスタンシング用のデスクリプタレンジ
 
 	D3D12_DESCRIPTOR_RANGE descriptorRangeForInstancing[1]{};
-	descriptorRangeForInstancing[0].BaseShaderRegister = 257;
+	descriptorRangeForInstancing[0].BaseShaderRegister = 1;
 	descriptorRangeForInstancing[0].NumDescriptors = 1;
 	descriptorRangeForInstancing[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
 	descriptorRangeForInstancing[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
@@ -57,7 +57,10 @@ void ParticleManager::StaticInitialize(int windowWidth, int windowHeight, const 
 #pragma region デスクリプタレンジ
 
 	D3D12_DESCRIPTOR_RANGE descriptorRangeSRV[1]{};
-	descriptorRangeSRV[0] = MyCreate::MyInit(D3D12_DESCRIPTOR_RANGE_TYPE_SRV, 1, 0);
+	descriptorRangeSRV[0].BaseShaderRegister = 0;
+	descriptorRangeSRV[0].NumDescriptors = 1;
+	descriptorRangeSRV[0].RangeType = D3D12_DESCRIPTOR_RANGE_TYPE_SRV;
+	descriptorRangeSRV[0].OffsetInDescriptorsFromTableStart = D3D12_DESCRIPTOR_RANGE_OFFSET_APPEND;
 
 #pragma endregion
 
@@ -73,7 +76,7 @@ void ParticleManager::StaticInitialize(int windowWidth, int windowHeight, const 
 	rootParameters[1] = MyCreate::MyInitAsDescriptorTable(
 		_countof(descriptorRangeSRV),
 		descriptorRangeSRV,
-		D3D12_SHADER_VISIBILITY_ALL);
+		D3D12_SHADER_VISIBILITY_PIXEL);
 
 #pragma endregion
 
@@ -120,7 +123,7 @@ void ParticleManager::StaticInitialize(int windowWidth, int windowHeight, const 
 		{
 		"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,	0, D3D12_APPEND_ALIGNED_ELEMENT,
 		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0}
-	};
+		};
 
 	//InputLayoutの設定
 	graphicsPipelineStateDesc.InputLayout.pInputElementDescs = inputElementDescs;
@@ -143,10 +146,10 @@ void ParticleManager::StaticInitialize(int windowWidth, int windowHeight, const 
 #pragma region 各シェーダーのコンパイル
 
 	//各シェーダーの読み込みとコンパイル
-	std::wstring vsFile = directoryPath + L"/shaders/SpriteVS.hlsl";
+	std::wstring vsFile = directoryPath + L"/shaders/ParticleVS.hlsl";
 	vertexShaderBlob = DXCManager::GetInstance()->CompileShader(vsFile, L"vs_6_0");
 	assert(vertexShaderBlob != nullptr);
-	std::wstring psFile = directoryPath + L"/shaders/SpritePS.hlsl";
+	std::wstring psFile = directoryPath + L"/shaders/ParticlePS.hlsl";
 	pixelShaderBlob = DXCManager::GetInstance()->CompileShader(psFile, L"ps_6_0");
 	assert(pixelShaderBlob != nullptr);
 

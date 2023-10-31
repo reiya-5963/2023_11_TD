@@ -165,7 +165,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\RayEngine\Collision\CollisionConfig.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Collision\CollisionManager.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Framework\Framework.h" />
-    <ClInclude Include="DIrectXGame\GlobalVariables.h" />
+    <ClInclude Include="DIrectXGame\RayEngine\GlobalVariables.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Input\Input.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix3x3.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Math\Matrix4x4.h" />
