@@ -25,9 +25,15 @@ void GameScene::Initialize() {
 
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
+
+	map_ = Mapchip::GetInstance();
+	map_->Initialize("resources/Level/Level1.csv");
+
 }
 
-void GameScene::Finalize() {}
+void GameScene::Finalize() {
+	
+}
 
 void GameScene::Update() {}
 
@@ -50,6 +56,7 @@ void GameScene::Draw() {
 
 
 
+	map_->Draw();
 
 
 

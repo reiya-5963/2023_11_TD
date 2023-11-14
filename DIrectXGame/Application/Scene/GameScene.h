@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "FollowCamera.h"
+#include "Mapchip.h"
 
 /// <summary>
 /// ゲームシーン
@@ -40,6 +41,7 @@ public:
 	/// </summary>
 	void Draw() override;
 private:
+	Mapchip* map_;
 
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
