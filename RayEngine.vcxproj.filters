@@ -192,6 +192,24 @@
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
       <Filter>ソース ファイル\App\Camera</Filter>
     </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Player\PlayerController.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Player\PlayerState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Player\Player.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Gimmick\IGimmick.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Gimmick\GimmickState.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="DIrectXGame\Application\Gimmick\WallGimmick.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Externals\imgui\imconfig.h">
@@ -346,6 +364,24 @@
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h">
       <Filter>ヘッダー ファイル\App</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Player\PlayerController.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Player\PlayerState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Player\Player.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Gimmick\IGimmick.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Gimmick\GimmickState.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="DIrectXGame\Application\Gimmick\WallGimmick.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

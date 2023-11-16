@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "FollowCamera.h"
+#include "Player/PlayerController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -45,4 +46,10 @@ private:
 	ViewProjection viewProjection_;
 
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
+
+	std::unique_ptr<PlayerController> playerController_ = nullptr;
+
+private:
+	void CameraUpdate();
+
 };

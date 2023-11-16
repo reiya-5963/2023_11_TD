@@ -23,13 +23,20 @@ void GameScene::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
+	playerController_ = std::make_unique<PlayerController>();
+	playerController_->Initialize();
+
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
 }
 
 void GameScene::Finalize() {}
 
-void GameScene::Update() {}
+void GameScene::Update() 
+{
+	playerController_->Update();
+	CameraUpdate();
+}
 
 void GameScene::Draw() {
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -41,6 +48,8 @@ void GameScene::Draw() {
 	dxCommon_->ClearDepthBuffer();
 
 	Model::PreDraw(commandList, Model::BlendMode::kNone);
+
+	playerController_->Draw(viewProjection_);
 
 
 	Model::PostDraw();
@@ -56,5 +65,10 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
+}
+
+void GameScene::CameraUpdate()
+{
+	viewProjection_.UpdateMatrix();
 }
 
