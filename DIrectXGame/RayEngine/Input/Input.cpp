@@ -26,7 +26,7 @@
 			(p) = nullptr;                                                                         \
 		}                                                                                          \
 	}
-	
+
 
 namespace {
 
@@ -160,7 +160,7 @@ namespace {
 		return false;
 	}
 
-	BOOL CALLBACK EnumAxesCallback(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID* ) {
+	BOOL CALLBACK EnumAxesCallback(const DIDEVICEOBJECTINSTANCE* pdidoi, VOID*) {
 		if (!sCurrentDevice) {
 			return DIENUM_STOP;
 		}
@@ -229,11 +229,13 @@ Input::EnumJoySticksCallback(const DIDEVICEINSTANCE* pdidInstance, VOID* pContex
 Input::~Input() {
 	if (deviceKeyboard_) {
 		deviceKeyboard_->Unacquire();
-	}	
+	}
 	if (deviceMouse_) {
 		deviceMouse_->Unacquire();
 	}
-
+	for (auto& joyStick : devJoySticks_) {
+		joyStick.device_->Unacquire();
+	}
 }
 
 void Input::SetupJoySticks() {
@@ -279,7 +281,7 @@ void Input::Initialize() {
 	// キーボードデバイスの生成
 	result = directinput_->CreateDevice(GUID_SysKeyboard, &deviceKeyboard_, NULL);
 	assert(SUCCEEDED(result));
-	
+
 	// 入力データ形式のセット
 	result = deviceKeyboard_->SetDataFormat(&c_dfDIKeyboard); // 標準形式
 	assert(SUCCEEDED(result));
@@ -301,14 +303,49 @@ void Input::Initialize() {
 	result = deviceMouse_->SetCooperativeLevel(hwnd_, DISCL_FOREGROUND | DISCL_NONEXCLUSIVE);
 	assert(SUCCEEDED(result));
 
+	// XInput判定
+	SetupForIsXInputDevice();
+
+	// JoyStickのセットアップ
+	SetupJoySticks();
+
+	// 抜き差し検知
+	DEV_BROADCAST_DEVICEINTERFACE notificationFilter{};
+	notificationFilter.dbcc_devicetype = DBT_DEVTYP_DEVICEINTERFACE;
+	notificationFilter.dbcc_size = sizeof(notificationFilter);
+
+	HDEVNOTIFY notifyResult = RegisterDeviceNotification(
+		hwnd_, &notificationFilter,
+		DEVICE_NOTIFY_WINDOW_HANDLE | DEVICE_NOTIFY_ALL_INTERFACE_CLASSES);
+	assert(!!notifyResult);
+
+	notifyResult;
+
+	SetWindowsHookExW(
+		WH_CALLWNDPROC, (HOOKPROC)&SubWndProc, GetModuleHandleW(NULL), GetCurrentThreadId());
+
 }
 
 void Input::Update() {
+	if (sRefreshInputDevices) {
+		SetupForIsXInputDevice();
+		SetupJoySticks();
+		sRefreshInputDevices = false;
+	}
+
+	deviceKeyboard_->Acquire(); // キーボード動作開始
+	deviceMouse_->Acquire();    // マウス動作開始
+	for (auto& joystick : devJoySticks_) {
+		joystick.device_->Acquire();
+	}
 
 	// キーボード情報の取得開始
 	deviceKeyboard_->Acquire();
 	// マウス情報の取得開始
 	deviceMouse_->Acquire();
+	for (auto& joystick : devJoySticks_) {
+		joystick.device_->Acquire();
+	}
 
 	// 前フレームの入力を代入
 	preKey_ = key_;
@@ -322,11 +359,50 @@ void Input::Update() {
 	std::memset(&mouse_, 0, sizeof(mouse_));
 	deviceMouse_->GetDeviceState(sizeof(mouse_), &mouse_);
 
+	// ジョイスティックの入力情報取得
+	int32_t xInputIndex = 0;
+	for (auto& joystick : devJoySticks_) {
+		joystick.preState_ = joystick.state_;
+		std::memset(&joystick.state_, 0, sizeof(joystick.state_));
+
+		if (joystick.type_ == PadType::DirectInput) {
+			auto& directInput = joystick.state_.directInput_;
+			joystick.device_->GetDeviceState(sizeof(directInput), &directInput);
+			if (std::abs(directInput.lX) < joystick.deadZoneL_) {
+				directInput.lX = 0;
+			}
+			if (std::abs(directInput.lY) < joystick.deadZoneL_) {
+				directInput.lY = 0;
+			}
+			if (std::abs(directInput.lRx) < joystick.deadZoneR_) {
+				directInput.lRx = 0;
+			}
+			if (std::abs(directInput.lRy) < joystick.deadZoneR_) {
+				directInput.lRy = 0;
+			}
+		}
+		else {
+			XInputGetState(xInputIndex, &joystick.state_.xInput_);
+			auto& gamePad = joystick.state_.xInput_.Gamepad;
+			if (std::abs(gamePad.sThumbLX) < joystick.deadZoneL_) {
+				gamePad.sThumbLX = 0;
+			}
+			if (std::abs(gamePad.sThumbLY) < joystick.deadZoneL_) {
+				gamePad.sThumbLY = 0;
+			}
+			if (std::abs(gamePad.sThumbRX) < joystick.deadZoneR_) {
+				gamePad.sThumbRX = 0;
+			}
+			if (std::abs(gamePad.sThumbRY) < joystick.deadZoneR_) {
+				gamePad.sThumbRY = 0;
+			}
+		}
+	}
 
 }
 
 bool Input::PushKey(BYTE keyNumber) const {
-	
+
 	// 0でなければ押している
 	if (key_[keyNumber]) {
 		return true;

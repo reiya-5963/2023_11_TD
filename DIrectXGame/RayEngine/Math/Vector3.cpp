@@ -1,77 +1,48 @@
 #include "Vector3.h"
-#include <cmath>
+#include "Matrix4x4.h"
+//#include <Novice.h>
+#include <cassert>
 
-// 全ての値が0のベクトル
-const Vector3 Vector3::zero = { 0.0f, 0.0f, 0.0f };
-// 全ての値が1のベクトル
-const Vector3 Vector3::one = { 1.0f, 1.0f, 1.0f };
+const Vector3 Vector3::zero = Vector3{ 0.f,0.f,0.f };
 
+const Vector3 Vector3::up = Vector3{ 0.f,1.f,0.f };
+const Vector3 Vector3::front = Vector3{ 0.f,0.f,1.f };
+const Vector3 Vector3::right = Vector3{ 1.f,0.f,0.f };
 
-float Vector3::Length() const {
-	return sqrtf((*this) * (*this));
-}
+const Vector3 Vector3::one = Vector3{ 1.f,1.f,1.f };
 
-Vector3 Vector3::Normarize() const {
-	float length = this->Length();
-	if (length != 0) {
-		return *this / length;
-	}
-	else {
-		return { 0.0f, 0.0f, 0.0f };
-	}
-}
-
-Vector3 Vector3::operator+(const Vector3& v2) const {
-	Vector3 result;
-	result.x = this->x + v2.x;
-	result.y = this->y + v2.y;
-	result.z = this->z + v2.z;
-	return result;
-}
-
-Vector3 Vector3::operator-(const Vector3& v2) const {
-	Vector3 result;
-	result.x = this->x - v2.x;
-	result.y = this->y - v2.y;
-	result.z = this->z - v2.z;
-	return result;
-}
-
-Vector3 Vector3::operator*(const float& value) const {
-	Vector3 result;
-	result.x = this->x * value;
-	result.y = this->y * value;
-	result.z = this->z * value;
-	return result;
-}
-
-Vector3 Vector3::operator/(const float& value) const {
-	Vector3 result;
-	result.x = this->x / value;
-	result.y = this->y / value;
-	result.z = this->z / value;
-	return result;
-}
-
-float Vector3::operator*(const Vector3& v2) const {
-	float result;
-	result = this->x * v2.x + this->y * v2.y + this->z * v2.z;
-	return result;
-}
-
-Vector3 Vector3::cross(const Vector3& v2) const {
-	Vector3 result;
-	result.x = y * v2.z - z * v2.y;
-	result.x = z * v2.x - x * v2.z;
-	result.x = x * v2.y - y * v2.x;
-
-	return result;
-}
-
-//Vector3 Vector3::operator%(const Vector3& v2) const {
-//	Vector3 result;
-//	result.x = this->x % v2.x;
-//	result.y = this->y % v2.y;
-//	result.z = z % v2.z;
-//	return result;
+//void Vector3::Printf(int x_, int y_) const {
+//	/*Novice::ScreenPrintf(x_, y_, "%12.2f // %6.2f", this->x, Length());
+//	Novice::ScreenPrintf(x_, y_ + static_cast<int>(TextSize.y), "%12.2f", this->y);
+//	Novice::ScreenPrintf(x_, y_ + static_cast<int>(TextSize.y * 2), "%12.2f", this->z);*/
 //}
+
+Vector3 Vector3::operator*(const Matrix4x4& Second) const {
+	Vector3 result;
+
+	result.x = this->x * Second.m[0][0] + this->y * Second.m[1][0] + this->z * Second.m[2][0] +
+		1.0f * Second.m[3][0];
+	result.y = this->x * Second.m[0][1] + this->y * Second.m[1][1] + this->z * Second.m[2][1] +
+		1.0f * Second.m[3][1];
+	result.z = this->x * Second.m[0][2] + this->y * Second.m[1][2] + this->z * Second.m[2][2] +
+		1.0f * Second.m[3][2];
+	const float w = this->x * Second.m[0][3] + this->y * Second.m[1][3] + this->z * Second.m[2][3] +
+		1.0f * Second.m[3][3];
+	assert(w != 0.0f);
+	return result / w; // 演算子のオーバーライド
+}
+
+Vector3& Vector3::operator*=(const Matrix4x4& Second) {
+	Vector3 result;
+
+	result.x = this->x * Second.m[0][0] + this->y * Second.m[1][0] + this->z * Second.m[2][0] +
+		1.0f * Second.m[3][0];
+	result.y = this->x * Second.m[0][1] + this->y * Second.m[1][1] + this->z * Second.m[2][1] +
+		1.0f * Second.m[3][1];
+	result.z = this->x * Second.m[0][2] + this->y * Second.m[1][2] + this->z * Second.m[2][2] +
+		1.0f * Second.m[3][2];
+	const float w = this->x * Second.m[0][3] + this->y * Second.m[1][3] + this->z * Second.m[2][3] +
+		1.0f * Second.m[3][3];
+	assert(w != 0.0f);
+	return *this = (result / w); // 演算子のオーバーライド
+}

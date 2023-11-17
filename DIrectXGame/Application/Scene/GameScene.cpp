@@ -29,13 +29,25 @@ void GameScene::Initialize() {
 	map_ = Mapchip::GetInstance();
 	map_->Initialize("resources/Level/Level1.csv");
 
+	player_ = std::make_unique<TmpObject>();
+	player_->Initialize();
+
 }
 
 void GameScene::Finalize() {
 	
 }
 
-void GameScene::Update() {}
+void GameScene::Update() {
+	
+
+	viewProjection_.translation_.x = 0.0f;
+	viewProjection_.translation_.y = 15.0f;
+	viewProjection_.translation_.z = -40.0f;
+
+	viewProjection_.UpdateMatrix();
+	player_->Update();
+}
 
 void GameScene::Draw() {
 	ID3D12GraphicsCommandList* commandList = dxCommon_->GetCommandList();
@@ -47,7 +59,9 @@ void GameScene::Draw() {
 	dxCommon_->ClearDepthBuffer();
 
 	Model::PreDraw(commandList, Model::BlendMode::kNone);
-
+	
+	map_->Draw(viewProjection_);
+	player_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
@@ -55,8 +69,7 @@ void GameScene::Draw() {
 	//
 
 
-
-	map_->Draw();
+	
 
 
 

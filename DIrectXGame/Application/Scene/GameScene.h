@@ -4,6 +4,7 @@
 #include <memory>
 #include "FollowCamera.h"
 #include "Mapchip.h"
+#include "TmpObject.h"
 
 /// <summary>
 /// ゲームシーン
@@ -42,7 +43,7 @@ public:
 	void Draw() override;
 private:
 	Mapchip* map_;
-
+	std::unique_ptr<TmpObject> player_;
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 

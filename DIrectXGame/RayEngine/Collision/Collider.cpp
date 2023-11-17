@@ -14,8 +14,8 @@ void Collider::Draw(Model* model, const ViewProjection& viewProjection) {
 }
 
 void Collider::SetRadius(const Vector3 radius) {
-	radius_ = radius;
-	worldTransform_.scale_ = radius_;
+	ColliderRadius_ = radius;
+	worldTransform_.scale_ = ColliderRadius_;
 	worldTransform_.matWorld_ = R_Math::MakeAffineMatrix(worldTransform_.scale_, worldTransform_.rotation_, worldTransform_.translation_);
 }
 
