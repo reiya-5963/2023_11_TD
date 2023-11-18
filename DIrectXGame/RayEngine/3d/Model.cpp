@@ -312,7 +312,10 @@ void Model::Draw(const WorldTransform& worldTransform, const ViewProjection& vie
 	
 	// 全メッシュを描画
 	for (auto& mesh : meshes_) {
-		mesh->Draw(sCommandList_, (UINT)RootParameter::kMaterial, (UINT)RootParameter::kTexture);
+		if (mesh) {
+			mesh->Draw(sCommandList_, (UINT)RootParameter::kMaterial, (UINT)RootParameter::kTexture);
+
+		}
 	}
 
 }

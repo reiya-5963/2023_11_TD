@@ -4,32 +4,18 @@
 
 #include "Model.h"
 #include "WorldTransform.h"
+#include "BaseCharacter.h"
 
-class TmpObject {
+class TmpObject : public BaseCharacter {
 public:
-	void Initialize();
-	void Update();
-	void Draw(const ViewProjection &viewProjection);
-	
+	void Initialize(const std::vector<Model*>& models) override;
+	void Update() override;
+	void Draw(const ViewProjection &viewProjection) override;
+	void OnCollision() override {};
+
 private:
-	std::unique_ptr<Model> model_;
-	std::unique_ptr<WorldTransform> worldTrans_;
-
-	
-	Vector3 velocity_{};
-	Vector3 acceleration_{};
-	//Vector3 beforePos = {};
-	//Vector3 afterPos = {};
-
-	
-	//bool isCollider_ = false;
 
 	bool isDefault = true;
 	bool isJump = false;
-
-	bool isGround_ = false;
-	
-	bool isMapChipCollision_ = true;
-
 };
 

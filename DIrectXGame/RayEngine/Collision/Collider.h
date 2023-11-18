@@ -26,7 +26,7 @@ public: // メンバ関数
 	void Draw(Model* model, const ViewProjection& viewProjection);
 	
 	// 衝突時に呼ばれる関数
-	virtual void OnCollisionEnter() = 0;
+	virtual void OnCollision() = 0;
 	//virtual void OnCollisionExit() = 0;
 
 
@@ -62,10 +62,10 @@ public: // Getter & Setter
 		parent_ = parent;
 	}
 
-	WorldTransform& GetWorldTransform() { return worldTrans_; }
-	void SetWorldTransform(WorldTransform worldTrans) {
+	WorldTransform& GetCollisionWorldTransform() { return collisionWorldTransform_; }
+	void SetCollisionWorldTransform(WorldTransform worldTrans) {
 
-		worldTrans_ = worldTrans;
+		collisionWorldTransform_ = worldTrans;
 	}
 
 	bool GetIsCollision() { return isCollision_; }
@@ -83,21 +83,7 @@ protected: // メンバ変数　
 	// AABBの最大点
 	Vector3 max_;
 
-	// 速度
-	Vector3 velocity_{};
-	
-	// 加速度
-	Vector3 acceleration_{};
-
-	// 地面にいるか？
-	bool isGround_ = false;
-
-	// マップチップの当たり判定をするかどうか
-	bool hasMapChipCollider_ = true;
-
-
-	WorldTransform worldTransform_;
-	WorldTransform worldTrans_;
+	WorldTransform collisionWorldTransform_;
 
 	// 地面
 	WorldTransform* parent_;

@@ -34,14 +34,28 @@ public:
 	/// </summary>
 	/// <returns>ワールド変換データ</returns>
 	const WorldTransform& GetWorldTransform() { 
-		return worldTransform_;
+		return objectWorldTransform_;
 	}
 
 	virtual Vector3 GetWorldPosition() override;
 
+	void OnCollision() override = 0;
 protected:
 	// モデルデータ配列
 	std::vector<Model*> models_;
 	// ワールド変換データ
-	//WorldTransform worldTrans_;
+	//
+	WorldTransform objectWorldTransform_;
+
+	// 速度
+	Vector3 velocity_{};
+	
+	// 加速度
+	Vector3 acceleration_{};
+
+	// 地面に乗ってるか？
+	bool isGround_ = false;
+
+	// マップチップの判定をとるか？
+	bool isMapChipCollision_ = true;
 };

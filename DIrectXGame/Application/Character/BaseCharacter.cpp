@@ -1,31 +1,129 @@
 #include "BaseCharacter.h"
+#include <cassert>
+#include "ImGuiManager.h"
+#include "Mapchip.h"
 
 void BaseCharacter::Initialize(const std::vector<Model*>& models) { 
+	// モデルがあるかチェック
+	for (uint32_t i = 0; i < models.size(); i++) {
+		assert(models[i]);
+	}
+	
+	// モデルを設定
 	models_ = models;
-	worldTrans_.Initialize();
+	
+	// オブジェクトのワールド変換データ初期化
+	objectWorldTransform_.Initialize();
+	
+	// 衝突判定系を初期化
 	Collider::Initialize();
+
+	// それぞれ初期化
+	velocity_ = {};
+	acceleration_ = {};
 
 }
 
 void BaseCharacter::Update() {
+	const float deltaTime = 0.03f;
+
+#pragma region 共通の処理
+
+	// 動く前の位置と、動いた後の位置を取得
+	Vector3 beforePos = objectWorldTransform_.translation_;
+	Vector3& afterPos = objectWorldTransform_.translation_;
+
+	// 速度に加速度を加算
+	velocity_ += acceleration_;
+	Vector3 fixVelocity = velocity_ * deltaTime;
+
+	// 速度を調整　速度を調整　速度を調整　速度を調整　速度を調整　速度を調整　速度を調整　速度を調整　速度を調整　速度を調整 //
+	if (fixVelocity.y <= -1.0f) {
+		fixVelocity.y = -1.0f;
+	}
+	else if (fixVelocity.y >= 1.0f) {
+		fixVelocity.y = 1.0f;
+	}
+	if (fixVelocity.x <= -2.0f) {
+		fixVelocity.x = -2.0f;
+	}
+	else if (fixVelocity.x >= 2.0f) {
+		fixVelocity.x = 2.0f;
+	}
+
+	// 速度を調整し、位置に加算
+	objectWorldTransform_.translation_ += fixVelocity;
+
+	// 一旦地面判定を無効に
+	isGround_ = false;
+
+	// もしマップチップ当たり判定をとるなら
+	if (isMapChipCollision_) {
+		// beforeからafterの間で、ブロックがあるならその位置、ないならafterの位置が帰ってくる
+		const Vector3 hitPos = Mapchip::GetInstance()->HitMap(beforePos, afterPos, 1.0f);
+
+		// もし違う場合(地面に触れる場合)
+		if (hitPos.y != afterPos.y) {
+			if (velocity_.y < 0.f) {
+				// 地面に触れている
+				isGround_ = true;
+			}
+			velocity_.y = 0.f;
+		}
+
+		// もし地面に触れているなら位置を当たった位置へ
+		if (hitPos != afterPos) {
+			objectWorldTransform_.translation_ = hitPos;
+		}
+	}
+
+	// もし地面に触れていたら
+	if (isGround_) {
+		//velocity_.x = 0.f;
+
+		if (velocity_.y < 0.f) {
+			velocity_.y = 0.f;
+		}
+	}
+
+	// 加速度を初期化
+	acceleration_ = {};
+#pragma endregion
+
+	// オブジェクトのワールド変換データを更新
+	objectWorldTransform_.UpdateMatrix();
+
+	// 当たり判定用のワールド変換データを更新
 	UpdateWorldTransform();
 
-	worldTrans_.UpdateMatrix();
-
+#ifdef DEBUG_
+	// デバッグ用
+	ImGui::Begin("debug");
+	ImGui::Text("%f , %f", worldTrans_->matWorld_.m[3][0], worldTrans_->matWorld_.m[3][1]);
+	if (isGround_) {
+		ImGui::Text("isGround : true");
+	}
+	else {
+		ImGui::Text("isGround : false");
+	}
+	ImGui::End();
+#endif // DEBUG
 }
 
 void BaseCharacter::Draw(const ViewProjection& viewProjection) {
 	for (Model* model : models_) {
-		model->Draw(worldTrans_, viewProjection);
+		if (model) {
+			model->Draw(objectWorldTransform_, viewProjection);
+		}
 	}
 }
 
 Vector3 BaseCharacter::GetWorldPosition() {
 	Vector3 result{};
 	//
-	result.x = worldTrans_.matWorld_.m[3][0];
-	result.y = worldTrans_.matWorld_.m[3][1];
-	result.z = worldTrans_.matWorld_.m[3][2];
+	result.x = objectWorldTransform_.matWorld_.m[3][0];
+	result.y = objectWorldTransform_.matWorld_.m[3][1];
+	result.z = objectWorldTransform_.matWorld_.m[3][2];
 
 	return result;
 }

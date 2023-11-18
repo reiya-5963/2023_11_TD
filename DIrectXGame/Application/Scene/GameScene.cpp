@@ -4,6 +4,7 @@
 #include "TextureManager.h"
 #include "ImGuiManager.h"
 
+
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -29,8 +30,15 @@ void GameScene::Initialize() {
 	map_ = Mapchip::GetInstance();
 	map_->Initialize("resources/Level/Level1.csv");
 
+	Model* p_model;
+	p_model =  Model::CreateFlomObj("cube");
+
+	std::vector<Model*> p_models = {
+		p_model
+	};
+
 	player_ = std::make_unique<TmpObject>();
-	player_->Initialize();
+	player_->Initialize(p_models);
 
 }
 
