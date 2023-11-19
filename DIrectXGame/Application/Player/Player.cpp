@@ -81,8 +81,9 @@ void Player::Draw(const ViewProjection& viewProjection)
 	BaseCharacter::Draw(viewProjection);
 }
 
-void Player::OnCollision()
+void Player::OnCollision(WorldTransform* worldTransform)
 {
+	worldTransform;
 	request_ = Behavior::kRoot;
 }
 

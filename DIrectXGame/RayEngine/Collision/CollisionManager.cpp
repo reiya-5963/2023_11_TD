@@ -67,9 +67,9 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 
 	// もし当たってたら
 	if (IsCollision(colliderA, colliderB)) {
-		colliderA->OnCollision();
+		colliderA->OnCollision(colliderB->GetParent());
 		colliderA->SetParent(&colliderB->GetCollisionWorldTransform());
-		colliderB->OnCollision();
+		colliderB->OnCollision(colliderA->GetParent());
 		colliderB->SetParent(&colliderA->GetCollisionWorldTransform());
 	}
 }

@@ -22,7 +22,7 @@ public:
 	/// <summary>
 	/// 衝突
 	/// </summary>
-	void OnCollision() override;
+	void OnCollision(WorldTransform* worldTransform) override;
 
 private:
 	bool isAction_ = false;

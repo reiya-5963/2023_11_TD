@@ -26,7 +26,7 @@ public: // メンバ関数
 	void Draw(Model* model, const ViewProjection& viewProjection);
 	
 	// 衝突時に呼ばれる関数
-	virtual void OnCollision() = 0;
+	virtual void OnCollision(WorldTransform* worldTransform) = 0;
 	//virtual void OnCollisionExit() = 0;
 
 

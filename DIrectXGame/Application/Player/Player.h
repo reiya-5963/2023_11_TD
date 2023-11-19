@@ -36,7 +36,7 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection) override;
 
-	void OnCollision() override;
+	void OnCollision(WorldTransform* worldTransform) override;
 	
 	void MoveUpdate(Vector3& moveDirect);
 

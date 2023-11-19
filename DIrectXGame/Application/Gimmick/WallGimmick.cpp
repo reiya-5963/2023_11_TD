@@ -60,7 +60,7 @@ void WallGimmick::Draw(const ViewProjection& viewProjection)
 
 }
 
-void WallGimmick::OnCollision()
+void WallGimmick::OnCollision(WorldTransform* worldTransform)
 {
-
+	worldTransform;
 }

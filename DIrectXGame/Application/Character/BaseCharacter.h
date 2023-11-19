@@ -39,7 +39,7 @@ public:
 
 	virtual Vector3 GetWorldPosition() override;
 
-	void OnCollision() override = 0;
+	void OnCollision(WorldTransform* worldTransform) override = 0;
 protected:
 	// モデルデータ配列
 	std::vector<Model*> models_;
