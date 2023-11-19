@@ -21,19 +21,19 @@ void TmpObject::Update() {
 		objectWorldTransform_.translation_.y = 10.0f;
 	}
 
-	// A,Dで横移動
-	if (input_->PushKey(DIK_D)) {
-		velocity_.x = 5.0f;
-	}
-	else if (input_->PushKey(DIK_A)) {
-		velocity_.x = -5.0f;
-	}
-	else {
-		velocity_.x = 0.0f;
-	}
-	if (input_->PushKey(DIK_LSHIFT)) {
-		velocity_.x *= 1.6f;
-	}
+	//// A,Dで横移動
+	//if (input_->PushKey(DIK_D)) {
+	//	velocity_.x = 5.0f;
+	//}
+	//else if (input_->PushKey(DIK_A)) {
+	//	velocity_.x = -5.0f;
+	//}
+	//else {
+	//	velocity_.x = 0.0f;
+	//}
+	//if (input_->PushKey(DIK_LSHIFT)) {
+	//	velocity_.x *= 1.6f;
+	//}
 
 	// スぺ―スでジャンプ
 	if (input_->PushKey(DIK_SPACE) && !isJump) {

@@ -5,6 +5,8 @@
 #include "FollowCamera.h"
 #include "Mapchip.h"
 #include "TmpObject.h"
+#include "Gimmick/GimmickManager.h"
+#include "Player/PlayerController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -44,6 +46,9 @@ public:
 private:
 	Mapchip* map_;
 	std::unique_ptr<TmpObject> player_;
+	std::unique_ptr<PlayerController> playerController_;
+	std::unique_ptr<GimmickManager> gimmickManager_;
+
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
 

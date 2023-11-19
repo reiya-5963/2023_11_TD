@@ -30,15 +30,12 @@ void GameScene::Initialize() {
 	map_ = Mapchip::GetInstance();
 	map_->Initialize("resources/Level/Level1.csv");
 
-	Model* p_model;
-	p_model =  Model::CreateFlomObj("cube");
 
-	std::vector<Model*> p_models = {
-		p_model
-	};
+	playerController_ = std::make_unique<PlayerController>();
+	playerController_->Initialize();
 
-	player_ = std::make_unique<TmpObject>();
-	player_->Initialize(p_models);
+	gimmickManager_ = std::make_unique<GimmickManager>();
+	gimmickManager_->Initialize();
 
 }
 
@@ -54,7 +51,10 @@ void GameScene::Update() {
 	viewProjection_.translation_.z = -40.0f;
 
 	viewProjection_.UpdateMatrix();
-	player_->Update();
+
+	playerController_->Update();
+
+	gimmickManager_->Update();
 }
 
 void GameScene::Draw() {
@@ -69,7 +69,10 @@ void GameScene::Draw() {
 	Model::PreDraw(commandList, Model::BlendMode::kNone);
 	
 	map_->Draw(viewProjection_);
-	player_->Draw(viewProjection_);
+
+	playerController_->Draw(viewProjection_);
+
+	gimmickManager_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
