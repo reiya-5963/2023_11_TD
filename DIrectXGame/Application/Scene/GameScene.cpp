@@ -52,6 +52,10 @@ void GameScene::Update() {
 
 	viewProjection_.UpdateMatrix();
 
+	this->ColliderListUpdate();
+
+	colliderManager_->CheckAllCollisions();
+
 	playerController_->Update();
 
 	gimmickManager_->Update();
@@ -87,5 +91,17 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
+}
+
+void GameScene::ColliderListUpdate()
+{
+	colliderManager_->ClearColliders();
+
+	colliderManager_->AddColliders(playerController_->GetPlayer1());
+	colliderManager_->AddColliders(playerController_->GetPlayer2());
+	for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
+		colliderManager_->AddColliders(gimmick);
+	}
+
 }
 

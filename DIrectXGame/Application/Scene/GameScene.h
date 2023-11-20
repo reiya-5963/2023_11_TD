@@ -43,6 +43,10 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw() override;
+
+private:
+	void ColliderListUpdate();
+
 private:
 	Mapchip* map_;
 	std::unique_ptr<TmpObject> player_;
