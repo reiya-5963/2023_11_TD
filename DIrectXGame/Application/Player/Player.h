@@ -69,6 +69,12 @@ public:
 		kAction,
 	};
 
+	/// <summary>
+	/// アクション状態の取得
+	/// </summary>
+	/// <returns></returns>
+	Behavior GetBehaviorState() { return behavior_; }
+
 private:
 	// 状態管理変数
 	Behavior behavior_ = Behavior::kRoot;

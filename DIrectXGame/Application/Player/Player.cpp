@@ -51,6 +51,7 @@ void Player::Update()
 			JumpInitialize();
 			break;
 		case Player::Behavior::kAction:
+			ActionInitialize();
 			break;
 		}
 
@@ -67,12 +68,16 @@ void Player::Update()
 		JumpUpdate();
 		break;
 	case Player::Behavior::kAction:
+		ActionUpdate();
 		break;
 	}
 
 	//objectWorldTransform_.translation_ = R_Math::Add(objectWorldTransform_.translation_, velocity_);
 
 	BaseCharacter::Update();
+
+	collisionWorldTransform_ = objectWorldTransform_;
+	collisionWorldTransform_.UpdateMatrix();
 
 }
 
@@ -84,7 +89,7 @@ void Player::Draw(const ViewProjection& viewProjection)
 void Player::OnCollision(WorldTransform* worldTransform)
 {
 	worldTransform;
-	request_ = Behavior::kRoot;
+	//request_ = Behavior::kRoot;
 }
 
 

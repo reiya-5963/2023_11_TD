@@ -30,10 +30,17 @@ void ActiveState::Update()
 		}
 
 		//---ジャンプ入力---//
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER) {
+		// ジャンプ中でなければ
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER &&
+			player_->GetBehaviorState() != Player::Behavior::kJump) {
 			player_->SetBehaviorRequest(Player::Behavior::kJump);
 		}
 
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_0) &&
+		player_->GetBehaviorState() != Player::Behavior::kJump) {
+		player_->SetBehaviorRequest(Player::Behavior::kJump);
 	}
 
 	move = { move.x,player_->GetVelocity().y,move.z };

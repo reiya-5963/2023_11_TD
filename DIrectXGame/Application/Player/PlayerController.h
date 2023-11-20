@@ -36,6 +36,10 @@ private:
 	std::unique_ptr<Player> player1_;
 	std::unique_ptr<Player> player2_;
 
+public:
+	Player* GetPlayer1() { return player1_.get(); }
+	Player* GetPlayer2() { return player2_.get(); }
+
 private:
 	enum class ControlNum : uint32_t 
 	{
