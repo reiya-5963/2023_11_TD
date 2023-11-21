@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "IGimmick.h"
+#include "WallGimmick.h"
 #include "viewProjection.h"
 #include "Model.h"
 
@@ -41,7 +42,8 @@ public:
 	std::list<IGimmick*> GetGimmickList() { return gimmicks_; }
 
 private:
-	void AddWallGimmick(const Vector3& position, WorldTransform* parent);
+	void AddWallGimmick(const Vector3& position, uint32_t number);
+	void AddWallChild(const Vector3& position, WallGimmick* parent);
 	void AddFloarGimmick();
 	void AddDoorGimmick();
 };

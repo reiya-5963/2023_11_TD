@@ -25,6 +25,8 @@ public:
 	/// <param name="viewProjection"></param>
 	virtual void Draw(const ViewProjection& viewProjection) = 0;
 
+	void StartSetting();
+
 public:
 	/// <summary>
 	/// 座標設定
@@ -82,6 +84,11 @@ protected:
 	/// 補間レート
 	/// </summary>
 	float ease_T_ = 0;
+
+	/// <summary>
+	/// 起動前か
+	/// </summary>
+	bool isBeforeStartup = false;
 
 };
 

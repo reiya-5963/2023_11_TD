@@ -15,7 +15,7 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	objectWorldTransform_.translation_ = position;
 	color;
 	behavior_ = Behavior::kRoot;
-	objectWorldTransform_.scale_ = { 5,5,1 };
+	objectWorldTransform_.scale_ = { 1,1,1 };
 }
 
 void Player::Update()
@@ -84,9 +84,9 @@ void Player::Update()
 
 void Player::Draw(const ViewProjection& viewProjection)
 {
-	if (typeid(*inputState_) == typeid(ActiveState)) {
+	//if (typeid(*inputState_) == typeid(ActiveState)) {
 		BaseCharacter::Draw(viewProjection);
-	}
+	//}
 }
 
 void Player::OnCollision(WorldTransform* worldTransform)
@@ -123,7 +123,7 @@ void Player::JumpInitialize()
 {
 	isGround_ = false;
 
-	const float kFirstSpeed = 5.0f;
+	const float kFirstSpeed = 10.0f;
 	
 	velocity_.y = kFirstSpeed;
 
@@ -133,7 +133,7 @@ void Player::JumpUpdate()
 {
 	const float kGravity = 9.8f;
 
-	const float deltaTime = 1.0f / 60.0f;
+	const float deltaTime = 1.0f / 45.0f;
 
 	Vector3 accelerationVector = { 0,-kGravity * deltaTime,0 };
 

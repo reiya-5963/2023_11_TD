@@ -43,17 +43,18 @@ void PlayerController::Update()
 	if (Input::GetInstance()->TriggerKey(DIK_8)) {
 		float length = std::numeric_limits<float>::max();
 		IGimmick* tmpGimmick = nullptr;
-		Vector3 playerPosition = {};
+		Player* tmpPlayer = nullptr;
 		if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
-			playerPosition = player1_->GetWorldPosition();
+			tmpPlayer = player1_.get();
 		}
 		else {
-			playerPosition = player2_->GetWorldPosition();
+			tmpPlayer = player2_.get();
 		}
 
 		// 範囲設定
 		float playerRadius = 5.0f;
 		float objectRadius = 1.0f;
+		Vector3 playerPosition = tmpPlayer->GetWorldPosition();
 
 		Vector2_AABB player = {
 			{playerPosition.x - playerRadius,playerPosition.y - playerRadius},
@@ -81,6 +82,7 @@ void PlayerController::Update()
 			if (length > R_Math::Length(range)) {
 				length = R_Math::Length(range);
 				tmpGimmick = gimmick;
+				//tmpPlayer->SetBehaviorRequest(Player::Behavior::kAction);
 			}
 
 		}
@@ -88,7 +90,7 @@ void PlayerController::Update()
 
 		// 見つかれば呼び出し
 		if (tmpGimmick != nullptr) {
-			tmpGimmick->SetIsAction(true);
+			tmpGimmick->StartSetting();
 		}
 
 	}
