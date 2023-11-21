@@ -15,7 +15,8 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	objectWorldTransform_.translation_ = position;
 	color;
 	behavior_ = Behavior::kRoot;
-	SetRadius({ 1.0f, 1.0f, 1.0f });
+	SetRadius({ 2.0f, 2.0f, 2.0f });
+	objectWorldTransform_.scale_ = GetRadius();
 }
 
 void Player::Update()

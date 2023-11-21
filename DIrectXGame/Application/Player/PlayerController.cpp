@@ -19,9 +19,9 @@ void PlayerController::Initialize()
 	controlNum_ = ControlNum::kOne;
 
 	Model* p_model1;
-	p_model1 = Model::CreateFlomObj("cube");
+	p_model1 = Model::CreateFlomObj("ghost");
 	Model* p_model2;
-	p_model2 = Model::CreateFlomObj("redBlock");
+	p_model2 = Model::CreateFlomObj("ghost");
 
 	std::vector<Model*> p_models1 = {
 		p_model1
