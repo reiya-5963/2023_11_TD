@@ -42,6 +42,7 @@ void GameScene::Initialize() {
 
 	gimmickManager_ = std::make_unique<GimmickManager>();
 	gimmickManager_->Initialize();
+	playerController_->SetGimmickManager(gimmickManager_.get());
 
 }
 

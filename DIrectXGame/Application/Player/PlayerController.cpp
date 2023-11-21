@@ -1,4 +1,8 @@
 ﻿#include "PlayerController.h"
+#include <limits>
+
+// マクロの停止
+#undef max
 
 PlayerController::PlayerController()
 {
@@ -34,6 +38,57 @@ void PlayerController::Initialize()
 
 void PlayerController::Update()
 {
+
+	if (Input::GetInstance()->TriggerKey(DIK_8)) {
+		float length = std::numeric_limits<float>::max();
+		IGimmick* tmpGimmick = nullptr;
+		Vector3 playerPosition = {};
+		if (typeid(*player1_.get()) == typeid(ActiveState)) {
+			playerPosition = player1_->GetWorldPosition();
+		}
+		else {
+			playerPosition = player2_->GetWorldPosition();
+		}
+
+		float radius = 30.0f;
+
+		Vector2_AABB player = {
+			{playerPosition.x - radius,playerPosition.y - radius},
+			{playerPosition.x + radius,playerPosition.y + radius},
+		};
+
+		for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
+			// 親を所持している場合スキップ
+			if (gimmick->GetWorldTransform()->parent_ != nullptr) {
+				continue;
+			}
+			// 長さ用
+			Vector3 range = R_Math::Subtract(playerPosition, gimmick->GetWorldPosition());
+			// オブジェクトのAABB
+			Vector2_AABB gim = {
+				{gimmick->GetWorldPosition().x - radius, gimmick->GetWorldPosition().y - radius},
+				{gimmick->GetWorldPosition().x + radius, gimmick->GetWorldPosition().y + radius},
+			};
+			if (!IsAABBCollision(player, gim)) {
+				// No
+				continue;
+			}
+
+			// 最短距離を計算
+			if (length > R_Math::Length(range)) {
+				length = R_Math::Length(range);
+				tmpGimmick = gimmick;
+			}
+
+		}
+
+		// 見つかれば呼び出し
+		if (tmpGimmick != nullptr) {
+			tmpGimmick->SetIsAction(true);
+		}
+
+	}
+
 	ChangeControl();
 	player1_->Update();
 	player2_->Update();
@@ -97,3 +152,12 @@ void PlayerController::ChangeControl()
 //	player->Initialize(model_.get());
 //	player->Setting(position, 0);
 //}
+
+bool PlayerController::IsAABBCollision(const Vector2_AABB& aabb1, const Vector2_AABB& aabb2) {
+	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&	// X軸
+		(aabb1.min.y <= aabb2.max.y && aabb1.max.y >= aabb2.min.y))	// Y軸
+	{	// Z軸
+		return true;
+	}
+	return false;
+}
