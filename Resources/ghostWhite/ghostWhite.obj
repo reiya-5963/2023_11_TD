@@ -1,6 +1,6 @@
 # Blender 3.5.0
 # www.blender.org
-mtllib ghost.mtl
+mtllib ghostWhite.mtl
 o 球
 v -0.000815 0.514304 -0.483735
 v 0.000795 0.381329 -0.609220
