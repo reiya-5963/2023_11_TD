@@ -37,8 +37,11 @@ private:
 	/// </summary>
 	std::unique_ptr<Model> floarModel_;
 
+public:
+	std::list<IGimmick*> GetGimmickList() { return gimmicks_; }
+
 private:
-	void AddWallGimmick(const Vector3& position);
+	void AddWallGimmick(const Vector3& position, WorldTransform* parent);
 	void AddFloarGimmick();
 	void AddDoorGimmick();
 };

@@ -7,7 +7,7 @@ void WallGimmick::Initialize(Model* model)
 	model_ = model;
 	worldTransform_.Initialize();
 	collisionWorldTransform_.Initialize();
-
+	ease_T_ = 0;
 }
 
 void WallGimmick::Update()
@@ -38,15 +38,15 @@ void WallGimmick::Update()
 		}
 		worldTransform_.translation_ = R_Math::lerp(ease_T_, worldTransform_.translation_, EndPoint_);
 	}
-	else {
-		if (ease_T_ >= 1.0f) {
-			ease_T_ = 1.0f;
-		}
-		else {
-			ease_T_ += 1.0f / 300.0f;
-		}
-		worldTransform_.translation_ = R_Math::lerp(ease_T_, worldTransform_.translation_, beginPoint_);
-	}
+	//else {
+	//	if (ease_T_ >= 1.0f) {
+	//		ease_T_ = 1.0f;
+	//	}
+	//	else {
+	//		ease_T_ += 1.0f / 300.0f;
+	//	}
+	//	worldTransform_.translation_ = R_Math::lerp(ease_T_, worldTransform_.translation_, beginPoint_);
+	//}
 
 	this->worldTransform_.UpdateMatrix();
 	collisionWorldTransform_ = worldTransform_;
