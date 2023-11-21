@@ -8,6 +8,7 @@
 #include "Gimmick/GimmickManager.h"
 #include "Player/PlayerController.h"
 #include "Collision/CollisionManager.h"
+#include "FocusCamera.h"
 
 /// <summary>
 /// ゲームシーン
@@ -48,6 +49,17 @@ public:
 
 	void ColliderUpdate();
 private:
+	/*/// <summary>
+	/// コライダーリストの更新
+	/// </summary>
+	void ColliderListUpdate();*/
+
+	/// <summary>
+	/// カメラ関係の更新
+	/// </summary>
+	void CameraUpdate();
+
+private:
 	Mapchip* map_;
 	//std::unique_ptr<TmpObject> player_;
 
@@ -56,6 +68,8 @@ private:
 
 	// ビュープロジェクション
 	ViewProjection viewProjection_;
+
+	std::unique_ptr<FocusCamera> focusCamera_;
 
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
 };

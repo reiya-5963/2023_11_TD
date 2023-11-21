@@ -73,6 +73,12 @@ public:
 		kAction,
 	};
 
+	/// <summary>
+	/// アクション状態の取得
+	/// </summary>
+	/// <returns></returns>
+	Behavior GetBehaviorState() { return behavior_; }
+
 private:
 	// 状態管理変数
 	Behavior behavior_ = Behavior::kRoot;
@@ -98,5 +104,8 @@ private:
 	// プレイヤーの入力状態
 	InputState* inputState_ = nullptr;
 	int test = 0;
+
+public:
+	InputState* GetInputState() { return inputState_; }
 };
 

@@ -1,8 +1,7 @@
 ﻿#pragma once
-#include "Gimmick/IGimmick.h"
-#include "viewProjection.h"
+#include "IGimmick.h"
 
-class WallGimmick : public IGimmick
+class DoorGimmick : public IGimmick
 {
 public:
 	/// <summary>
@@ -22,13 +21,7 @@ public:
 	/// <summary>
 	/// 衝突
 	/// </summary>
-	void OnCollision([[maybe_unused]] Collider* other) override;
-	void SetParent(WorldTransform* parent) { worldTransform_.parent_ = parent; };
-
-	WorldTransform* GetParent() { return &worldTransform_; };
-
-private:
-	//bool isAction_ = false;
+	void OnCollision([[maybe_unused]] Collider* other) override ;
 
 };
 

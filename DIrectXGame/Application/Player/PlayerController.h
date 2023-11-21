@@ -5,7 +5,12 @@
 #include "Player.h"
 #include "Model.h"
 #include "viewProjection.h"
+#include "Gimmick/GimmickManager.h"
 
+struct Vector2_AABB{
+	Vector2 min;
+	Vector2 max;
+};
 
 class PlayerController
 {
@@ -41,7 +46,29 @@ private:
 	std::unique_ptr<Player> player1_;
 	std::unique_ptr<Player> player2_;
 
+public:
+	/*Player* GetPlayer1() { return player1_.get(); }
+	Player* GetPlayer2() { return player2_.get(); }*/
+
 private:
+	/// <summary>
+	/// リスト用
+	/// </summary>
+	GimmickManager* gimmickManager_ = nullptr;
+
+	bool IsAABBCollision(const Vector2_AABB& aabb1, const Vector2_AABB& aabb2);
+
+public:
+	/// <summary>
+	/// 設定
+	/// </summary>
+	/// <param name="manager"></param>
+	void SetGimmickManager(GimmickManager* manager) { gimmickManager_ = manager; }
+
+private: // 切り替え用変数
+	/// <summary>
+	/// 切り替え
+	/// </summary>
 	enum class ControlNum : uint32_t 
 	{
 		kOne,

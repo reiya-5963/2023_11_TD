@@ -252,4 +252,13 @@ public:
 	static Vector2 EaseInOutCubicF(float t, Vector2 start, Vector2 end);
 #pragma endregion
 
+#pragma region Vector3 Easing
+
+	static Vector3 EaseInQuadF(float t, Vector3 start, Vector3 end);
+
+	static Vector3 EaseOutQuadF(float t, Vector3 start, Vector3 end);
+
+
+#pragma endregion
+
 };

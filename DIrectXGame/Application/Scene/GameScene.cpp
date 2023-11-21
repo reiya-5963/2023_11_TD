@@ -24,6 +24,12 @@ void GameScene::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
+	focusCamera_ = std::make_unique<FocusCamera>();
+	focusCamera_->Initialize();
+	focusCamera_->SetPosition(Vector3{ 0,15.0f,-40.0f });
+
+	focusCamera_->SettingAnimation(focusCamera_->GetView().translation_, Vector3(10.0f, 15.0f, -50.0f));
+
 	colliderManager_ = std::make_unique<CollisionManager>();
 	colliderManager_->Initialize();
 
@@ -36,6 +42,7 @@ void GameScene::Initialize() {
 
 	gimmickManager_ = std::make_unique<GimmickManager>();
 	gimmickManager_->Initialize();
+	playerController_->SetGimmickManager(gimmickManager_.get());
 
 }
 
@@ -45,15 +52,13 @@ void GameScene::Finalize() {
 
 void GameScene::Update() {
 	
+	if (Input::GetInstance()->TriggerKey(DIK_9)) {
+		focusCamera_->SetIsAnimater(true);
+	}
 
-	viewProjection_.translation_.x = 0.0f;
-	viewProjection_.translation_.y = 15.0f;
-	viewProjection_.translation_.z = -40.0f;
+	CameraUpdate();
 
-	viewProjection_.UpdateMatrix();
-
-
-	ColliderUpdate();
+	this->ColliderUpdate();
 
 	playerController_->Update();
 
@@ -106,7 +111,7 @@ void GameScene::ColliderUpdate() {
 
 	std::list<IGimmick*> gimmicks = gimmickManager_->GetGimmicks();
 
-	for (auto* gimmick : gimmicks) {
+	for (IGimmick* gimmick : gimmicks) {
 		colliderManager_->AddColliders(gimmick);
 	}
 	// 当たり判定チェック
@@ -115,3 +120,12 @@ void GameScene::ColliderUpdate() {
 
 }
 
+void GameScene::CameraUpdate()
+{
+
+	focusCamera_->Update();
+	viewProjection_.matProjection = focusCamera_->GetView().matProjection;
+	viewProjection_.matView = focusCamera_->GetView().matView;
+	viewProjection_.TransferMatrix();
+
+}

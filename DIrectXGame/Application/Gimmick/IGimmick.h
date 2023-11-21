@@ -25,6 +25,8 @@ public:
 	/// <param name="viewProjection"></param>
 	virtual void Draw(const ViewProjection& viewProjection) = 0;
 
+	void StartSetting();
+
 public:
 	/// <summary>
 	/// 座標設定
@@ -45,6 +47,12 @@ public:
 	/// <param name="end"></param>
 	void SetEasePoint(const Vector3& begin, const Vector3& end);
 
+	void SetIsAction(bool actionFlag) { isAction_ = actionFlag; }
+
+	void SetParentChildren(WorldTransform* parent) { worldTransform_.parent_ = parent; }
+
+	WorldTransform* GetWorldTransform() { return &worldTransform_; }
+
 protected:
 	/// <summary>
 	/// ワールドトランスフォーム
@@ -59,11 +67,28 @@ protected:
 	/// </summary>
 	Vector3 velocity_ = {};
 
+	/// <summary>
+	/// 始点
+	/// </summary>
 	Vector3 beginPoint_ = {};
-
+	/// <summary>
+	/// 終点
+	/// </summary>
 	Vector3 EndPoint_ = {};
 
+	/// <summary>
+	/// アクション中か
+	/// </summary>
+	bool isAction_ = false;
+	/// <summary>
+	/// 補間レート
+	/// </summary>
 	float ease_T_ = 0;
+
+	/// <summary>
+	/// 起動前か
+	/// </summary>
+	bool isBeforeStartup = false;
 
 };
 

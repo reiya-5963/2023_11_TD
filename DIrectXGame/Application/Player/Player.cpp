@@ -52,6 +52,7 @@ void Player::Update()
 			JumpInitialize();
 			break;
 		case Player::Behavior::kAction:
+			ActionInitialize();
 			break;
 		}
 
@@ -68,6 +69,7 @@ void Player::Update()
 		JumpUpdate();
 		break;
 	case Player::Behavior::kAction:
+		ActionUpdate();
 		break;
 	}
 
@@ -90,7 +92,9 @@ void Player::Update()
 
 void Player::Draw(const ViewProjection& viewProjection)
 {
-	BaseCharacter::Draw(viewProjection);
+	//if (typeid(*inputState_) == typeid(ActiveState)) {
+		BaseCharacter::Draw(viewProjection);
+	//}
 }
 
 void Player::OnCollision([[maybe_unused]] Collider* other) {
@@ -256,7 +260,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 	}
 
 }
-
 
 void Player::MoveUpdate(Vector3& moveDirect)
 {
