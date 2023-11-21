@@ -63,7 +63,7 @@ void Player::Update()
 	switch (behavior_)
 	{
 	case Player::Behavior::kRoot:
-		//RootUpdate();
+		RootUpdate();
 		break;
 	case Player::Behavior::kJump:
 		JumpUpdate();
@@ -279,8 +279,11 @@ void Player::RootInitialize()
 
 void Player::RootUpdate()
 {
+	if (typeid(*inputState_) == typeid(InactiveState)) {
+		velocity_ = {};
+	}
 
-	inputState_->Update();
+	//inputState_->Update();
 
 }
 
