@@ -768,5 +768,22 @@ Vector2 R_Math::EaseInOutCubicF(float t, Vector2 start, Vector2 end) {
 		(1.0f - easeT) * start.y + easeT * end.y);
 }
 
-
 #pragma endregion
+
+Vector3 R_Math::EaseInQuadF(float t, Vector3 start, Vector3 end)
+{
+	float easeT = t * t;
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
+
+Vector3 R_Math::EaseOutQuadF(float t, Vector3 start, Vector3 end)
+{
+	float easeT = 1.0f - powf(1.0f - t, 2.0f);
+	return Vector3(
+		(1.0f - easeT) * start.x + easeT * end.x,
+		(1.0f - easeT) * start.y + easeT * end.y,
+		(1.0f - easeT) * start.z + easeT * end.z);
+}
