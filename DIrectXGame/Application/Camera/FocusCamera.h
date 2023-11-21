@@ -29,6 +29,8 @@ public:
 
 private:
 	CameraAnimation animater_;
+	Vector3 startRot_ = {};
+	Vector3 endRot_ = {};
 	bool isEase_ = false;
 
 };

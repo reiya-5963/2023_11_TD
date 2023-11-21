@@ -25,6 +25,10 @@ void FocusCamera::Update()
 	
 	ImGui::Begin("FocusCamera");
 	ImGui::DragFloat3("position", &viewProjection.translation_.x, 0.01f, -100, 100);
+	ImGui::DragFloat3("rotate", &viewProjection.rotation_.x, 0.01f, -3.14f, 3.14f);
+	ImGui::DragFloat3("stRotate", &startRot_.x, 0.01f, -3.14f, 3.14f);
+	ImGui::DragFloat3("edRotate", &endRot_.x, 0.01f, -3.14f, 3.14f);
+
 	ImGui::End();
 
 #endif // _DEBUG
@@ -41,6 +45,7 @@ void FocusCamera::Update()
 		}
 
 		viewProjection.translation_ = R_Math::lerp(animater_.ease_t_, animater_.startPoint_, animater_.endPoint_);
+		viewProjection.rotation_ = R_Math::lerp(animater_.ease_t_, startRot_, endRot_);
 
 	}
 	else {
