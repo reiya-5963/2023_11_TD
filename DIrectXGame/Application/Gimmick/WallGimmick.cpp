@@ -1,13 +1,14 @@
 ﻿#include "WallGimmick.h"
 #include "ImGuiManager.h"
 #include "Input.h"
-
+#include "CollisionTypeIdDef.h"
 void WallGimmick::Initialize(Model* model)
 {
 	model_ = model;
 	worldTransform_.Initialize();
+	SetRadius({ 1.0f, 1.0f, 1.0f });
 	collisionWorldTransform_.Initialize();
-
+	SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kMoveGimmick));
 }
 
 void WallGimmick::Update()
@@ -49,7 +50,7 @@ void WallGimmick::Update()
 	}
 
 	this->worldTransform_.UpdateMatrix();
-	collisionWorldTransform_ = worldTransform_;
+	collisionWorldTransform_.translation_ = worldTransform_.translation_;
 	this->collisionWorldTransform_.UpdateMatrix();
 }
 
@@ -60,7 +61,5 @@ void WallGimmick::Draw(const ViewProjection& viewProjection)
 
 }
 
-void WallGimmick::OnCollision(WorldTransform* worldTransform)
-{
-	worldTransform;
+void WallGimmick::OnCollision([[maybe_unused]] Collider* other) {
 }

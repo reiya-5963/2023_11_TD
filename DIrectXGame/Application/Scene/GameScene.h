@@ -4,9 +4,10 @@
 #include <memory>
 #include "FollowCamera.h"
 #include "Mapchip.h"
-#include "TmpObject.h"
+//#include "TmpObject.h"
 #include "Gimmick/GimmickManager.h"
 #include "Player/PlayerController.h"
+#include "Collision/CollisionManager.h"
 
 /// <summary>
 /// ゲームシーン
@@ -43,9 +44,13 @@ public:
 	/// 描画処理
 	/// </summary>
 	void Draw() override;
+
+
+	void ColliderUpdate();
 private:
 	Mapchip* map_;
-	std::unique_ptr<TmpObject> player_;
+	//std::unique_ptr<TmpObject> player_;
+
 	std::unique_ptr<PlayerController> playerController_;
 	std::unique_ptr<GimmickManager> gimmickManager_;
 

@@ -39,7 +39,7 @@ public:
 
 	virtual Vector3 GetWorldPosition() override;
 
-	void OnCollision(WorldTransform* worldTransform) override = 0;
+	void  OnCollision([[maybe_unused]] Collider* other)  override = 0;
 protected:
 	// モデルデータ配列
 	std::vector<Model*> models_;
@@ -55,6 +55,7 @@ protected:
 
 	// 地面に乗ってるか？
 	bool isGround_ = false;
+	bool isDriveObject_ = false;
 
 	// マップチップの判定をとるか？
 	bool isMapChipCollision_ = true;

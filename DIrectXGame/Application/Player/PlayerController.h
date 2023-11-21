@@ -32,6 +32,11 @@ public:
 	/// </summary>
 	void ChangeControl();
 
+	// コライダーとしてのプレイヤーを貸出
+	Collider* GetPlayer1();
+	Collider* GetPlayer2();
+
+
 private:
 	std::unique_ptr<Player> player1_;
 	std::unique_ptr<Player> player2_;

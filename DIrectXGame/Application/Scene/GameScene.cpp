@@ -52,9 +52,14 @@ void GameScene::Update() {
 
 	viewProjection_.UpdateMatrix();
 
+
+	ColliderUpdate();
+
 	playerController_->Update();
 
 	gimmickManager_->Update();
+
+
 }
 
 void GameScene::Draw() {
@@ -74,6 +79,9 @@ void GameScene::Draw() {
 
 	gimmickManager_->Draw(viewProjection_);
 
+
+	colliderManager_->Draw(viewProjection_);
+
 	Model::PostDraw();
 
 	Sprite::PreDraw(commandList);
@@ -87,5 +95,23 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
+}
+
+void GameScene::ColliderUpdate() {
+	// コライダーリストの初期化
+	colliderManager_->ClearColliders();
+
+	colliderManager_->AddColliders(playerController_->GetPlayer1());
+	colliderManager_->AddColliders(playerController_->GetPlayer2());
+
+	std::list<IGimmick*> gimmicks = gimmickManager_->GetGimmicks();
+
+	for (auto* gimmick : gimmicks) {
+		colliderManager_->AddColliders(gimmick);
+	}
+	// 当たり判定チェック
+	colliderManager_->CheckAllCollisions();
+	colliderManager_->UpdateWorldTransform();
+
 }
 

@@ -2,21 +2,26 @@
 #include <iterator>
 
 #include "R_Math.h"
+#include "GlobalVariables.h"
 
 void CollisionManager::Initialize() {
 	model_.reset(Model::CreateFlomObj("BaseElipse"));
-
+	InitializeGlobalVariables();
 }
 
 void CollisionManager::UpdateWorldTransform() {
+	ApplyGlobalVariables();
+
 	for (Collider* collider : colliders_) {
-		collider->UpdateWorldTransform();
+		collider->UpdateCollider();
 	}
 }
 
 void CollisionManager::Draw(const ViewProjection& viewProjection) {
-	for (Collider* collider : colliders_) {
-		collider->Draw(model_.get(), viewProjection);
+	if (isColliderDraw) {
+		for (Collider* collider : colliders_) {
+			collider->Draw(model_.get(), viewProjection);
+		}
 	}
 }
 
@@ -53,6 +58,20 @@ void CollisionManager::ClearColliders() {
 	}
 }
 
+void CollisionManager::InitializeGlobalVariables() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Colliders";
+	//
+	GlobalVariables::GetInstance()->CreateGroup(groupName);
+	globalVariables->AddItem(groupName, "ColliderDraw", isColliderDraw);
+}
+
+void CollisionManager::ApplyGlobalVariables() {
+	GlobalVariables* globalVariables = GlobalVariables::GetInstance();
+	const char* groupName = "Colliders";
+	isColliderDraw = globalVariables->GetIntValue(groupName, "ColliderDraw");
+}
+
 void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* colliderB) {
 
 	// 衝突フィルタリング (もし同じ属性なら判定しない)
@@ -61,16 +80,16 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		((colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()) == 0u)) {
 		return;
 	}	
-	colliderA->SetParent(nullptr);
-	colliderB->SetParent(nullptr);
+//	colliderA->SetParent(nullptr);
+	//colliderB->SetParent(nullptr);
 
 
 	// もし当たってたら
 	if (IsCollision(colliderA, colliderB)) {
-		colliderA->OnCollision(colliderB->GetParent());
-		colliderA->SetParent(&colliderB->GetCollisionWorldTransform());
-		colliderB->OnCollision(colliderA->GetParent());
-		colliderB->SetParent(&colliderA->GetCollisionWorldTransform());
+		colliderA->OnCollision(colliderB);
+		//colliderA->SetParent(&colliderB->GetCollisionWorldTransform());
+		colliderB->OnCollision(colliderA);
+	//	colliderB->SetParent(&colliderA->GetCollisionWorldTransform());
 	}
 }
 

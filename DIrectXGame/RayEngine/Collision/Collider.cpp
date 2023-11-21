@@ -4,8 +4,12 @@ void Collider::Initialize() {
 	collisionWorldTransform_.Initialize();
 }
 
-void Collider::UpdateWorldTransform() {
-	collisionWorldTransform_.translation_ = GetWorldPosition();
+void Collider::UpdateCollider() {
+	// AABB用のMinとMaxを設定
+	SetMin(GetWorldPosition() - GetRadius());
+	SetMax(GetWorldPosition() + GetRadius());
+	collisionWorldTransform_.scale_ = GetRadius();
+	// ワールド変換データを更新
 	collisionWorldTransform_.UpdateMatrix();
 }
 

@@ -22,7 +22,10 @@ public:
 	/// <summary>
 	/// 衝突
 	/// </summary>
-	void OnCollision(WorldTransform* worldTransform) override;
+	void OnCollision([[maybe_unused]] Collider* other) override;
+	void SetParent(WorldTransform* parent) { worldTransform_.parent_ = parent; };
+
+	WorldTransform* GetParent() { return &worldTransform_; };
 
 private:
 	bool isAction_ = false;

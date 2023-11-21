@@ -9,11 +9,15 @@
 /// </summary>
 class CollisionManager {
 public: // メンバ関数
+	// 初期化処理
 	void Initialize();
 
+	// ワールド変換データ更新処理
 	void UpdateWorldTransform();
 
+	// 描画処理
 	void Draw(const ViewProjection& viewProjection);
+
 	/// <summary>
 	/// 全ての当たり判定
 	/// </summary>
@@ -29,6 +33,9 @@ public: // メンバ関数
 	/// コンテナの初期化
 	/// </summary>
 	void ClearColliders();
+
+	void InitializeGlobalVariables();
+	void ApplyGlobalVariables();
 
 private: // メンバ関数
 	/// <summary>
@@ -59,6 +66,9 @@ private: // メンバ変数
 	// コライダーリスト
 	std::list<Collider*> colliders_;
 
+	// デバッグ用のモデル
 	std::unique_ptr<Model> model_;
+
+	bool isColliderDraw = false;
 };
 

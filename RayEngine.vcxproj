@@ -147,6 +147,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
   <ItemGroup>
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h" />
     <ClInclude Include="DIrectXGame\Application\Character\BaseCharacter.h" />
+    <ClInclude Include="DIrectXGame\Application\CollisionTypeIdDef.h" />
     <ClInclude Include="DIrectXGame\Application\Gimmick\GimmickState.h" />
     <ClInclude Include="DIrectXGame\Application\Gimmick\IGimmick.h" />
     <ClInclude Include="DIrectXGame\Application\Gimmick\WallGimmick.h" />

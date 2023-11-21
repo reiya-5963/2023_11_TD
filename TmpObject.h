@@ -11,7 +11,7 @@ public:
 	void Initialize(const std::vector<Model*>& models) override;
 	void Update() override;
 	void Draw(const ViewProjection &viewProjection) override;
-	void OnCollision(WorldTransform* worldTransform) override { worldTransform; };
+	void  OnCollision([[maybe_unused]] Collider* other)  override { other; };
 
 private:
 

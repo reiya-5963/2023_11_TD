@@ -25,13 +25,17 @@ void BaseCharacter::Initialize(const std::vector<Model*>& models) {
 }
 
 void BaseCharacter::Update() {
-	const float deltaTime = 0.03f;
+	const float deltaTime = 1.0f / 60.0f;
 
-#pragma region 共通の処理
+#pragma region 共通の処理	
+
+	objectWorldTransform_.UpdateMatrix();
+
+	Vector3 worldPos = { objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1],objectWorldTransform_.matWorld_.m[3][2] };
 
 	// 動く前の位置と、動いた後の位置を取得
-	Vector3 beforePos = objectWorldTransform_.translation_;
-	Vector3& afterPos = objectWorldTransform_.translation_;
+	Vector3 beforePos = worldPos;
+	Vector3& afterPos = worldPos;
 
 	// 速度に加速度を加算
 	velocity_ += acceleration_;
@@ -52,18 +56,17 @@ void BaseCharacter::Update() {
 	}
 
 	// 速度を調整し、位置に加算
-	objectWorldTransform_.translation_ += fixVelocity;
-
-	// 一旦地面判定を無効に
+	worldPos += fixVelocity;
 	isGround_ = false;
 
+
 	// もしマップチップ当たり判定をとるなら
-	if (isMapChipCollision_) {
+	if (isMapChipCollision_ && !isGround_) {
 		// beforeからafterの間で、ブロックがあるならその位置、ないならafterの位置が帰ってくる
 		const Vector3 hitPos = Mapchip::GetInstance()->HitMap(beforePos, afterPos, 1.0f);
 
 		// もし違う場合(地面に触れる場合)
-		if (hitPos.y != afterPos.y) {
+		if (hitPos.y != afterPos.y && !isDriveObject_) {
 			if (velocity_.y < 0.f) {
 				// 地面に触れている
 				isGround_ = true;
@@ -73,8 +76,26 @@ void BaseCharacter::Update() {
 
 		// もし地面に触れているなら位置を当たった位置へ
 		if (hitPos != afterPos) {
-			objectWorldTransform_.translation_ = hitPos;
+			if (objectWorldTransform_.parent_) {
+				worldPos.x = hitPos.x;
+				worldPos.z = hitPos.z;
+			}
+			else {
+				worldPos = hitPos;
+
+			}
 		}
+	}
+
+	if (objectWorldTransform_.parent_) {
+		if(velocity_.y < 0.0f){
+			isGround_ = true;
+		}
+		Vector3 parentWorldPos = { objectWorldTransform_.parent_->matWorld_.m[3][0], objectWorldTransform_.parent_->matWorld_.m[3][1], objectWorldTransform_.parent_->matWorld_.m[3][2] };
+		objectWorldTransform_.translation_ = worldPos - parentWorldPos;
+	}
+	else {
+		objectWorldTransform_.translation_ = worldPos;
 	}
 
 	// もし地面に触れていたら
@@ -86,20 +107,20 @@ void BaseCharacter::Update() {
 		}
 	}
 
-	// 加速度を初期化
-	acceleration_ = {};
+	
 #pragma endregion
-
 	// オブジェクトのワールド変換データを更新
 	objectWorldTransform_.UpdateMatrix();
-
+	collisionWorldTransform_.translation_ = objectWorldTransform_.translation_;
 	// 当たり判定用のワールド変換データを更新
-	UpdateWorldTransform();
+	UpdateCollider();
 
-#ifdef DEBUG_
+
+#ifdef _DEBUG
 	// デバッグ用
 	ImGui::Begin("debug");
-	ImGui::Text("%f , %f", worldTrans_->matWorld_.m[3][0], worldTrans_->matWorld_.m[3][1]);
+	ImGui::Text("%f , %f", objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1]);
+	ImGui::Text("%f , %f", objectWorldTransform_.translation_.x, objectWorldTransform_.translation_.y);
 	if (isGround_) {
 		ImGui::Text("isGround : true");
 	}
