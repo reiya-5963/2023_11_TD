@@ -15,6 +15,7 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	objectWorldTransform_.translation_ = position;
 	color;
 	behavior_ = Behavior::kRoot;
+	objectWorldTransform_.scale_ = { 5,5,1 };
 }
 
 void Player::Update()
@@ -83,7 +84,9 @@ void Player::Update()
 
 void Player::Draw(const ViewProjection& viewProjection)
 {
-	BaseCharacter::Draw(viewProjection);
+	if (typeid(*inputState_) == typeid(ActiveState)) {
+		BaseCharacter::Draw(viewProjection);
+	}
 }
 
 void Player::OnCollision(WorldTransform* worldTransform)

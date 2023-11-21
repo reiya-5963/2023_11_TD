@@ -1,5 +1,6 @@
 ﻿#include "PlayerController.h"
 #include <limits>
+#include <imgui.h>
 
 // マクロの停止
 #undef max
@@ -43,20 +44,22 @@ void PlayerController::Update()
 		float length = std::numeric_limits<float>::max();
 		IGimmick* tmpGimmick = nullptr;
 		Vector3 playerPosition = {};
-		if (typeid(*player1_.get()) == typeid(ActiveState)) {
+		if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
 			playerPosition = player1_->GetWorldPosition();
 		}
 		else {
 			playerPosition = player2_->GetWorldPosition();
 		}
 
-		float radius = 30.0f;
+		// 範囲設定
+		float playerRadius = 5.0f;
+		float objectRadius = 1.0f;
 
 		Vector2_AABB player = {
-			{playerPosition.x - radius,playerPosition.y - radius},
-			{playerPosition.x + radius,playerPosition.y + radius},
+			{playerPosition.x - playerRadius,playerPosition.y - playerRadius},
+			{playerPosition.x + playerRadius,playerPosition.y + playerRadius},
 		};
-
+		Vector2_AABB gim = {};
 		for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
 			// 親を所持している場合スキップ
 			if (gimmick->GetWorldTransform()->parent_ != nullptr) {
@@ -65,9 +68,9 @@ void PlayerController::Update()
 			// 長さ用
 			Vector3 range = R_Math::Subtract(playerPosition, gimmick->GetWorldPosition());
 			// オブジェクトのAABB
-			Vector2_AABB gim = {
-				{gimmick->GetWorldPosition().x - radius, gimmick->GetWorldPosition().y - radius},
-				{gimmick->GetWorldPosition().x + radius, gimmick->GetWorldPosition().y + radius},
+			gim = {
+				{gimmick->GetWorldPosition().x - objectRadius, gimmick->GetWorldPosition().y - objectRadius},
+				{gimmick->GetWorldPosition().x + objectRadius, gimmick->GetWorldPosition().y + objectRadius},
 			};
 			if (!IsAABBCollision(player, gim)) {
 				// No
@@ -81,6 +84,7 @@ void PlayerController::Update()
 			}
 
 		}
+
 
 		// 見つかれば呼び出し
 		if (tmpGimmick != nullptr) {

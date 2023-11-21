@@ -100,5 +100,8 @@ private:
 	// プレイヤーの入力状態
 	InputState* inputState_ = nullptr;
 	int test = 0;
+
+public:
+	InputState* GetInputState() { return inputState_; }
 };
 
