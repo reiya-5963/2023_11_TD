@@ -105,7 +105,21 @@ private:
 	InputState* inputState_ = nullptr;
 	int test = 0;
 
+	struct modelInfo {
+		bool isLeft_;
+		float defaultRotate_;
+	};
+
+	modelInfo info_;
+
+	WorldTransform worldTransformHat_;
+
+	std::unique_ptr<Model> hatModel_;
+
 public:
 	InputState* GetInputState() { return inputState_; }
+
+	void SetIsLeft(bool isLeft) { info_.isLeft_ = isLeft; }
+
 };
 

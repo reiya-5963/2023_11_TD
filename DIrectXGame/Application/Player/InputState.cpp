@@ -27,6 +27,14 @@ void ActiveState::Update()
 			move = {
 				(float)joyState.Gamepad.sThumbLX / SHRT_MAX * speed,0,0
 			};
+
+			if (move.x > 0) {
+				player_->SetIsLeft(false);
+			}
+			else {
+				player_->SetIsLeft(true);
+			}
+
 		}
 
 		//---ジャンプ入力---//

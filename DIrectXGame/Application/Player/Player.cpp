@@ -7,7 +7,11 @@ void Player::Initialize(const std::vector<Model*>& models)
 {
 	// 初期化
 	BaseCharacter::Initialize(models);
+	worldTransformHat_.Initialize();
+	worldTransformHat_.parent_ = &objectWorldTransform_;
 
+	hatModel_.reset(Model::CreateFlomObj("hat"));
+	worldTransformHat_.translation_.z = -0.3f;
 }
 
 void Player::Setting(const Vector3& position, uint32_t color)
@@ -17,6 +21,10 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	behavior_ = Behavior::kRoot;
 	SetRadius({ 2.0f, 2.0f, 2.0f });
 	objectWorldTransform_.scale_ = GetRadius();
+
+	info_.defaultRotate_ = 1.57f;
+	info_.isLeft_ = false;
+
 }
 
 void Player::Update()
@@ -35,9 +43,18 @@ void Player::Update()
 	ImGui::Text("behavior : %d", static_cast<int>(behavior_));
 	ImGui::Text("test : %d", test);
 	ImGui::DragFloat3("velocity", &velocity_.x, 0.01f, -100, 100);
+
+	ImGui::DragFloat3("hat", &worldTransformHat_.translation_.x, 0.01f, -100, 100);
 	ImGui::End();
 
 #endif // _DEBUG
+	// プレイヤーの向き設定
+	if (info_.isLeft_) {
+		objectWorldTransform_.rotation_.y = -info_.defaultRotate_;
+	}
+	else {
+		objectWorldTransform_.rotation_.y = info_.defaultRotate_;
+	}
 
 
 	if (request_) {
@@ -87,15 +104,19 @@ void Player::Update()
 
 
 	BaseCharacter::Update();
+	worldTransformHat_.UpdateMatrix();
 	ImGui::Text("%d", isGround_);
 	acceleration_ = {};
 }
 
 void Player::Draw(const ViewProjection& viewProjection)
 {
-	//if (typeid(*inputState_) == typeid(ActiveState)) {
-		BaseCharacter::Draw(viewProjection);
-	//}
+		
+	BaseCharacter::Draw(viewProjection);
+
+	if (typeid(*inputState_) == typeid(ActiveState)) {
+		hatModel_->Draw(worldTransformHat_, viewProjection);
+	}
 }
 
 void Player::OnCollision([[maybe_unused]] Collider* other) {
