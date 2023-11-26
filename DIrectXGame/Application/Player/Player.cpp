@@ -3,6 +3,11 @@
 #include "R_Math.h"
 #include "ImGuiManager.h"
 #include "CollisionTypeIdDef.h"
+
+const Player::ConstAction Player::kConstAction_ = {
+	60,60,300
+};
+
 void Player::Initialize(const std::vector<Model*>& models)
 {
 	// 初期化
@@ -321,7 +326,7 @@ void Player::JumpInitialize()
 		//isMapChipCollision_ = true;
 
 	}
-	const float kFirstSpeed = 5.0f;
+	const float kFirstSpeed = 15.0f;
 
 	velocity_.y = kFirstSpeed;
 

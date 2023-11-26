@@ -47,62 +47,64 @@ void PlayerController::Initialize()
 
 void PlayerController::Update()
 {
+	XINPUT_STATE joyState;
+	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
 
-	if (Input::GetInstance()->TriggerKey(DIK_8)) {
-		float length = std::numeric_limits<float>::max();
-		IGimmick* tmpGimmick = nullptr;
-		Player* tmpPlayer = nullptr;
-		if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
-			tmpPlayer = player1_.get();
-		}
-		else {
-			tmpPlayer = player2_.get();
-		}
-
-		// 範囲設定
-		float playerRadius = 5.0f;
-		float objectRadius = 1.0f;
-		Vector3 playerPosition = tmpPlayer->GetWorldPosition();
-
-		Vector2_AABB player = {
-			{playerPosition.x - playerRadius,playerPosition.y - playerRadius},
-			{playerPosition.x + playerRadius,playerPosition.y + playerRadius},
-		};
-		Vector2_AABB gim = {};
-		for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
-			// 親を所持している場合スキップ
-			if (gimmick->GetWorldTransform()->parent_ != nullptr) {
-				continue;
+		if (Input::GetInstance()->TriggerKey(DIK_8) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
+			float length = std::numeric_limits<float>::max();
+			IGimmick* tmpGimmick = nullptr;
+			Player* tmpPlayer = nullptr;
+			if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
+				tmpPlayer = player1_.get();
 			}
-			// 長さ用
-			Vector3 range = R_Math::Subtract(playerPosition, gimmick->GetWorldPosition());
-			// オブジェクトのAABB
-			gim = {
-				{gimmick->GetWorldPosition().x - objectRadius, gimmick->GetWorldPosition().y - objectRadius},
-				{gimmick->GetWorldPosition().x + objectRadius, gimmick->GetWorldPosition().y + objectRadius},
+			else {
+				tmpPlayer = player2_.get();
+			}
+
+			// 範囲設定
+			float playerRadius = 5.0f;
+			float objectRadius = 1.0f;
+			Vector3 playerPosition = tmpPlayer->GetWorldPosition();
+
+			Vector2_AABB player = {
+				{playerPosition.x - playerRadius,playerPosition.y - playerRadius},
+				{playerPosition.x + playerRadius,playerPosition.y + playerRadius},
 			};
-			if (!IsAABBCollision(player, gim)) {
-				// No
-				continue;
+			Vector2_AABB gim = {};
+			for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
+				// 親を所持している場合スキップ
+				if (gimmick->GetWorldTransform()->parent_ != nullptr) {
+					continue;
+				}
+				// 長さ用
+				Vector3 range = R_Math::Subtract(playerPosition, gimmick->GetWorldPosition());
+				// オブジェクトのAABB
+				gim = {
+					{gimmick->GetWorldPosition().x - objectRadius, gimmick->GetWorldPosition().y - objectRadius},
+					{gimmick->GetWorldPosition().x + objectRadius, gimmick->GetWorldPosition().y + objectRadius},
+				};
+				if (!IsAABBCollision(player, gim)) {
+					// No
+					continue;
+				}
+
+				// 最短距離を計算
+				if (length > R_Math::Length(range)) {
+					length = R_Math::Length(range);
+					tmpGimmick = gimmick;
+					//tmpPlayer->SetBehaviorRequest(Player::Behavior::kAction);
+				}
+
 			}
 
-			// 最短距離を計算
-			if (length > R_Math::Length(range)) {
-				length = R_Math::Length(range);
-				tmpGimmick = gimmick;
-				//tmpPlayer->SetBehaviorRequest(Player::Behavior::kAction);
+
+			// 見つかれば呼び出し
+			if (tmpGimmick != nullptr) {
+				tmpGimmick->StartSetting();
 			}
 
 		}
-
-
-		// 見つかれば呼び出し
-		if (tmpGimmick != nullptr) {
-			tmpGimmick->StartSetting();
-		}
-
 	}
-
 	ChangeControl();
 	player1_->Update();
 	player2_->Update();

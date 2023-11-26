@@ -116,6 +116,24 @@ private:
 
 	std::unique_ptr<Model> hatModel_;
 
+private:
+	struct ConstAction {
+		uint32_t startTime_; // 憑りつくまで
+		uint32_t endTime_;	// 終了まで
+		uint32_t releaseTime_;	// 憑りつき解除まで 
+	};
+
+	static const ConstAction kConstAction_;
+
+	enum class ActionState : uint32_t 
+	{
+		kReserve,
+		kNow,
+		kRelease,
+	};
+
+	ActionState actionState_;
+
 public:
 	InputState* GetInputState() { return inputState_; }
 
