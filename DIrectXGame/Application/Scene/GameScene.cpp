@@ -57,12 +57,12 @@ void GameScene::Update() {
 	}
 
 	CameraUpdate();
-
-	this->ColliderUpdate();
-
 	playerController_->Update();
 
 	gimmickManager_->Update();
+
+	this->ColliderUpdate();
+
 
 
 }
@@ -79,13 +79,12 @@ void GameScene::Draw() {
 	Model::PreDraw(commandList, Model::BlendMode::kNone);
 	
 	map_->Draw(viewProjection_);
-
 	playerController_->Draw(viewProjection_);
 
 	gimmickManager_->Draw(viewProjection_);
 
-
 	colliderManager_->Draw(viewProjection_);
+
 
 	Model::PostDraw();
 

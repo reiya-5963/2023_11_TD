@@ -79,25 +79,26 @@ void CollisionManager::CheckCollisionPair(Collider* colliderA, Collider* collide
 		((colliderA->GetCollisionAttribute() & colliderB->GetCollisionMask()) == 0u) ||
 		((colliderB->GetCollisionAttribute() & colliderA->GetCollisionMask()) == 0u)) {
 		return;
-	}	
-//	colliderA->SetParent(nullptr);
-	//colliderB->SetParent(nullptr);
+	}
+	//	colliderA->SetParent(nullptr);
+		//colliderB->SetParent(nullptr);
 
 
-	// もし当たってたら
+		// もし当たってたら
 	if (IsCollision(colliderA, colliderB)) {
 		colliderA->OnCollision(colliderB);
 		//colliderA->SetParent(&colliderB->GetCollisionWorldTransform());
 		colliderB->OnCollision(colliderA);
-	//	colliderB->SetParent(&colliderA->GetCollisionWorldTransform());
+		//	colliderB->SetParent(&colliderA->GetCollisionWorldTransform());
 	}
 }
 
 bool CollisionManager::IsCollision(Collider* colliderA, Collider* colliderB)
 {
-	if ((colliderA->GetMin().x <= colliderB->GetMax().x && colliderA->GetMax().x >= colliderB->GetMin().x) &&
-		(colliderA->GetMin().y <= colliderB->GetMax().y && colliderA->GetMax().y >= colliderB->GetMin().y) &&
-		(colliderA->GetMin().z <= colliderB->GetMax().z && colliderA->GetMax().z >= colliderB->GetMin().z)) {
+	const float kError = 0.5f;
+	if ((colliderA->GetMin().x - kError <= colliderB->GetMax().x + kError && colliderA->GetMax().x + kError >= colliderB->GetMin().x - kError) &&
+		(colliderA->GetMin().y - kError <= colliderB->GetMax().y + kError && colliderA->GetMax().y + kError >= colliderB->GetMin().y - kError) &&
+		(colliderA->GetMin().z - kError <= colliderB->GetMax().z + kError && colliderA->GetMax().z + kError >= colliderB->GetMin().z - kError)) {
 
 		return true;
 	}
