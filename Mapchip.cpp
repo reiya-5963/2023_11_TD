@@ -37,13 +37,25 @@ void Mapchip::Initialize(const std::string& file_path) {
 
 }
 
+void Mapchip::Update(const ViewProjection& viewProjection) {
+
+	for (uint32_t y = 0u; y < height_; ++y) {
+		for (uint32_t x = 0u; x < width_; ++x) {
+			mapDatas_[y][x].Update(viewProjection);
+		}
+	}
+
+}
+
 //void Mapchip::Update() {
 //}
 
 void Mapchip::Draw(const ViewProjection& viewProjection) {
 	for (uint32_t y = 0u; y < height_; ++y) {
 		for (uint32_t x = 0u; x < width_; ++x) {
-			mapDatas_[y][x].Draw(viewProjection);
+			if (mapDatas_[y][x].showVisible_) {
+				mapDatas_[y][x].Draw(viewProjection);
+			}
 		}
 	}
 
@@ -565,6 +577,25 @@ void Mapchip::ChipData::Init() {
 		//sprite_->SetSize({ mapchipSize_, mapchipSize_ });
 	}
 
+}
+
+void Mapchip::ChipData::Update(const ViewProjection& viewProjection) {
+	Matrix4x4 viewPort = R_Math::MakeViewPortMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+
+	Matrix4x4 matViewProjectionViewPort = R_Math::Multiply(
+		viewProjection.matView, R_Math::Multiply(viewProjection.matProjection, viewPort));
+	if (transform_) {
+		Vector3 chipPos = { transform_->matWorld_.m[3][0],transform_->matWorld_.m[3][1],transform_->matWorld_.m[3][2] };
+		chipPos = R_Math::TransformCoord(chipPos, matViewProjectionViewPort);
+
+		if (chipPos.x + kChipSize > 0 && chipPos.x - kChipSize < WinApp::kWindowWidth &&
+			chipPos.y + kChipSize > 0 && chipPos.y - kChipSize < WinApp::kWindowHeight) {
+			showVisible_ = true;
+		}
+		else {
+			showVisible_ = false;
+		}
+	}
 }
 
 void Mapchip::ChipData::Exit() {

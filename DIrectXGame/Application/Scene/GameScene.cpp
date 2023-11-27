@@ -44,6 +44,12 @@ void GameScene::Initialize() {
 	gimmickManager_->Initialize();
 	playerController_->SetGimmickManager(gimmickManager_.get());
 
+	//skyModel.reset(Model::CreateFlomObj("skydome"));
+	backTex_ = TextureManager::Load("skydomeTex.png");
+	//back_ = std::make_unique<Skydome>();
+	//back_->Initialize(skyModel.get(), {0.0f, 0.0f ,0.0f});
+	back_.reset(Sprite::Create(backTex_, { 640.0f, 320.0f }, 0.0f, {0.8f, 0.8f, 0.8f, 1.0f}, {0.5f, 0.5f}));
+
 }
 
 void GameScene::Finalize() {
@@ -63,8 +69,9 @@ void GameScene::Update() {
 
 	this->ColliderUpdate();
 
+	//back_->Update();
 
-
+	Mapchip::GetInstance()->Update(viewProjection_);
 }
 
 void GameScene::Draw() {
@@ -72,6 +79,11 @@ void GameScene::Draw() {
 
 	Sprite::PreDraw(commandList);
 	////この間に背景スプライトの描画を入れる
+
+
+	back_->Draw();
+
+
 	Sprite::PostDraw();
 
 	dxCommon_->ClearDepthBuffer();
@@ -84,6 +96,7 @@ void GameScene::Draw() {
 	gimmickManager_->Draw(viewProjection_);
 
 	colliderManager_->Draw(viewProjection_);
+	//back_->Draw(viewProjection_);
 
 
 	Model::PostDraw();

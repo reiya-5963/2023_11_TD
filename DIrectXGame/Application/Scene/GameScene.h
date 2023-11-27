@@ -9,6 +9,8 @@
 #include "Player/PlayerController.h"
 #include "Collision/CollisionManager.h"
 #include "FocusCamera.h"
+//#include "skydome.h"
+
 
 /// <summary>
 /// ゲームシーン
@@ -72,4 +74,10 @@ private:
 	std::unique_ptr<FocusCamera> focusCamera_;
 
 	std::unique_ptr<CollisionManager> colliderManager_ = nullptr;
+
+	//std::unique_ptr<Model> skyModel;
+	//std::unique_ptr<Skydome> back_ = nullptr;
+	std::unique_ptr<Sprite> back_ = nullptr;
+	uint32_t backTex_ = 0u;
+
 };

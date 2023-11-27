@@ -145,6 +145,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Camera\ICamera.cpp" />
     <ClCompile Include="DIrectXGame\Application\Camera\FocusCamera.cpp" />
     <ClCompile Include="Mapchip.cpp" />
+    <ClCompile Include="DIrectXGame\Application\skydome.cpp" />
     <ClCompile Include="TmpObject.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -212,6 +213,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\Camera\ICamera.h" />
     <ClInclude Include="DIrectXGame\Application\Camera\FocusCamera.h" />
     <ClInclude Include="Mapchip.h" />
+    <ClInclude Include="DIrectXGame\Application\skydome.h" />
     <ClInclude Include="TmpObject.h" />
   </ItemGroup>
   <ItemGroup>

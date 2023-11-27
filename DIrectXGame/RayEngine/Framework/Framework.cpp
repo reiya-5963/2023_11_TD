@@ -6,7 +6,7 @@ void Framework::Initialize() {
 	winApp_ = WinApp::GetInstance();
 
 	// ウィンドウの作成
-	winApp_->Initialize(L"LE2A_22_ワタナベエンジン");
+	winApp_->Initialize(L"2209_巡霊");
  #pragma endregion
 
  #pragma region DirectX汎用クラス初期化

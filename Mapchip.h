@@ -35,7 +35,11 @@ public:
 		std::unique_ptr<WorldTransform> transform_;
 		std::unique_ptr<Model> model_;
 
+		bool showVisible_ = false;
+
 		void Init();
+
+		void Update(const ViewProjection& viewProjection);
 
 		void Exit();
 
@@ -60,7 +64,7 @@ public:
 	void Initialize();
 	void Initialize(const std::string& file_path);
 
-	//void Update();
+	void Update(const ViewProjection& viewProjection);
 
 	void Draw(const ViewProjection &viewProjection);
 
@@ -87,9 +91,9 @@ private:
 	inline static const int kChipSize = 32;
 	inline static const float scale_ = 2.0f;
 
-	static const uint32_t width_ = 24;
+	static const uint32_t width_ = 72;
 
-	static const uint32_t height_ = 15;
+	static const uint32_t height_ = 30;
 
 	std::array<std::array<ChipData, width_>, height_> mapDatas_;
 

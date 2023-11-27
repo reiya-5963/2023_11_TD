@@ -134,7 +134,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 
 			Vector3 worldPos = { objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1],objectWorldTransform_.matWorld_.m[3][2] };
 			// 左下に向かってる時
-			if (direction.x < 0) 
+			if (direction.x < 0) {
 				if (worldPos.x + GetRadius().x < other->GetMin().x) {
 					isDriveObject_ = false;
 					objectWorldTransform_.translation_ = objectWorldTransform_.translation_ + parentWorldPos;
@@ -293,9 +293,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 				(GetMin().z <= other->GetMax().z && GetMax().z >= other->GetMin().z)) {
 				isDriveObject_ = true;
 			}
-
 		}
-
 		else if ((GetMin().x <= other->GetMax().x && GetMax().x >= other->GetMin().x) &&
 			(GetMin().y <= other->GetMax().y && GetMax().y >= other->GetMin().y) &&
 			(GetMin().z <= other->GetMax().z && GetMax().z >= other->GetMin().z)) {
@@ -479,7 +477,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 			objectWorldTransform_.UpdateMatrix();
 		}
 	}
-
 }
 
 void Player::MoveUpdate(Vector3& moveDirect)
