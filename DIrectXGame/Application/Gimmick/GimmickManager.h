@@ -22,8 +22,18 @@ public:
 
 	struct ParentBlock {
 		BlockDirection direction_; // 方向
+		Vector3 endPoint_;
 		int number_;	// 数
 	};
+
+	struct EasePointInfo {
+		Vector3 startSquares = {};
+		Vector3 endSquares = {};
+		float valueY = 0.01f;
+	};
+
+private:
+	EasePointInfo GenerateEaseStartToEnd(const Vector3& start,const Vector3& end, float value);
 
 public:
 	/// <summary>

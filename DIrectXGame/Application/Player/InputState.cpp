@@ -41,7 +41,7 @@ void ActiveState::ActionInput()
 		}
 		// 移動処理
 		if (isMoving) {
-			const float speed = 3.0f;
+			const float speed = 10.0f;
 
 			move = {
 				(float)joyState.Gamepad.sThumbLX / SHRT_MAX * speed,0,0

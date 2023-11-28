@@ -92,6 +92,8 @@ private:
 	WorldTransform worldTransformHat_;
 	std::unique_ptr<Model> hatModel_;
 
+	static const float kFisrtJumpPower_;
+
 private: // 憑りつきアクション用
 	// アクション定数
 	struct ConstAction {

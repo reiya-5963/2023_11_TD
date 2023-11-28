@@ -5,8 +5,9 @@
 #include "CollisionTypeIdDef.h"
 
 const Player::ConstAction Player::kConstAction_ = {
-	60,30,300
+	30,30,150
 };
+const float Player::kFisrtJumpPower_ = 45.0f;
 
 void Player::Initialize(const std::vector<Model*>& models)
 {
@@ -106,7 +107,7 @@ void Player::Update()
 	if (!isDriveObject_) {
 		const float kGravity = 9.8f;
 
-		const float deltaTime = 1.0f / 60.0f;
+		const float deltaTime = 10.0f / 60.0f;
 
 		Vector3 accelerationVector = { 0,-kGravity * deltaTime,0 };
 
@@ -381,9 +382,9 @@ void Player::JumpInitialize()
 		//isMapChipCollision_ = true;
 
 	}
-	const float kFirstSpeed = 15.0f;
+	//const float kFirstSpeed = 30.0f;
 
-	velocity_.y = kFirstSpeed;
+	velocity_.y = kFisrtJumpPower_;
 
 	isMapChipCollision_ = true;
 }

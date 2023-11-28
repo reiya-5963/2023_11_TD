@@ -23,6 +23,14 @@ void WallGimmick::Update()
 	ImGui::DragFloat3("begin", &beginPoint_.x, 0.01f, -100, 100);
 	ImGui::DragFloat3("end", &EndPoint_.x, 0.01f, -100, 100);
 	ImGui::End();
+
+	if (Input::GetInstance()->TriggerKey(DIK_A)) {
+		StartSetting(30);
+	}
+	if (Input::GetInstance()->TriggerKey(DIK_D)) {
+		ReturnSetting(30);
+	}
+
 #endif // _DEBUG
 
 	if (isAction_) {

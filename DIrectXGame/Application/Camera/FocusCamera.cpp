@@ -24,7 +24,7 @@ void FocusCamera::Update()
 #ifdef _DEBUG
 	
 	ImGui::Begin("FocusCamera");
-	ImGui::DragFloat3("position", &viewProjection.translation_.x, 0.01f, -100, 100);
+	ImGui::SliderFloat3("position", &viewProjection.translation_.x, -100, 100);
 	ImGui::DragFloat3("rotate", &viewProjection.rotation_.x, 0.01f, -3.14f, 3.14f);
 	ImGui::DragFloat3("stRotate", &startRot_.x, 0.01f, -3.14f, 3.14f);
 	ImGui::DragFloat3("edRotate", &endRot_.x, 0.01f, -3.14f, 3.14f);

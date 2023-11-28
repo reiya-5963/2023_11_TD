@@ -11,7 +11,7 @@ SceneManager* SceneManager::GetInstance() {
 void SceneManager::Initialize() {	
 	//BaseScene* scene = new GameScene();
 	sceneFactory_ = new SceneFactory();
-	scene_ = sceneFactory_->CreateScene("TITLE");
+	scene_ = sceneFactory_->CreateScene("GAME");
 	scene_->Initialize();
 }
 

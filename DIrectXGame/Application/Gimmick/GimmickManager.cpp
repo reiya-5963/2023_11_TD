@@ -7,26 +7,54 @@ GimmickManager::GimmickManager()
 	floarModel_.reset(Model::CreateFlomObj("cube"));
 }
 
+GimmickManager::EasePointInfo GimmickManager::GenerateEaseStartToEnd(const Vector3& start, const Vector3& end, float value)
+{
+	EasePointInfo result = {};
+	const float xCenter = 48 / 2.0f - 0.5f;
+	float valueY = value;
+	Vector3 startPoint = { ((start.x - 1.0f) - xCenter) * 2.0f, (start.y * 2.0f + 1.0f) - valueY, 0.0f };
+	Vector3 endPoint = { ((end.x - 1.0f) - xCenter) * 2.0f,(end.y * 2.0f + 1.0f) + valueY, 0.0f };
+	result.startSquares = startPoint;
+	result.endSquares = endPoint;
+	return result;
+}
+
 void GimmickManager::Initialize()
 {
-	const float xCenter = 48 / 2.0f - 0.5f;
-
-	Vector3 tmpPosition = { (10.0f - xCenter) * 2.0f, 4.0f * 2.0f + 1.0f, 0.0f };
+	EasePointInfo test = {};
+	test.startSquares = { 37.0f,1.0f, 0};
+	test.endSquares = { 37.0f,7.0f, 0};
+	test = GenerateEaseStartToEnd(Vector3{ 37.0f,1.0f,0 }, Vector3{ 37.0f,7.0f,0 }, 0.01f);
 	// ローカル変数
-	//Vector3 tmpPosition = { -10.0f,0.0f,0.0f };
-	uint32_t generateNum = 5;
-	Vector3 end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });
+	uint32_t generateNum = 3;
 	ParentBlock info;
 
-	info.direction_ = kBottom;
+	// 上下
+	info.direction_ = kRight;
 	info.number_ = generateNum;
-	AddWallGimmick(tmpPosition, end, info);
+	AddWallGimmick(test.startSquares, test.endSquares, info);
 
-	tmpPosition = { (40.0f - xCenter) * 2.0f, 13.0f * 2.0f + 1.0f, 0.0f };
-	generateNum = 2;
-	info.number_ = generateNum;
-	end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });
-	AddWallGimmick(tmpPosition, end, info);
+	// 左右
+	info.number_ = 5;
+	test = GenerateEaseStartToEnd(Vector3{ 6.0f,15.0f,0 }, Vector3{ 12.0f,15.0f,0 }, 0.01f);
+	AddWallGimmick(test.startSquares, test.endSquares, info);
+
+	// 上下
+	info.direction_ = kTop;
+	info.number_ = 5;
+	test = GenerateEaseStartToEnd(Vector3{ 12.0f,1.0f,0 }, Vector3{ 12.0f,7.0f,0 }, 0.01f);
+	AddWallGimmick(test.startSquares, test.endSquares, info);
+
+
+	info.direction_ = kRight;
+	info.number_ = 3;
+	test = GenerateEaseStartToEnd(Vector3{ 29.0f,16.0f,0 }, Vector3{ 29.0f,22.0f,0 }, 0.01f);
+	AddWallGimmick(test.startSquares, test.endSquares, info);
+
+	info.direction_ = kTop;
+	info.number_ = 6;
+	test = GenerateEaseStartToEnd(Vector3{ 40.0f,22.0f,0 }, Vector3{ 40.0f,30.0f,0 }, 0.01f);
+	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 }
 

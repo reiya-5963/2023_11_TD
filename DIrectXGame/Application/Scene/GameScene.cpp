@@ -34,7 +34,7 @@ void GameScene::Initialize() {
 	colliderManager_->Initialize();
 
 	map_ = Mapchip::GetInstance();
-	map_->Initialize("resources/Level/Level1.csv");
+	map_->Initialize("resources/Level/Level_1_.csv");
 
 
 	playerController_ = std::make_unique<PlayerController>();
