@@ -26,15 +26,12 @@ void GameScene::Initialize() {
 
 	Retry();
 
-
 	backTex_ = TextureManager::Load("skydomeTex.png");
 	back_.reset(Sprite::Create(backTex_, { 640.0f, 320.0f }, 0.0f, {0.8f, 0.8f, 0.8f, 1.0f}, {0.5f, 0.5f}));
 
 	retryPos_ = { 1280.0f -  0.4f, 0.4f };
 	retryTex_ = TextureManager::Load("Rretry.png");
 	retry_.reset(Sprite::Create(retryTex_, retryPos_, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f }, { 1.0f, 0.0f }));
-
-
 }
 
 void GameScene::Finalize() {
