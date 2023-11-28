@@ -9,13 +9,14 @@ GimmickManager::GimmickManager()
 
 void GimmickManager::Initialize()
 {
+	const float xCenter = 72 / 2.0f - 0.5f;
 
-	Vector3 tmpPosition = { -10.0f,10.0f,0.0f };
+	Vector3 tmpPosition = { (10.0f - xCenter) * 2.0f, 4.0f * 2.0f + 1.0f, 0.0f };
 	uint32_t generateNum = 5;
 
 	AddWallGimmick(tmpPosition, generateNum);
 
-	tmpPosition = { 1.0f,20.0f,0.0f };
+	tmpPosition = { (40.0f - xCenter) * 2.0f, 13.0f * 2.0f + 1.0f, 0.0f };
 	generateNum = 2;
 	AddWallGimmick(tmpPosition, generateNum);
 

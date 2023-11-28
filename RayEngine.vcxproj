@@ -144,9 +144,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Gimmick\GimmickManager.cpp" />
     <ClCompile Include="DIrectXGame\Application\Camera\ICamera.cpp" />
     <ClCompile Include="DIrectXGame\Application\Camera\FocusCamera.cpp" />
-    <ClCompile Include="Mapchip.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Mapchip.cpp" />
     <ClCompile Include="DIrectXGame\Application\skydome.cpp" />
-    <ClCompile Include="TmpObject.cpp" />
+    <ClCompile Include="DIrectXGame\Application\TmpObject.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h" />
@@ -212,9 +212,9 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\Gimmick\GimmickManager.h" />
     <ClInclude Include="DIrectXGame\Application\Camera\ICamera.h" />
     <ClInclude Include="DIrectXGame\Application\Camera\FocusCamera.h" />
-    <ClInclude Include="Mapchip.h" />
+    <ClInclude Include="DIrectXGame\Application\Mapchip.h" />
     <ClInclude Include="DIrectXGame\Application\skydome.h" />
-    <ClInclude Include="TmpObject.h" />
+    <ClInclude Include="DIrectXGame\Application\TmpObject.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

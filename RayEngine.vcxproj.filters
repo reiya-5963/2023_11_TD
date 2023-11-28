@@ -192,10 +192,10 @@
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp">
       <Filter>ソース ファイル\App\Camera</Filter>
     </ClCompile>
-    <ClCompile Include="Mapchip.cpp">
+    <ClCompile Include="DIrectXGame\Application\Mapchip.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="TmpObject.cpp">
+    <ClCompile Include="DIrectXGame\Application\TmpObject.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="DIrectXGame\Application\Player\InputState.cpp">
@@ -389,10 +389,10 @@
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h">
       <Filter>ヘッダー ファイル\App</Filter>
     </ClInclude>
-    <ClInclude Include="Mapchip.h">
+    <ClInclude Include="DIrectXGame\Application\Mapchip.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="TmpObject.h">
+    <ClInclude Include="DIrectXGame\Application\TmpObject.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\Player\InputState.h">
