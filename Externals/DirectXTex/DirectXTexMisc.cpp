@@ -246,7 +246,8 @@ namespace
             if (!LoadScanline(sScanline, width, pSrc, spitch, srcImage.format))
                 return E_FAIL;
 
-        #ifdef _DEBUG
+        #ifdef _
+
             memset(dScanline, 0xCD, sizeof(XMVECTOR)*width);
         #endif
 

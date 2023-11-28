@@ -122,7 +122,7 @@ void Player::Update()
 		BaseCharacter::Update();
 	}
 	worldTransformHat_.UpdateMatrix();
-	ImGui::Text("%d", isGround_);
+	//ImGui::Text("%d", isGround_);
 	acceleration_ = {};
 }
 
@@ -162,7 +162,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 					objectWorldTransform_.translation_ = objectWorldTransform_.translation_ + parentWorldPos;
 					objectWorldTransform_.parent_ = nullptr;
 				}
-				ImGui::Text("%d :left down", typeID_);
+				//ImGui::Text("%d :left down", typeID_);
 			}
 			// 右下に向かってる時
 			else if (direction.x > 0) {
@@ -178,7 +178,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 					objectWorldTransform_.translation_ = objectWorldTransform_.translation_ + parentWorldPos;
 					objectWorldTransform_.parent_ = nullptr;
 				}
-				ImGui::Text("%d :right down", typeID_);
+			//	ImGui::Text("%d :right down", typeID_);
 			}
 			else if ((GetMin().x <= other->GetMax().x && GetMax().x >= other->GetMin().x) &&
 				(GetMin().y <= other->GetMax().y && GetMax().y >= other->GetMin().y) &&
@@ -226,7 +226,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 						objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
 					}
 				}
-				ImGui::Text("%d :left down", typeID_);
+			//	ImGui::Text("%d :left down", typeID_);
 			}
 			// 右下に向かってる時
 			else if (direction.y < 0 && direction.x > 0) {
@@ -258,7 +258,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 						objectWorldTransform_.translation_.x = other->GetMin().x - GetRadius().x;
 					}
 				}
-				ImGui::Text("%d :right down", typeID_);
+			//	ImGui::Text("%d :right down", typeID_);
 			}
 			// 左上に向かってる時
 			else if (direction.y > 0 && direction.x < 0) {
@@ -290,7 +290,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 						objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
 					}
 				}
-				ImGui::Text("%d :left up", typeID_);
+				//ImGui::Text("%d :left up", typeID_);
 			}
 			// 右上に向かってる時
 			else if (direction.y > 0 && direction.x > 0) {
@@ -322,7 +322,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 						objectWorldTransform_.translation_.x = other->GetMin().x - GetRadius().x;
 					}
 				}
-				ImGui::Text("%d :right up", typeID_);
+				//ImGui::Text("%d :right up", typeID_);
 			}
 			// 下に向かってる時
 			else if (direction.y < 0) {
@@ -331,7 +331,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 					acceleration_.y = {};
 					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
 					isDriveObject_ = true;
-					ImGui::Text("%d : down", typeID_);
+					//ImGui::Text("%d : down", typeID_);
 				}
 
 			}
@@ -343,7 +343,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 					objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
 					isDriveObject_ = false;
 
-					ImGui::Text("%d : up", typeID_);
+					//ImGui::Text("%d : up", typeID_);
 				}
 
 			}
