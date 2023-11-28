@@ -146,7 +146,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 
 	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kMoveGimmick)) {
 
-
 		const float kError = 0.2f;
 		Vector3 direction = velocity_;
 		R_Math::Normalize(direction);
@@ -192,21 +191,27 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 			(GetMin().z <= other->GetMax().z && GetMax().z >= other->GetMin().z)) {
 			// 左下に向かってる時
 			if (direction.y < 0 && direction.x < 0) {
+				// p右端がo右端より左にいたら
 				if (other->GetMax().x > GetMax().x) {
+					// 上に乗ってます
 					velocity_.y = {};
 					acceleration_.y = {};
 					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
 					isDriveObject_ = true;
 
 				}
+				// p上端がo上端より下にいたら
 				else if (other->GetMax().y > GetMax().y) {
+					// 横にぶち当たってます
 					isDriveObject_ = false;
 					objectWorldTransform_.parent_ = nullptr;
 					velocity_.x = {};
 					acceleration_.x = {};
 					objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
 				}
+				// そうでないとき
 				else {
+					// ど
 					if (other->GetMax().x - GetMin().x > other->GetMax().y - GetMin().y) {
 						velocity_.y = {};
 						acceleration_.y = {};
@@ -319,6 +324,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 				}
 				ImGui::Text("%d :right up", typeID_);
 			}
+			// 下に向かってる時
 			else if (direction.y < 0) {
 				if ((GetMax().x > other->GetMin().x + kError && GetMin().x < other->GetMax().x) || (GetMin().x < other->GetMax().x - kError && GetMax().x > other->GetMin().x)) {
 					velocity_.y = {};
@@ -329,6 +335,7 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 				}
 
 			}
+			// 上に向かってる時
 			else if (direction.y > 0) {
 				if ((GetMax().x > other->GetMin().x + kError && GetMin().x < other->GetMax().x) || (GetMin().x < other->GetMax().x - kError && GetMax().x > other->GetMin().x)) {
 					velocity_.y = {};
@@ -340,6 +347,8 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 				}
 
 			}
+
+
 			if (isDriveObject_) {
 				Vector3 selfWorldPos = { objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1],objectWorldTransform_.matWorld_.m[3][2] };
 
