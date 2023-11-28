@@ -48,6 +48,8 @@ public:
 	/// </summary>
 	void Draw() override;
 
+	void Retry();
+
 
 	void ColliderUpdate();
 private:
@@ -80,4 +82,8 @@ private:
 	std::unique_ptr<Sprite> back_ = nullptr;
 	uint32_t backTex_ = 0u;
 
+
+	std::unique_ptr<Sprite> retry_ = nullptr;
+	Vector2 retryPos_ = { 0.0f, 0.0f };
+	uint32_t retryTex_ = 0u;
 };
