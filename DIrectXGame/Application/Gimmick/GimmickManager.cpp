@@ -5,6 +5,7 @@ GimmickManager::GimmickManager()
 {
 	// モデル初期化
 	floarModel_.reset(Model::CreateFlomObj("cube"));
+	blockTexture_ = TextureManager::Load("cube/MoveBlock.png");
 }
 
 GimmickManager::EasePointInfo GimmickManager::GenerateEaseStartToEnd(const Vector3& start, const Vector3& end, float value)
@@ -72,7 +73,7 @@ void GimmickManager::Draw(const ViewProjection& viewProjection)
 {
 
 	for (IGimmick* gimmick : gimmicks_) {
-		gimmick->Draw(viewProjection);
+		gimmick->Draw(viewProjection, blockTexture_);
 	}
 
 }

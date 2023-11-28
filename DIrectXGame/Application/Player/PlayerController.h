@@ -27,7 +27,7 @@ public:
 	/// <summary>
 	/// 更新
 	/// </summary>
-	void Update();
+	void Update(const ViewProjection& viewProjection);
 	/// <summary>
 	/// 描画
 	/// </summary>
@@ -38,15 +38,13 @@ public:
 	/// </summary>
 	void ChangeControl();
 
-	void ActivePlayerArea();
+	void ActivePlayerArea(const ViewProjection& viewProjection);
 
 	void InactivePlayerInfo(const ViewProjection& viewProjection);
 
 	bool PlayerInGimmick(Vector2_AABB player);
 
 	void UIDraw();
-
-	Vector2 WorldToScreenPoint(const Vector3& worldPoint);
 
 	// コライダーとしてのプレイヤーを貸出
 	Collider* GetPlayer1();
@@ -59,18 +57,28 @@ private:
 
 	bool isInArea_ = false;
 
-	std::unique_ptr<Sprite> buttonUi_;
+	std::unique_ptr<Sprite> BButtonUi_;
 	std::unique_ptr<Sprite> XButtonUi_;
 
 	Player* inactivePlayer_ = nullptr;
+	Player* activePlayer_ = nullptr;
+
+	Vector2 GenerateScreenPosition(const Vector3& worldPosition, const Vector3& offset, const ViewProjection& viewProjection);
 
 private:
 	std::unique_ptr<Player> player1_;
 	std::unique_ptr<Player> player2_;
 
+	bool isClear_ = false;
+
 public:
 	Player* GetPlayerPtr1() { return player1_.get(); }
 	Player* GetPlayerPtr2() { return player2_.get(); }
+
+	/// <summary>
+	/// クリアフラグ
+	/// </summary>
+	bool GetIsClear() { return isClear_; }
 
 private:
 	/// <summary>

@@ -18,7 +18,7 @@ public:
 	/// 描画
 	/// </summary>
 	/// <param name="viewProjection"></param>
-	void Draw(const ViewProjection& viewProjection) override;
+	void Draw(const ViewProjection& viewProjection, uint32_t texture) override;
 	/// <summary>
 	/// 衝突
 	/// </summary>

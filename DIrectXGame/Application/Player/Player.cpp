@@ -18,6 +18,8 @@ void Player::Initialize(const std::vector<Model*>& models)
 
 	hatModel_.reset(Model::CreateFlomObj("hat"));
 	worldTransformHat_.translation_.z = -0.3f;
+
+	isGoal_ = false;
 }
 
 void Player::Setting(const Vector3& position, uint32_t color)
@@ -141,6 +143,11 @@ void Player::Draw(const ViewProjection& viewProjection)
 void Player::OnCollision([[maybe_unused]] Collider* other) {
 
 	if (behavior_ == Behavior::kAction) {
+		return;
+	}
+
+	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kGoal)) {
+		isGoal_ = true;
 		return;
 	}
 

@@ -222,9 +222,6 @@
     <ClCompile Include="DIrectXGame\Application\Gimmick\GimmickManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="DIrectXGame\Application\Gimmick\DoorGimmick.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="DIrectXGame\Application\Camera\ICamera.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -423,9 +420,6 @@
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\Gimmick\GimmickManager.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="DIrectXGame\Application\Gimmick\DoorGimmick.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="DIrectXGame\Application\Camera\ICamera.h">

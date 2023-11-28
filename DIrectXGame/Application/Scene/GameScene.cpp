@@ -3,7 +3,7 @@
 #include "R_Math.h"
 #include "TextureManager.h"
 #include "ImGuiManager.h"
-
+#include "SceneManager.h"
 
 /// <summary>
 /// コンストラクタ
@@ -24,8 +24,13 @@ void GameScene::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
+	goalModel_.reset(Model::CreateFlomObj("cube"));
+	goal_ = std::make_unique<Goal>();
+	goal_->Initialize(goalModel_.get());
+
 	Retry();
 
+	
 	backTex_ = TextureManager::Load("skydomeTex.png");
 	back_.reset(Sprite::Create(backTex_, { 640.0f, 320.0f }, 0.0f, {0.8f, 0.8f, 0.8f, 1.0f}, {0.5f, 0.5f}));
 
@@ -44,18 +49,21 @@ void GameScene::Update() {
 		focusCamera_->SetIsAnimater(true);
 	}
 
+	if (playerController_->GetIsClear()) {
+		SceneManager::GetInstance()->ChangeScene("TITLE");
+	}
+
 	CameraUpdate();
 	
 	gimmickManager_->Update();
 
-	playerController_->Update();
-	playerController_->InactivePlayerInfo(viewProjection_);
+	playerController_->Update(viewProjection_);
 
 	this->ColliderUpdate();
 
 	//back_->Update();
 
-	//goal_->Update();
+	goal_->Update();
 
 	Mapchip::GetInstance()->Update(viewProjection_);
 
@@ -95,7 +103,7 @@ void GameScene::Draw() {
 	colliderManager_->Draw(viewProjection_);
 	//back_->Draw(viewProjection_);
 
-	//goal_->Draw(viewProjection_);
+	goal_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
@@ -145,8 +153,10 @@ void GameScene::Retry() {
 	//skyModel.reset(Model::CreateFlomObj("skydome"));
 	//back_ = std::make_unique<Skydome>();
 	//back_->Initialize(skyModel.get(), {0.0f, 0.0f ,0.0f});
+	const float xCenter = 48 / 2.0f - 0.5f;
+	Vector3 GoalPosition = { ((46.0f - 1.0f) - xCenter) * 2.0f, (24.0f * 2.0f + 1.0f), 0.0f };
 
-
+	goal_->SetPosition(GoalPosition);
 
 }
 
@@ -162,6 +172,8 @@ void GameScene::ColliderUpdate() {
 	for (IGimmick* gimmick : gimmicks) {
 		colliderManager_->AddColliders(gimmick);
 	}
+
+	colliderManager_->AddColliders(goal_.get());
 	// 当たり判定チェック
 	colliderManager_->CheckAllCollisions();
 	colliderManager_->UpdateWorldTransform();

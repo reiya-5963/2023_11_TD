@@ -81,6 +81,12 @@ public:
 	/// <param name="request"></param>
 	void SetBehaviorRequest(Behavior request) { request_ = request; }
 
+	/// <summary>
+	/// クリア用リソース
+	/// </summary>
+	/// <returns></returns>
+	bool GetIsGoal() { return isGoal_; }
+
 private:
 	// プレイヤーの入力状態
 	InputState* inputState_ = nullptr;
@@ -97,6 +103,8 @@ private:
 	std::unique_ptr<Model> hatModel_;
 
 	static const float kFisrtJumpPower_;
+
+	bool isGoal_ = false;
 
 private: // 憑りつきアクション用
 	// アクション定数

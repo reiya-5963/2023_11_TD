@@ -146,7 +146,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\RayEngine\Scene\BaseScene.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneFactory.cpp" />
     <ClCompile Include="DIrectXGame\RayEngine\Scene\SceneManager.cpp" />
-    <ClCompile Include="DIrectXGame\Application\Gimmick\DoorGimmick.cpp" />
     <ClCompile Include="Externals\imgui\imgui.cpp" />
     <ClCompile Include="Externals\imgui\imgui_demo.cpp" />
     <ClCompile Include="Externals\imgui\imgui_draw.cpp" />
@@ -215,7 +214,6 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\RayEngine\Scene\BaseScene.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Scene\SceneFactory.h" />
     <ClInclude Include="DIrectXGame\RayEngine\Scene\SceneManager.h" />
-    <ClInclude Include="DIrectXGame\Application\Gimmick\DoorGimmick.h" />
     <ClInclude Include="Externals\imgui\imconfig.h" />
     <ClInclude Include="Externals\imgui\imgui.h" />
     <ClInclude Include="Externals\imgui\imgui_impl_dx12.h" />

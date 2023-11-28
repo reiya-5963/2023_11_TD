@@ -63,10 +63,10 @@ void WallGimmick::Update()
 	this->collisionWorldTransform_.UpdateMatrix();
 }
 
-void WallGimmick::Draw(const ViewProjection& viewProjection)
+void WallGimmick::Draw(const ViewProjection& viewProjection, uint32_t texture)
 {
 
-	model_->Draw(worldTransform_, viewProjection);
+	model_->Draw(worldTransform_, viewProjection, texture);
 
 }
 

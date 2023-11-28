@@ -83,8 +83,8 @@ private:
 	std::unique_ptr<Sprite> back_ = nullptr;
 	uint32_t backTex_ = 0u;
 
-	//std::unique_ptr<Goal> goal_;
-	//std::unique_ptr<Model> goalModel_;
+	std::unique_ptr<Goal> goal_;
+	std::unique_ptr<Model> goalModel_;
 
 
 	std::unique_ptr<Sprite> retry_ = nullptr;

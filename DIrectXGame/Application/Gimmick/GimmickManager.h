@@ -61,6 +61,8 @@ private:
 	/// </summary>
 	std::unique_ptr<Model> floarModel_;
 
+	uint32_t blockTexture_ = 0u;
+
 public:
 	std::list<IGimmick*> GetGimmickList() { return gimmicks_; }
 

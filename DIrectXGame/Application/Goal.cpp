@@ -20,3 +20,7 @@ void Goal::Draw(const ViewProjection& viewProjection)
 {
 	model_->Draw(collisionWorldTransform_, viewProjection);
 }
+
+void Goal::OnCollision([[maybe_unused]] Collider* other)
+{
+}

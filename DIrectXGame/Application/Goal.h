@@ -22,6 +22,15 @@ public:
 
 	void SetPosition(const Vector3& position) { collisionWorldTransform_.translation_ = position; }
 
+	void OnCollision([[maybe_unused]] Collider* other) override;
+
+	Vector3 GetWorldPosition() override {
+		return Vector3{ collisionWorldTransform_.matWorld_.m[3][0],collisionWorldTransform_.matWorld_.m[3][1],collisionWorldTransform_.matWorld_.m[3][2] };
+	}
+
+	void SetParent(WorldTransform* parent) override { collisionWorldTransform_.parent_ = parent; }
+	WorldTransform* GetParent() { return &collisionWorldTransform_; }
+
 private:
 	Model* model_ = nullptr;
 

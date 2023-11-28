@@ -49,17 +49,25 @@ void PlayerController::Initialize()
 	player2_->SetState(new InactiveState());
 
 	uint32_t uiTexture = TextureManager::Load("UI/BButton.png");
-	buttonUi_.reset(Sprite::Create(uiTexture, { 100,100 }, 0.0f, { 1,1,1,1.0f }, { 0.5f,0.5f }));
+	BButtonUi_.reset(Sprite::Create(uiTexture, { 100,100 }, 0.0f, { 1,1,1,1.0f }, { 0.5f,0.5f }));
+	BButtonUi_->SetSize({ BButtonUi_->GetSize().x / 5.0f,BButtonUi_->GetSize().y / 5.0f });
+
 	uiTexture = TextureManager::Load("UI/XButton.png");
 	XButtonUi_.reset(Sprite::Create(uiTexture, { 0,0 }, 0.0f, { 1,1,1,1 }, { 0.5f,0.5f }));
 	XButtonUi_->SetSize({ XButtonUi_->GetSize().x / 5,XButtonUi_->GetSize().y / 5 });
 
 	isInArea_ = false;
+	isClear_ = false;
 
 }
 
-void PlayerController::Update()
+void PlayerController::Update(const ViewProjection& viewProjection)
 {
+
+	if (player1_->GetIsGoal() || player2_->GetIsGoal()) {
+		isClear_ = true;
+	}
+
 	// 遅延（バグ防止の仮
 	if (ghostWork_.isDelay_) {
 		int interval = 60;
@@ -146,7 +154,8 @@ void PlayerController::Update()
 	player1_->Update();
 	player2_->Update();
 	// ボタン表示
-	ActivePlayerArea();
+	ActivePlayerArea(viewProjection);
+	InactivePlayerInfo(viewProjection);
 }
 
 void PlayerController::Draw(ViewProjection& viewprojection)
@@ -212,28 +221,35 @@ void PlayerController::ChangeControl()
 
 }
 
-void PlayerController::ActivePlayerArea()
+void PlayerController::ActivePlayerArea(const ViewProjection& viewProjection)
 {
 	isInArea_ = false;
-	Vector3 playerPosition = {};
 	// アクティブ中
 	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
-		playerPosition = player1_->GetWorldPosition();
+		activePlayer_ = player1_.get();
 		inactivePlayer_ = player2_.get();
 	}
 	else {
-		playerPosition = player2_->GetWorldPosition();
+		activePlayer_ = player2_.get();
 		inactivePlayer_ = player1_.get();
 	}
+
+	Vector3 worldPosition = activePlayer_->GetWorldPosition();
+
 	// AABB
 	float playerRadius = 5.0f;
 	Vector2_AABB gim = {};
 	Vector2_AABB player = {
-		{playerPosition.x - playerRadius,playerPosition.y - playerRadius},
-		{playerPosition.x + playerRadius,playerPosition.y + playerRadius},
+		{worldPosition.x - playerRadius,worldPosition.y - playerRadius},
+		{worldPosition.x + playerRadius,worldPosition.y + playerRadius},
 	};
 
 	isInArea_ = this->PlayerInGimmick(player);
+
+	if (isInArea_) {
+		BButtonUi_->SetPosition(GenerateScreenPosition(activePlayer_->GetWorldPosition(), { -0.2f,1.5f,0 }, viewProjection));
+	}
+
 }
 
 void PlayerController::InactivePlayerInfo(const ViewProjection& viewProjection)
@@ -241,15 +257,8 @@ void PlayerController::InactivePlayerInfo(const ViewProjection& viewProjection)
 	if (inactivePlayer_ == nullptr) {
 		return;
 	}
-	Vector3 offSet = { 1.0f,1.5f,0 };
 
-	Vector3 positionWorld = R_Math::Add(inactivePlayer_->GetWorldPosition(), offSet);
-
-	Vector3 positionScreen = WorldToScreen(positionWorld, viewProjection);
-
-	Vector2 screen = { positionScreen.x,positionScreen.y };
-
-	this->XButtonUi_->SetPosition(screen);
+	this->XButtonUi_->SetPosition(GenerateScreenPosition(inactivePlayer_->GetWorldPosition(), Vector3{ 1.0f,1.5f,0 }, viewProjection));
 
 }
 
@@ -281,20 +290,13 @@ bool PlayerController::PlayerInGimmick(Vector2_AABB player)
 void PlayerController::UIDraw()
 {
 	if (isInArea_) {
-		this->buttonUi_->Draw();
+		this->BButtonUi_->Draw();
 	}
 
 	if (inactivePlayer_->GetBehaviorState() != Player::Behavior::kAction) {
 		this->XButtonUi_->Draw();
 	}
 
-}
-
-Vector2 PlayerController::WorldToScreenPoint(const Vector3& offset)
-{
-	Vector3 result = R_Math::TransformCoord(offset, inactivePlayer_->GetWorldTransform()->matWorld_);
-
-	return Vector2();
 }
 
 Collider* PlayerController::GetPlayer1()
@@ -317,6 +319,18 @@ Vector3 PlayerController::WorldToScreen(const Vector3& position, const ViewProje
 		R_Math::Multiply(viewProjection.matView, viewProjection.matProjection), matViewport);
 
 	return Vector3(R_Math::TransformCoord(position, matViewProjection));
+}
+
+Vector2 PlayerController::GenerateScreenPosition(const Vector3& worldPosition, const Vector3& offset, const ViewProjection& viewProjection)
+{
+
+	Vector3 positionWorld = R_Math::Add(worldPosition, offset);
+
+	Vector3 positionScreen = WorldToScreen(positionWorld, viewProjection);
+
+	Vector2 screen = { positionScreen.x,positionScreen.y };
+
+	return screen;
 }
 
 bool PlayerController::IsAABBCollision(const Vector2_AABB& aabb1, const Vector2_AABB& aabb2) {

@@ -23,7 +23,7 @@ public:
 	/// 描画処理
 	/// </summary>
 	/// <param name="viewProjection"></param>
-	virtual void Draw(const ViewProjection& viewProjection) = 0;
+	virtual void Draw(const ViewProjection& viewProjection, uint32_t texture) = 0;
 
 	/// <summary>
 	/// 進む処理
