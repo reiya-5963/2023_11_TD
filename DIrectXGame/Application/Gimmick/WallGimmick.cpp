@@ -18,20 +18,19 @@ void WallGimmick::Update()
 	ImGui::Begin("Wall");
 	ImGui::Text("IsAction : %d", isAction_);
 	ImGui::Text("ease : %f", (ease_T_));
+	ImGui::Text("maxF : %f", maxFrame_);
 	ImGui::DragFloat3("begin", &beginPoint_.x, 0.01f, -100, 100);
 	ImGui::DragFloat3("end", &EndPoint_.x, 0.01f, -100, 100);
 	ImGui::End();
 
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
 
-		StartSetting();
+		StartSetting(120.0f);
 
 	}
 
-	float maxFrame = 120.0f;
-
 	if (isAction_) {
-		ease_T_ += 1.0f / maxFrame;
+		ease_T_ += 1.0f / maxFrame_;
 
 		if (ease_T_ >= 1.0f) {
 			ease_T_ = 1.0f;
@@ -44,6 +43,9 @@ void WallGimmick::Update()
 			}
 			else {
 				worldTransform_.translation_ = R_Math::EaseOutQuadF(ease_T_, EndPoint_, beginPoint_);
+				if (ease_T_ >= 1.0f) {
+					isSetUp_ = false;
+				}
 			}
 		}
 	}

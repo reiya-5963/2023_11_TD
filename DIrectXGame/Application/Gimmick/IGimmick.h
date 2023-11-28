@@ -25,7 +25,17 @@ public:
 	/// <param name="viewProjection"></param>
 	virtual void Draw(const ViewProjection& viewProjection) = 0;
 
-	void StartSetting();
+	/// <summary>
+	/// 進む処理
+	/// </summary>
+	/// <param name="maxFrame"></param>
+	void StartSetting(float maxFrame);
+
+	/// <summary>
+	/// 戻す処理
+	/// </summary>
+	/// <param name="maxFrame"></param>
+	void ReturnSetting(float maxFrame);
 
 public:
 	/// <summary>
@@ -52,6 +62,10 @@ public:
 	void SetParentChildren(WorldTransform* parent) { worldTransform_.parent_ = parent; }
 
 	WorldTransform* GetWorldTransform() { return &worldTransform_; }
+
+	bool GetIsSetup() { return isAction_; }
+
+	void SetIsSetup(bool setUp) { isSetUp_ = setUp; }
 
 protected:
 	/// <summary>
@@ -90,5 +104,11 @@ protected:
 	/// </summary>
 	bool isBeforeStartup = false;
 
+	/// <summary>
+	/// 移動フレーム数
+	/// </summary>
+	float maxFrame_ = 0;
+
+	bool isSetUp_ = 0;
 };
 

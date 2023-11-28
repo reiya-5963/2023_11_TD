@@ -16,7 +16,7 @@ class PlayerController
 {
 public:
 	PlayerController();
-	~PlayerController() = default;
+	~PlayerController();
 
 public:
 	/// <summary>
@@ -82,5 +82,15 @@ private: // 切り替え用変数
 	bool isDelay_ = 0;
 
 	int delayCount_ = 0;
+
+	IGimmick* tmpGimmick_;
+
+	struct GhostWork {
+		bool isDelay_;
+		int delayCount_;
+	};
+
+	GhostWork ghostWork_;
+
 };
 

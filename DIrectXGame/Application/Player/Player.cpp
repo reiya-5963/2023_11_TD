@@ -4,6 +4,9 @@
 #include "ImGuiManager.h"
 #include "CollisionTypeIdDef.h"
 
+const Player::ConstAction Player::kConstAction_ = {
+	60,30,300
+};
 
 void Player::Initialize(const std::vector<Model*>& models)
 {
@@ -43,10 +46,15 @@ void Player::Update()
 		ImGui::TreePop();
 	}
 	ImGui::Text("behavior : %d", static_cast<int>(behavior_));
-	ImGui::Text("test : %d", test);
 	ImGui::DragFloat3("velocity", &velocity_.x, 0.01f, -100, 100);
-
 	ImGui::DragFloat3("hat", &worldTransformHat_.translation_.x, 0.01f, -100, 100);
+
+	if (ImGui::TreeNode("ActionV")) {
+		ImGui::Text("timer : %d", tmpValue_.timer_);
+		ImGui::Text("const S : %d E : %d R : %d", kConstAction_.startTime_, kConstAction_.endTime_, kConstAction_.releaseTime_);
+		ImGui::TreePop();
+	}
+
 	ImGui::End();
 
 #endif // _DEBUG
@@ -66,7 +74,7 @@ void Player::Update()
 		switch (behavior_)
 		{
 		case Player::Behavior::kRoot:
-			//RootInitialize();
+			isMapChipCollision_ = true;
 			break;
 		case Player::Behavior::kJump:
 			JumpInitialize();
@@ -80,6 +88,7 @@ void Player::Update()
 	}
 	inputState_->Update();
 
+	// 更新
 	switch (behavior_)
 	{
 	case Player::Behavior::kRoot:
@@ -93,7 +102,6 @@ void Player::Update()
 		break;
 	}
 
-	//objectWorldTransform_.translation_ = R_Math::Add(objectWorldTransform_.translation_, velocity_);
 	if (!isDriveObject_) {
 		const float kGravity = 9.8f;
 
@@ -104,8 +112,9 @@ void Player::Update()
 		acceleration_ = R_Math::Add(acceleration_, accelerationVector);
 	}
 
-
-	BaseCharacter::Update();
+	if (behavior_ != Behavior::kAction) {
+		BaseCharacter::Update();
+	}
 	worldTransformHat_.UpdateMatrix();
 	ImGui::Text("%d", isGround_);
 	acceleration_ = {};
@@ -481,11 +490,6 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 	}
 }
 
-void Player::MoveUpdate(Vector3& moveDirect)
-{
-	objectWorldTransform_.translation_ = R_Math::Add(objectWorldTransform_.translation_, moveDirect);
-}
-
 void Player::SetState(InputState* state)
 {
 	inputState_ = state;
@@ -524,35 +528,109 @@ void Player::JumpInitialize()
 
 	velocity_.y = kFirstSpeed;
 
+	isMapChipCollision_ = true;
 }
 
 void Player::JumpUpdate()
 {
-	//const float kGravity = 9.8f;
-
-	//const float deltaTime = 1.0f / 60.0f;
-
-	//Vector3 accelerationVector = { 0,-kGravity * deltaTime,0 };
-
-	//velocity_ = R_Math::Add(velocity_, accelerationVector);
-	test += 1;
-
 	if (isGround_ || isDriveObject_) {
 		request_ = Behavior::kRoot;
 		if (typeid(*inputState_) == typeid(InactiveState)) {
 			velocity_ = {};
 		}
 	}
-
-
 }
 
 void Player::ActionInitialize()
 {
-
+	objectWorldTransform_.parent_ = nullptr;
+	isMapChipCollision_ = false;
+	actionState_ = ActionState::kReserve;
+	tmpValue_.timer_ = 0;
 }
 
 void Player::ActionUpdate()
 {
+	objectWorldTransform_.parent_ = nullptr;
+	velocity_ = {};
+	tmpValue_.timer_++;
+	switch (actionState_)
+	{
+	// 憑りつくまでの動き
+	case Player::ActionState::kReserve:
+		if (tmpValue_.timer_ > kConstAction_.startTime_) {
+			actionState_ = ActionState::kNow;
+			tmpValue_.timer_ = 0;
+			tmpValue_.ease_t_ = 0;
+		}
+		else {
+			tmpValue_.ease_t_ += 1.0f / (float)kConstAction_.startTime_;
+			if (tmpValue_.ease_t_ >= 1.0f) {
+				tmpValue_.ease_t_ = 1.0f;
+			}
+			Vector3 WorldPosition = R_Math::lerp(tmpValue_.ease_t_, tmpValue_.startPoint_, tmpValue_.endPoint_);
+			objectWorldTransform_.translation_ = WorldPosition;
+		}
 
+		if (tmpValue_.startPoint_.x > tmpValue_.endPoint_.x) {
+			info_.isLeft_ = true;
+		}
+		else {
+			info_.isLeft_ = false;
+		}
+
+		break;
+	// 憑りつき中
+	case Player::ActionState::kNow:
+		if (iGimmickPtr_ != nullptr && tmpValue_.timer_ < 10) {
+			iGimmickPtr_->StartSetting(float(kConstAction_.releaseTime_) / 2.0f);
+			//iGimmickPtr_ = nullptr;
+		}
+
+		if (tmpValue_.timer_ > kConstAction_.releaseTime_) {
+			actionState_ = ActionState::kRelease;
+			tmpValue_.timer_ = 0;
+		}
+
+		break;
+	// 解除中
+	case Player::ActionState::kRelease:
+		if (iGimmickPtr_ != nullptr && tmpValue_.timer_ < 10) {
+			iGimmickPtr_->ReturnSetting(float(kConstAction_.endTime_));
+			iGimmickPtr_ = nullptr;
+		}
+		if (tmpValue_.timer_ > kConstAction_.endTime_) {
+			tmpValue_.timer_ = 0;
+			behavior_ = Behavior::kRoot;
+		}
+		else {
+			tmpValue_.ease_t_ += 1.0f / (float)kConstAction_.endTime_;
+			if (tmpValue_.ease_t_ >= 1.0f) {
+				tmpValue_.ease_t_ = 1.0f;
+			}
+			Vector3 WorldPosition = R_Math::lerp(tmpValue_.ease_t_, tmpValue_.endPoint_, tmpValue_.startPoint_);
+			objectWorldTransform_.translation_ = WorldPosition;
+		}
+
+		if (tmpValue_.startPoint_.x > tmpValue_.endPoint_.x) {
+			info_.isLeft_ = false;
+		}
+		else {
+			info_.isLeft_ = true;
+		}
+
+		break;
+	}
+
+	objectWorldTransform_.UpdateMatrix();
+
+}
+
+void Player::GhostSetting()
+{
+	// 移動用の座標設定
+	tmpValue_ = {};
+	tmpValue_.startPoint_ = GetWorldPosition();
+	tmpValue_.endPoint_ = iGimmickPtr_->GetWorldPosition();
+	
 }

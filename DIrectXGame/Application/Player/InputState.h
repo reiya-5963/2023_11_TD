@@ -21,6 +21,7 @@ public:
 
 private:
 	void MoveInputProcess();
+	void ActionInput();
 
 };
 
