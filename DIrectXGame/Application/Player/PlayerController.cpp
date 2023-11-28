@@ -9,7 +9,9 @@
 
 PlayerController::PlayerController()
 {
-
+	jumpSE_ = Audio::GetInstance()->LoadWave("sound/JumpSE.wav");
+	ghostSE_ = Audio::GetInstance()->LoadWave("sound/GhostSE.wav");
+	//switchSE_ = Audio::GetInstance()->LoadWave("sound/SwitchSE.wav");
 }
 
 PlayerController::~PlayerController()
@@ -18,10 +20,10 @@ PlayerController::~PlayerController()
 
 void PlayerController::Initialize()
 {
+	audio_ = Audio::GetInstance();
+
 	player1_ = std::make_unique<Player>();
 	player2_ = std::make_unique<Player>();
-
-	controlNum_ = ControlNum::kOne;
 
 	Model* p_model1;
 	p_model1 = Model::CreateFlomObj("ghostWhite");
@@ -56,15 +58,16 @@ void PlayerController::Initialize()
 	XButtonUi_.reset(Sprite::Create(uiTexture, { 0,0 }, 0.0f, { 1,1,1,1 }, { 0.5f,0.5f }));
 	XButtonUi_->SetSize({ XButtonUi_->GetSize().x / 5,XButtonUi_->GetSize().y / 5 });
 
-	isInArea_ = false;
-	isClear_ = false;
+	uiTexture = TextureManager::Load("UI/Arrow.png");
+	ArrowUi_.reset(Sprite::Create(uiTexture, { 0,0 }, 0.0f, { 1,1,1,1 }, { 0.5f,0.5f }));
+	ArrowUi_->SetSize({ ArrowUi_->GetSize().x / 3,ArrowUi_->GetSize().y / 3 });
 
 }
 
 void PlayerController::Update(const ViewProjection& viewProjection)
 {
 
-	if (player1_->GetIsGoal() || player2_->GetIsGoal()) {
+	if (player1_->GetIsGoal() && player2_->GetIsGoal()) {
 		isClear_ = true;
 	}
 
@@ -156,6 +159,15 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 	// ボタン表示
 	ActivePlayerArea(viewProjection);
 	InactivePlayerInfo(viewProjection);
+
+	// ゴールへの矢印
+	Vector3 arrowWorld = R_Math::Subtract(goalPosition_, activePlayer_->GetWorldPosition());
+	arrowWorld = R_Math::Normalize(arrowWorld);
+	ArrowUi_->SetRotate(-std::atan2f(arrowWorld.y, arrowWorld.x));
+	float scaler = 5.0f;
+	arrowWorld = { arrowWorld.x * scaler,arrowWorld.y * scaler,arrowWorld.z * scaler };
+	Vector2 arrowScreen = this->GenerateScreenPosition(activePlayer_->GetWorldPosition(), arrowWorld, viewProjection);
+	ArrowUi_->SetPosition(arrowScreen);
 }
 
 void PlayerController::Draw(ViewProjection& viewprojection)
@@ -186,12 +198,14 @@ void PlayerController::ChangeControl()
 					break;
 				}
 				this->changeRequest_ = ControlNum::kTwo;
+				audio_->PlayWave(this->jumpSE_);
 				break;
 			case PlayerController::ControlNum::kTwo:
 				if (player1_->GetBehaviorState() == Player::Behavior::kAction) {
 					break;
 				}
 				this->changeRequest_ = ControlNum::kOne;
+				audio_->PlayWave(jumpSE_);
 				break;
 			}
 		}
@@ -225,14 +239,7 @@ void PlayerController::ActivePlayerArea(const ViewProjection& viewProjection)
 {
 	isInArea_ = false;
 	// アクティブ中
-	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
-		activePlayer_ = player1_.get();
-		inactivePlayer_ = player2_.get();
-	}
-	else {
-		activePlayer_ = player2_.get();
-		inactivePlayer_ = player1_.get();
-	}
+	PtrSetting();
 
 	Vector3 worldPosition = activePlayer_->GetWorldPosition();
 
@@ -297,6 +304,43 @@ void PlayerController::UIDraw()
 		this->XButtonUi_->Draw();
 	}
 
+	ArrowUi_->Draw();
+
+}
+
+void PlayerController::Reset()
+{
+	Vector3 position = { 0,3,0 };
+	player1_->Setting(position, 0);
+	player1_->SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer1));
+
+	position = { 2.5f,3,0 };
+	player2_->Setting(position, 0);
+	player2_->SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer2));
+
+	player1_->SetState(new ActiveState());
+	player2_->SetState(new InactiveState());
+
+	isInArea_ = false;
+	isClear_ = false;
+
+	controlNum_ = ControlNum::kOne;
+}
+
+void PlayerController::PtrSetting()
+{
+	activePlayer_ = nullptr;
+	inactivePlayer_ = nullptr;
+
+	// アクティブ中
+	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
+		activePlayer_ = player1_.get();
+		inactivePlayer_ = player2_.get();
+	}
+	else {
+		activePlayer_ = player2_.get();
+		inactivePlayer_ = player1_.get();
+	}
 }
 
 Collider* PlayerController::GetPlayer1()

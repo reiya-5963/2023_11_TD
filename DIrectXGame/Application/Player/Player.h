@@ -7,6 +7,7 @@
 #include "Input.h"
 #include "BaseCharacter.h"
 #include "Gimmick/IGimmick.h"
+#include "audio.h"
 
 #include <stdint.h>
 #include <optional>

@@ -7,6 +7,7 @@
 #include "TextureManager.h"
 #include "DXCManager.h"
 #include "GlobalVariables.h"
+#include "audio.h"
 //#include "AbstractSceneFactory.h"
 
 #include "Sprite.h"
@@ -86,4 +87,6 @@ protected: // メンバ変数
 	bool endRequest_ = false;
 
 	AbstractSceneFactory* sceneFactory_;
+
+	Audio* audio_ = nullptr;
 };

@@ -25,6 +25,8 @@ public:
 	/// <param name="viewProjection"></param>
 	virtual void Draw(const ViewProjection& viewProjection, uint32_t texture) = 0;
 
+	virtual void Reset() {};
+
 	/// <summary>
 	/// 進む処理
 	/// </summary>

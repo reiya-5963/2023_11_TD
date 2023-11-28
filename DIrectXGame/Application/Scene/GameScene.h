@@ -10,6 +10,7 @@
 #include "Collision/CollisionManager.h"
 #include "FocusCamera.h"
 #include "Goal.h"
+#include "audio.h"
 //#include "skydome.h"
 
 
@@ -63,6 +64,9 @@ private:
 	/// カメラ関係の更新
 	/// </summary>
 	void CameraUpdate();
+
+private:
+	Audio* audio_ = nullptr;
 
 private:
 	Mapchip* map_;

@@ -37,6 +37,14 @@ void Framework::Initialize() {
 	input_->Initialize();
  #pragma endregion
 
+#pragma region Audio
+
+	audio_ = Audio::GetInstance();
+	audio_->Initilize();
+
+#pragma endregion
+
+
  #pragma region テクスチャ管理クラスの初期化
 	// TextureManagerの初期化処理 (シングルトン)
 	TextureManager::GetInstance()->Initialize(dxCommon_->GetDevice());
@@ -76,6 +84,9 @@ void Framework::Finalize() {
 	delete sceneFactory_;
 	// ImGuiのRelease処理
 	imGuiManager_->Finalize();
+	
+	// Audio
+	audio_->Finalize();
 
 	// ウィンドウの破棄の処理
 	winApp_->Finalize();

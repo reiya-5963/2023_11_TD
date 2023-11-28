@@ -5,7 +5,7 @@
 #include "CollisionTypeIdDef.h"
 
 const Player::ConstAction Player::kConstAction_ = {
-	30,30,150
+	30,30,180
 };
 const float Player::kFisrtJumpPower_ = 45.0f;
 
@@ -18,8 +18,10 @@ void Player::Initialize(const std::vector<Model*>& models)
 
 	hatModel_.reset(Model::CreateFlomObj("hat"));
 	worldTransformHat_.translation_.z = -0.3f;
+	info_.defaultRotate_ = 1.57f;
+	SetRadius({ 1.2f, 1.2f, 1.2f });
+	objectWorldTransform_.scale_ = GetRadius();
 
-	isGoal_ = false;
 }
 
 void Player::Setting(const Vector3& position, uint32_t color)
@@ -27,12 +29,11 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	objectWorldTransform_.translation_ = position;
 	color;
 	behavior_ = Behavior::kRoot;
-	SetRadius({ 1.2f, 1.2f, 1.2f });
-	objectWorldTransform_.scale_ = GetRadius();
+	objectWorldTransform_.parent_ = nullptr;
+	objectWorldTransform_.UpdateMatrix();
 
-	info_.defaultRotate_ = 1.57f;
 	info_.isLeft_ = false;
-
+	isGoal_ = false;
 }
 
 void Player::Update()

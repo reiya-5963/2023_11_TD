@@ -27,6 +27,8 @@ public:
 
 	WorldTransform* GetParent() { return &worldTransform_; };
 
+	void Reset() override;
+
 private:
 	//bool isAction_ = false;
 

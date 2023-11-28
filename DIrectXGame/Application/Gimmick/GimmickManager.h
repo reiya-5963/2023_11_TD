@@ -50,6 +50,8 @@ public:
 	/// <param name="viewProjection"></param>
 	void Draw(const ViewProjection& viewProjection);
 
+	void Reset();
+
 	std::list<IGimmick*> GetGimmicks() {return gimmicks_;}
 private:
 	/// <summary>

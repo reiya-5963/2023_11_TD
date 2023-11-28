@@ -72,3 +72,11 @@ void WallGimmick::Draw(const ViewProjection& viewProjection, uint32_t texture)
 
 void WallGimmick::OnCollision([[maybe_unused]] Collider* other) {
 }
+
+void WallGimmick::Reset()
+{
+	ease_T_ = 0;
+	isBeforeStartup = false;
+	isAction_ = false;
+	isSetUp_ = false;
+}

@@ -13,7 +13,8 @@ void Goal::Initialize(Model* model)
 
 void Goal::Update()
 {
-	collisionWorldTransform_.UpdateMatrix();
+	Collider::UpdateCollider();
+	//collisionWorldTransform_.UpdateMatrix();
 }
 
 void Goal::Draw(const ViewProjection& viewProjection)

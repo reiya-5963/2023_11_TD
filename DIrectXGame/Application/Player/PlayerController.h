@@ -34,23 +34,51 @@ public:
 	/// <param name="viewprojection"></param>
 	void Draw(ViewProjection& viewprojection);
 	/// <summary>
-	/// 操作権の変更
+	/// UI描画
 	/// </summary>
-	void ChangeControl();
-
-	void ActivePlayerArea(const ViewProjection& viewProjection);
-
-	void InactivePlayerInfo(const ViewProjection& viewProjection);
-
-	bool PlayerInGimmick(Vector2_AABB player);
-
 	void UIDraw();
+
+	void Reset();
+
+	void PlayerPtrReset() {};
+
+	void PtrSetting();
 
 	// コライダーとしてのプレイヤーを貸出
 	Collider* GetPlayer1();
 	Collider* GetPlayer2();
 
+private:
+	/// <summary>
+	/// スクリーン座標に変換
+	/// </summary>
+	/// <param name="position"></param>
+	/// <param name="viewProjection"></param>
+	/// <returns></returns>
 	Vector3 WorldToScreen(const Vector3& position, const ViewProjection& viewProjection);
+	/// <summary>
+	/// 操作権の変更
+	/// </summary>
+	void ChangeControl();
+
+	/// <summary>
+	/// アクティブプレイヤーの近くのギミック探し
+	/// </summary>
+	/// <param name="viewProjection"></param>
+	void ActivePlayerArea(const ViewProjection& viewProjection);
+
+	/// <summary>
+	/// インアクティブプレイヤーUI
+	/// </summary>
+	/// <param name="viewProjection"></param>
+	void InactivePlayerInfo(const ViewProjection& viewProjection);
+
+	/// <summary>
+	/// 内側か判断
+	/// </summary>
+	/// <param name="player"></param>
+	/// <returns></returns>
+	bool PlayerInGimmick(Vector2_AABB player);
 
 private:
 	Vector2_AABB gim_;
@@ -59,11 +87,17 @@ private:
 
 	std::unique_ptr<Sprite> BButtonUi_;
 	std::unique_ptr<Sprite> XButtonUi_;
+	std::unique_ptr<Sprite> ArrowUi_;
 
 	Player* inactivePlayer_ = nullptr;
 	Player* activePlayer_ = nullptr;
 
 	Vector2 GenerateScreenPosition(const Vector3& worldPosition, const Vector3& offset, const ViewProjection& viewProjection);
+
+	Vector3 goalPosition_ = {};
+	Vector2 arrowScreenPosition_ = {};
+
+	Audio* audio_ = nullptr;
 
 private:
 	std::unique_ptr<Player> player1_;
@@ -80,12 +114,17 @@ public:
 	/// </summary>
 	bool GetIsClear() { return isClear_; }
 
+	void SetGoalPosition(const Vector3& goalPosition) { goalPosition_ = goalPosition; }
+
 private:
 	/// <summary>
 	/// リスト用
 	/// </summary>
 	GimmickManager* gimmickManager_ = nullptr;
 
+	/// <summary>
+	/// AABBの当たり判定
+	/// </summary>
 	bool IsAABBCollision(const Vector2_AABB& aabb1, const Vector2_AABB& aabb2);
 
 public:
@@ -121,6 +160,11 @@ private: // 切り替え用変数
 	};
 
 	GhostWork ghostWork_;
+
+private:
+	uint32_t jumpSE_ = 0u;
+	uint32_t switchSE_ = 0u;
+	uint32_t ghostSE_ = 0u;
 
 };
 

@@ -78,6 +78,13 @@ void GimmickManager::Draw(const ViewProjection& viewProjection)
 
 }
 
+void GimmickManager::Reset()
+{
+	for (IGimmick* gimmick : gimmicks_) {
+		gimmick->Reset();
+	}
+}
+
 void GimmickManager::AddWallGimmick(const Vector3& position, const Vector3& endPoint, ParentBlock info)
 {
 	WallGimmick* newObject = new WallGimmick();
