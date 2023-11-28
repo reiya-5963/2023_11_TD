@@ -1,13 +1,8 @@
 #include "MyGame.h"
-#include "SceneFactory.h"
 
 void MyGame::Initialize() {
 	// 基盤部分の初期化処理
 	Framework::Initialize();
-
-	// 
-	sceneFactory_ = new SceneFactory();
-	sceneManager_->SetSceneFactory(sceneFactory_);
 }
 
 void MyGame::Finalize() {

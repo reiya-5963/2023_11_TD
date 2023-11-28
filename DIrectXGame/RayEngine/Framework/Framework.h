@@ -7,12 +7,13 @@
 #include "TextureManager.h"
 #include "DXCManager.h"
 #include "GlobalVariables.h"
-
+//#include "AbstractSceneFactory.h"
 
 #include "Sprite.h"
 #include "Triangle.h"
 #include "Model.h"
 #include "ParticleManager.h"
+
 
 /// <summary>
 /// 骨組み
@@ -83,4 +84,6 @@ protected: // メンバ変数
 
 	// 終了リクエスト
 	bool endRequest_ = false;
+
+	AbstractSceneFactory* sceneFactory_;
 };

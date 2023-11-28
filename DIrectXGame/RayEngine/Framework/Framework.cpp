@@ -1,4 +1,5 @@
 #include "Framework.h"
+//#include "SceneFactory.h"
 
 void Framework::Initialize() {
  #pragma region WindowAPIクラス初期化
@@ -62,6 +63,8 @@ void Framework::Initialize() {
 	// シーン管理クラスの初期化処理
 	sceneManager_ = SceneManager::GetInstance();
 	sceneManager_->Initialize();
+	//sceneFactory_ = new SceneFactory();
+	//sceneManager_->SetSceneFactory(sceneFactory_);
 
 	// グローバル変数の読み込み
 	GlobalVariables::GetInstance()->LoadFiles();
@@ -70,7 +73,7 @@ void Framework::Initialize() {
 void Framework::Finalize() {
 	// シーン管理クラスの終了処理
 	sceneManager_->Finalize();
-
+	delete sceneFactory_;
 	// ImGuiのRelease処理
 	imGuiManager_->Finalize();
 
