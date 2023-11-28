@@ -74,6 +74,7 @@ void Player::Update()
 		{
 		case Player::Behavior::kRoot:
 			isMapChipCollision_ = true;
+			isDriveObject_ = false;
 			break;
 		case Player::Behavior::kJump:
 			JumpInitialize();
@@ -357,7 +358,9 @@ void Player::RootUpdate()
 {
 	// アクティブかどうか
 	if (typeid(*inputState_) == typeid(InactiveState)) {
-		velocity_ = {};
+		//velocity_ = {};
+		velocity_.x = 0;
+		velocity_.z = 0;
 	}
 }
 
