@@ -15,6 +15,7 @@ void WallGimmick::Initialize(Model* model)
 
 void WallGimmick::Update()
 {
+#ifdef _DEBUG
 	ImGui::Begin("Wall");
 	ImGui::Text("IsAction : %d", isAction_);
 	ImGui::Text("ease : %f", (ease_T_));
@@ -22,12 +23,7 @@ void WallGimmick::Update()
 	ImGui::DragFloat3("begin", &beginPoint_.x, 0.01f, -100, 100);
 	ImGui::DragFloat3("end", &EndPoint_.x, 0.01f, -100, 100);
 	ImGui::End();
-
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-
-		StartSetting(120.0f);
-
-	}
+#endif // _DEBUG
 
 	if (isAction_) {
 		ease_T_ += 1.0f / maxFrame_;
