@@ -26,7 +26,7 @@ void GameScene::Initialize() {
 
 	focusCamera_ = std::make_unique<FocusCamera>();
 	focusCamera_->Initialize();
-	focusCamera_->SetPosition(Vector3{ 0,15.0f,-40.0f });
+	focusCamera_->SetPosition(Vector3{ 0,15.0f,-34.0f });
 
 	focusCamera_->SettingAnimation(focusCamera_->GetView().translation_, Vector3(10.0f, 15.0f, -50.0f));
 

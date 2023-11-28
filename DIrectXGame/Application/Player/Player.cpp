@@ -3,6 +3,8 @@
 #include "R_Math.h"
 #include "ImGuiManager.h"
 #include "CollisionTypeIdDef.h"
+
+
 void Player::Initialize(const std::vector<Model*>& models)
 {
 	// 初期化
@@ -19,7 +21,7 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	objectWorldTransform_.translation_ = position;
 	color;
 	behavior_ = Behavior::kRoot;
-	SetRadius({ 1.4f, 1.4f, 1.4f });
+	SetRadius({ 1.2f, 1.2f, 1.2f });
 	objectWorldTransform_.scale_ = GetRadius();
 
 	info_.defaultRotate_ = 1.57f;
