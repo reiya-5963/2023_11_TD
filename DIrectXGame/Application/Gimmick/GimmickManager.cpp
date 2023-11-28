@@ -9,12 +9,12 @@ GimmickManager::GimmickManager()
 
 void GimmickManager::Initialize()
 {
-
+	// ローカル変数
 	Vector3 tmpPosition = { -10.0f,0.0f,0.0f };
 	uint32_t generateNum = 5;
-	//R_Math::Subtract(easeBegin, Vector3{ endOffSet,0,0 }
 	Vector3 end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });
 	ParentBlock info;
+
 	info.direction_ = kBottom;
 	info.number_ = generateNum;
 	AddWallGimmick(tmpPosition, end, info);
