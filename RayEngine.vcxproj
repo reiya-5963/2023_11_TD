@@ -160,6 +160,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Mapchip.cpp" />
     <ClCompile Include="DIrectXGame\Application\skydome.cpp" />
     <ClCompile Include="DIrectXGame\Application\TmpObject.cpp" />
+    <ClCompile Include="DIrectXGame\Application\UIManager.cpp" />
+    <ClCompile Include="DIrectXGame\Application\Goal.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h" />
@@ -228,6 +230,8 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClInclude Include="DIrectXGame\Application\Mapchip.h" />
     <ClInclude Include="DIrectXGame\Application\skydome.h" />
     <ClInclude Include="DIrectXGame\Application\TmpObject.h" />
+    <ClInclude Include="DIrectXGame\Application\UIManager.h" />
+    <ClInclude Include="DIrectXGame\Application\Goal.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Externals\imgui\LICENSE.txt" />

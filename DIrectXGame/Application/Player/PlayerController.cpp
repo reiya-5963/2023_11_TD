@@ -47,6 +47,11 @@ void PlayerController::Initialize()
 	player1_->SetState(new ActiveState());
 	player2_->SetState(new InactiveState());
 
+	uint32_t uiTexture = TextureManager::Load("UI/BButton.png");
+	buttonUi_.reset(Sprite::Create(uiTexture, { 100,100 }, 0.0f, { 1,1,1,1.0f }, { 0.5f,0.5f }));
+	
+	isInArea_ = false;
+
 }
 
 void PlayerController::Update()
@@ -136,6 +141,8 @@ void PlayerController::Update()
 	ChangeControl();
 	player1_->Update();
 	player2_->Update();
+	// ボタン表示
+	ActivePlayerArea();
 }
 
 void PlayerController::Draw(ViewProjection& viewprojection)
@@ -190,6 +197,60 @@ void PlayerController::ChangeControl()
 	}
 
 
+}
+
+void PlayerController::ActivePlayerArea()
+{
+	isInArea_ = false;
+	Vector3 playerPosition = {};
+	// アクティブ中
+	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
+		playerPosition = player1_->GetWorldPosition();
+	}
+	else {
+		playerPosition = player2_->GetWorldPosition();
+	}
+	// AABB
+	float playerRadius = 5.0f;
+	Vector2_AABB gim = {};
+	Vector2_AABB player = {
+		{playerPosition.x - playerRadius,playerPosition.y - playerRadius},
+		{playerPosition.x + playerRadius,playerPosition.y + playerRadius},
+	};
+
+	isInArea_ = this->PlayerInGimmick(player);
+}
+
+bool PlayerController::PlayerInGimmick(Vector2_AABB player)
+{
+	for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
+		// 親を所持している場合スキップ
+		if (gimmick->GetWorldTransform()->parent_ != nullptr) {
+			continue;
+		}
+		// オブジェクトのAABB
+		gim_ = {
+			{gimmick->GetWorldPosition().x - 1.0f, gimmick->GetWorldPosition().y - 1.0f},
+			{gimmick->GetWorldPosition().x + 1.0f, gimmick->GetWorldPosition().y + 1.0f},
+		};
+		if (!IsAABBCollision(player, gim_)) {
+			// No
+			continue;
+		}
+		if (gimmick->GetIsSetup()) {
+			continue;
+		}
+		return true;
+	}
+
+	return false;
+}
+
+void PlayerController::UIDraw()
+{
+	if (isInArea_) {
+		this->buttonUi_->Draw();
+	}
 }
 
 Collider* PlayerController::GetPlayer1()

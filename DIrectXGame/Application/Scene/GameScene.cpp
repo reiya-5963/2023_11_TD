@@ -36,6 +36,14 @@ void GameScene::Initialize() {
 	map_ = Mapchip::GetInstance();
 	map_->Initialize("resources/Level/Level_1_.csv");
 
+	//goalModel_.reset(Model::CreateFlomObj("TestPlayerer_body"));
+	//goal_ = std::make_unique<Goal>();
+	//goal_->Initialize(goalModel_.get());
+	//const float xCenter = 48 / 2.0f - 0.5f;
+	//Vector3 startPoint = { ((46.0f - 1.0f) - xCenter) * 2.0f, (23.0f * 2.0f + 1.0f), 0.0f };
+
+	//goal_->SetPosition(startPoint);
+
 
 	playerController_ = std::make_unique<PlayerController>();
 	playerController_->Initialize();
@@ -70,13 +78,16 @@ void GameScene::Update() {
 	}
 
 	CameraUpdate();
-	playerController_->Update();
-
+	
 	gimmickManager_->Update();
+
+	playerController_->Update();
 
 	this->ColliderUpdate();
 
 	//back_->Update();
+
+	//goal_->Update();
 
 	Mapchip::GetInstance()->Update(viewProjection_);
 }
@@ -105,6 +116,7 @@ void GameScene::Draw() {
 	colliderManager_->Draw(viewProjection_);
 	//back_->Draw(viewProjection_);
 
+	//goal_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
@@ -112,7 +124,7 @@ void GameScene::Draw() {
 	//
 
 
-	
+	playerController_->UIDraw();
 
 
 

@@ -9,6 +9,7 @@
 #include "Player/PlayerController.h"
 #include "Collision/CollisionManager.h"
 #include "FocusCamera.h"
+#include "Goal.h"
 //#include "skydome.h"
 
 
@@ -79,5 +80,8 @@ private:
 	//std::unique_ptr<Skydome> back_ = nullptr;
 	std::unique_ptr<Sprite> back_ = nullptr;
 	uint32_t backTex_ = 0u;
+
+	//std::unique_ptr<Goal> goal_;
+	//std::unique_ptr<Model> goalModel_;
 
 };

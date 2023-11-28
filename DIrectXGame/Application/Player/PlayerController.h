@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "viewProjection.h"
 #include "Gimmick/GimmickManager.h"
+#include "Sprite.h"
 
 struct Vector2_AABB{
 	Vector2 min;
@@ -37,10 +38,22 @@ public:
 	/// </summary>
 	void ChangeControl();
 
+	void ActivePlayerArea();
+
+	bool PlayerInGimmick(Vector2_AABB player);
+
+	void UIDraw();
+
 	// コライダーとしてのプレイヤーを貸出
 	Collider* GetPlayer1();
 	Collider* GetPlayer2();
 
+private:
+	Vector2_AABB gim_;
+
+	bool isInArea_ = false;
+
+	std::unique_ptr<Sprite> buttonUi_;
 
 private:
 	std::unique_ptr<Player> player1_;
