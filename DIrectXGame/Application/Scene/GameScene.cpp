@@ -45,12 +45,14 @@ void GameScene::Update() {
 	}
 
 	CameraUpdate();
-	
+
+
 	gimmickManager_->Update();
 
 	playerController_->Update();
 
 	this->ColliderUpdate();
+
 
 	//back_->Update();
 

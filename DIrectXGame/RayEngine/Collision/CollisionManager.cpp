@@ -38,7 +38,7 @@ void CollisionManager::CheckAllCollisions() {
 
 		for (; itrB != colliders_.end(); ++itrB) {
 			// イテレータBからコライダーBを取得する
-			Collider* colB = *itrB;
+ 			Collider* colB = *itrB;
 
 			// ペアの当たり判定
 			CheckCollisionPair(colA, colB);

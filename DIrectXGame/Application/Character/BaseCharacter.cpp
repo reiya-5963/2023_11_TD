@@ -66,7 +66,7 @@ void BaseCharacter::Update() {
 		const Vector3 hitPos = Mapchip::GetInstance()->HitMap(beforePos, afterPos, 1.0f);
 
 		// もし違う場合(地面に触れる場合)
-		if (hitPos.y != afterPos.y && !isDriveObject_) {
+		if (hitPos.y != afterPos.y) {
 			if (velocity_.y < 0.f) {
 				// 地面に触れている
 				isGround_ = true;
