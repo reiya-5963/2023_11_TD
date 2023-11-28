@@ -38,6 +38,7 @@ public:
 	void ReturnSetting(float maxFrame);
 
 public:
+#pragma region アクセッサ
 	/// <summary>
 	/// 座標設定
 	/// </summary>
@@ -63,10 +64,10 @@ public:
 
 	WorldTransform* GetWorldTransform() { return &worldTransform_; }
 
+	// セットアップ用変数
 	bool GetIsSetup() { return isAction_; }
-
 	void SetIsSetup(bool setUp) { isSetUp_ = setUp; }
-
+#pragma endregion
 protected:
 	/// <summary>
 	/// ワールドトランスフォーム
@@ -109,6 +110,9 @@ protected:
 	/// </summary>
 	float maxFrame_ = 0;
 
+	/// <summary>
+	/// アクション予約確認
+	/// </summary>
 	bool isSetUp_ = 0;
 };
 

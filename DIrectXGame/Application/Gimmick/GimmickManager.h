@@ -12,6 +12,18 @@ class GimmickManager
 public:
 	GimmickManager();
 	~GimmickManager() = default;
+public:
+	enum BlockDirection {
+		kLeft,
+		kRight,
+		kTop,
+		kBottom,
+	};
+
+	struct ParentBlock {
+		BlockDirection direction_; // 方向
+		int number_;	// 数
+	};
 
 public:
 	/// <summary>
@@ -43,7 +55,7 @@ public:
 	std::list<IGimmick*> GetGimmickList() { return gimmicks_; }
 
 private:
-	void AddWallGimmick(const Vector3& position, uint32_t number);
+	void AddWallGimmick(const Vector3& position, const Vector3& endPoint, ParentBlock info);
 	void AddWallChild(const Vector3& position, WallGimmick* parent);
 	void AddFloarGimmick();
 	void AddDoorGimmick();

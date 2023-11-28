@@ -10,14 +10,20 @@ GimmickManager::GimmickManager()
 void GimmickManager::Initialize()
 {
 
-	Vector3 tmpPosition = { -10.0f,10.0f,0.0f };
+	Vector3 tmpPosition = { -10.0f,0.0f,0.0f };
 	uint32_t generateNum = 5;
-
-	AddWallGimmick(tmpPosition, generateNum);
+	//R_Math::Subtract(easeBegin, Vector3{ endOffSet,0,0 }
+	Vector3 end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });
+	ParentBlock info;
+	info.direction_ = kBottom;
+	info.number_ = generateNum;
+	AddWallGimmick(tmpPosition, end, info);
 
 	tmpPosition = { 1.0f,20.0f,0.0f };
 	generateNum = 2;
-	AddWallGimmick(tmpPosition, generateNum);
+	info.number_ = generateNum;
+	end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });
+	AddWallGimmick(tmpPosition, end, info);
 
 }
 
@@ -39,20 +45,41 @@ void GimmickManager::Draw(const ViewProjection& viewProjection)
 
 }
 
-void GimmickManager::AddWallGimmick(const Vector3& position, uint32_t number)
+void GimmickManager::AddWallGimmick(const Vector3& position, const Vector3& endPoint, ParentBlock info)
 {
 	WallGimmick* newObject = new WallGimmick();
 	newObject->Initialize(floarModel_.get());
 	newObject->SetPosition(position);
-	float endOffSet = 10.0f;
-	Vector3 easeBegin = position;
-	Vector3 easeEnd = R_Math::Subtract(easeBegin, Vector3{ endOffSet,0,0 });
-	newObject->SetEasePoint(easeBegin, easeEnd);
+	newObject->SetEasePoint(position, endPoint);
 	gimmicks_.push_back(newObject);
 
-	float offSet = -2.0f;
-	for (int i = 0; i < static_cast<int>(number); ++i) {
-		AddWallChild(Vector3{ (i + 1) * offSet,0,0 }, newObject);
+	// 子の設定
+	if (info.number_ <= 0) {
+		return;
+	}
+	float offSet = 2.0f;
+	switch (info.direction_)
+	{
+	case kLeft:
+		for (int i = 0; i < static_cast<int>(info.number_); ++i) {
+			AddWallChild(Vector3{ (i + 1) * (-offSet),0,0 }, newObject);
+		}
+		break;
+	case kRight:
+		for (int i = 0; i < static_cast<int>(info.number_); ++i) {
+			AddWallChild(Vector3{ (i + 1) * offSet,0,0 }, newObject);
+		}
+		break;
+	case kTop:
+		for (int i = 0; i < static_cast<int>(info.number_); ++i) {
+			AddWallChild(Vector3{ 0,(i + 1) * offSet,0 }, newObject);
+		}
+		break;
+	case kBottom:
+		for (int i = 0; i < static_cast<int>(info.number_); ++i) {
+			AddWallChild(Vector3{ 0,(i + 1) * (-offSet),0 }, newObject);
+		}
+		break;
 	}
 
 }
