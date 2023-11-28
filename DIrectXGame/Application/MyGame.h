@@ -1,6 +1,6 @@
 ﻿#pragma once
 #include "Framework.h"
-
+#include "AbstractSceneFactory.h"
 //#include "GameScene.h"
 
 
@@ -30,4 +30,6 @@ public: // メンバ関数
 	void Draw()override;
 
 private: // メンバ変数
+	//
+	AbstractSceneFactory* sceneFactory_ = nullptr;
 };
