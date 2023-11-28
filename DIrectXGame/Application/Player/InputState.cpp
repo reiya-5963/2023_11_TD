@@ -5,6 +5,24 @@
 
 void ActiveState::Update()
 {
+	if (player_->GetBehaviorState() != Player::Behavior::kAction) {
+		ActionInput();
+	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_0) &&
+		player_->GetBehaviorState() != Player::Behavior::kJump) {
+		player_->SetBehaviorRequest(Player::Behavior::kJump);
+	}
+
+
+}
+
+void ActiveState::MoveInputProcess()
+{
+}
+
+void ActiveState::ActionInput()
+{
 	Vector3 move = {};
 
 	XINPUT_STATE joyState;
@@ -45,19 +63,10 @@ void ActiveState::Update()
 		}
 
 	}
-
-	if (Input::GetInstance()->TriggerKey(DIK_0) &&
-		player_->GetBehaviorState() != Player::Behavior::kJump) {
-		player_->SetBehaviorRequest(Player::Behavior::kJump);
-	}
-
+	// 移動処理
 	move = { move.x,player_->GetVelocity().y,move.z };
 	player_->SetVelocity(move);
 
-}
-
-void ActiveState::MoveInputProcess()
-{
 }
 
 void InactiveState::Update()

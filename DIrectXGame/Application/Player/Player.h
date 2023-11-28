@@ -6,6 +6,7 @@
 #include "Vector3.h"
 #include "Input.h"
 #include "BaseCharacter.h"
+#include "Gimmick/IGimmick.h"
 
 #include <stdint.h>
 #include <optional>
@@ -37,31 +38,7 @@ public:
 	void Draw(const ViewProjection& viewProjection) override;
 
 	void OnCollision([[maybe_unused]] Collider* other)  override;
-	
-	void MoveUpdate(Vector3& moveDirect);
-	
-	void SetParent(WorldTransform* parent) { objectWorldTransform_.parent_ = parent; };
-	
-	WorldTransform* GetParent() { return &objectWorldTransform_; };
-
-public: // アクセッサ
-	/// <summary>
-	/// 速さ設定
-	/// </summary>
-	/// <param name="velocity"></param>
-	void SetVelocity(Vector3& velocity) { velocity_ = velocity; }
-	/// <summary>
-	/// 取得
-	/// </summary>
-	/// <returns></returns>
-	Vector3 GetVelocity() { return velocity_; }
-
-	/// <summary>
-	/// 入力設定
-	/// </summary>
-	/// <param name="state"></param>
-	void SetState(InputState* state);
-
+		
 public:
 	/// <summary>
 	/// 状態
@@ -85,7 +62,7 @@ private:
 	// 状態のリクエスト
 	std::optional<Behavior> request_ = std::nullopt;
 
-private:
+private: // 状態ごとの関数
 	void RootInitialize();
 	void RootUpdate();
 	void JumpInitialize();
@@ -103,7 +80,6 @@ public:
 private:
 	// プレイヤーの入力状態
 	InputState* inputState_ = nullptr;
-	int test = 0;
 
 	struct modelInfo {
 		bool isLeft_;
@@ -112,11 +88,12 @@ private:
 
 	modelInfo info_;
 
+	// 帽子用
 	WorldTransform worldTransformHat_;
-
 	std::unique_ptr<Model> hatModel_;
 
-private:
+private: // 憑りつきアクション用
+	// アクション定数
 	struct ConstAction {
 		uint32_t startTime_; // 憑りつくまで
 		uint32_t endTime_;	// 終了まで
@@ -125,6 +102,7 @@ private:
 
 	static const ConstAction kConstAction_;
 
+	// アクションステート
 	enum class ActionState : uint32_t 
 	{
 		kReserve,
@@ -134,10 +112,68 @@ private:
 
 	ActionState actionState_;
 
-public:
-	InputState* GetInputState() { return inputState_; }
+	// アクション用の変数
+	struct ActionValue {
+		Vector3 startPoint_;
+		Vector3 endPoint_;
+		uint32_t timer_;
+		float ease_t_;
+	};
 
-	void SetIsLeft(bool isLeft) { info_.isLeft_ = isLeft; }
+	ActionValue tmpValue_;
+
+	IGimmick* iGimmickPtr_;
+
+public:
+	void GhostSetting();
+
+	void SetGimmickPtr(IGimmick* gimmick) {
+		iGimmickPtr_ = gimmick;
+		iGimmickPtr_->SetIsSetup(true);
+	}
+public: // アクセッサ
+#pragma region アクセッサ
+		/// <summary>
+		/// 速さ設定
+		/// </summary>
+		/// <param name="velocity"></param>
+		void SetVelocity(Vector3& velocity) { velocity_ = velocity; }
+		/// <summary>
+		/// 取得
+		/// </summary>
+		/// <returns></returns>
+		Vector3 GetVelocity() { return velocity_; }
+
+		/// <summary>
+		/// 入力設定
+		/// </summary>
+		/// <param name="state"></param>
+		void SetState(InputState* state);
+
+		/// <summary>
+		/// 親子設定
+		/// </summary>
+		/// <param name="parent"></param>
+		void SetParent(WorldTransform* parent) { objectWorldTransform_.parent_ = parent; };
+
+		/// <summary>
+		/// 親子取得
+		/// </summary>
+		/// <returns></returns>
+		WorldTransform* GetParent() { return &objectWorldTransform_; };
+		
+		/// <summary>
+		/// 入力状態
+		/// </summary>
+		/// <returns></returns>
+		InputState* GetInputState() { return inputState_; }
+
+		/// <summary>
+		/// 向き
+		/// </summary>
+		/// <param name="isLeft"></param>
+		void SetIsLeft(bool isLeft) { info_.isLeft_ = isLeft; }
+#pragma endregion
 
 };
 

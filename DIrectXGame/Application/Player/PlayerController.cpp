@@ -11,6 +11,10 @@ PlayerController::PlayerController()
 
 }
 
+PlayerController::~PlayerController()
+{
+}
+
 void PlayerController::Initialize()
 {
 	player1_ = std::make_unique<Player>();
@@ -47,10 +51,22 @@ void PlayerController::Initialize()
 
 void PlayerController::Update()
 {
+	// 遅延（バグ防止の仮
+	if (ghostWork_.isDelay_) {
+		int interval = 60;
+		ghostWork_.delayCount_++;
+		if (ghostWork_.delayCount_ > interval) {
+			ghostWork_ = {};
+		}
+	}
+
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
+		bool inputKey = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER);
+		if (inputKey && !ghostWork_.isDelay_) {
+#pragma region ギミックに憑りつく
+			ghostWork_.isDelay_ = true;
 
-		if (Input::GetInstance()->TriggerKey(DIK_8) || joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) {
 			float length = std::numeric_limits<float>::max();
 			IGimmick* tmpGimmick = nullptr;
 			Player* tmpPlayer = nullptr;
@@ -92,19 +108,31 @@ void PlayerController::Update()
 				if (length > R_Math::Length(range)) {
 					length = R_Math::Length(range);
 					tmpGimmick = gimmick;
-					//tmpPlayer->SetBehaviorRequest(Player::Behavior::kAction);
 				}
 
 			}
 
 
 			// 見つかれば呼び出し
-			if (tmpGimmick != nullptr) {
-				tmpGimmick->StartSetting();
-			}
+			if (tmpGimmick != nullptr && !tmpGimmick->GetIsSetup()) {
 
+				tmpPlayer->SetGimmickPtr(tmpGimmick);
+				tmpPlayer->SetBehaviorRequest(Player::Behavior::kAction);
+				tmpPlayer->GhostSetting();
+				if (this->controlNum_ == ControlNum::kOne) {
+					this->changeRequest_ = ControlNum::kTwo;
+				}
+				else {
+					this->changeRequest_ = ControlNum::kOne;
+				}
+			}
+			else {
+				ghostWork_.isDelay_ = false;
+			}
+#pragma endregion
 		}
 	}
+
 	ChangeControl();
 	player1_->Update();
 	player2_->Update();
