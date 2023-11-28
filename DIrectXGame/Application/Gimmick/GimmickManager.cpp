@@ -22,9 +22,10 @@ GimmickManager::EasePointInfo GimmickManager::GenerateEaseStartToEnd(const Vecto
 void GimmickManager::Initialize()
 {
 	EasePointInfo test = {};
+	float value = 0.1f;
 	test.startSquares = { 37.0f,1.0f, 0};
 	test.endSquares = { 37.0f,7.0f, 0};
-	test = GenerateEaseStartToEnd(Vector3{ 37.0f,1.0f,0 }, Vector3{ 37.0f,7.0f,0 }, 0.01f);
+	test = GenerateEaseStartToEnd(Vector3{ 37.0f,1.0f,0 }, Vector3{ 37.0f,7.0f,0 }, value);
 	// ローカル変数
 	uint32_t generateNum = 3;
 	ParentBlock info;
@@ -36,24 +37,24 @@ void GimmickManager::Initialize()
 
 	// 左右
 	info.number_ = 5;
-	test = GenerateEaseStartToEnd(Vector3{ 6.0f,15.0f,0 }, Vector3{ 12.0f,15.0f,0 }, 0.01f);
+	test = GenerateEaseStartToEnd(Vector3{ 6.0f,15.0f,0 }, Vector3{ 12.0f,15.0f,0 }, value);
 	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 	// 上下
 	info.direction_ = kTop;
 	info.number_ = 5;
-	test = GenerateEaseStartToEnd(Vector3{ 12.0f,1.0f,0 }, Vector3{ 12.0f,7.0f,0 }, 0.01f);
+	test = GenerateEaseStartToEnd(Vector3{ 12.0f,1.0f,0 }, Vector3{ 12.0f,7.0f,0 }, value);
 	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 
 	info.direction_ = kRight;
 	info.number_ = 3;
-	test = GenerateEaseStartToEnd(Vector3{ 29.0f,16.0f,0 }, Vector3{ 29.0f,22.0f,0 }, 0.01f);
+	test = GenerateEaseStartToEnd(Vector3{ 29.0f,16.0f,0 }, Vector3{ 29.0f,22.0f,0 }, value);
 	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 	info.direction_ = kTop;
 	info.number_ = 6;
-	test = GenerateEaseStartToEnd(Vector3{ 40.0f,22.0f,0 }, Vector3{ 40.0f,30.0f,0 }, 0.01f);
+	test = GenerateEaseStartToEnd(Vector3{ 40.0f,22.0f,0 }, Vector3{ 40.0f,30.0f,0 }, value);
 	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 }
