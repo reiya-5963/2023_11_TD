@@ -27,6 +27,7 @@ void ActiveState::ActionInput()
 
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
+		bool KeyInput = false;
 		// 閾値
 		const float threshold = 0.7f;
 		bool isMoving = false;
@@ -57,8 +58,9 @@ void ActiveState::ActionInput()
 
 		//---ジャンプ入力---//
 		// ジャンプ中でなければ
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER &&
-			player_->GetBehaviorState() != Player::Behavior::kJump) {
+		KeyInput = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER;
+		bool playerState = player_->GetBehaviorState() != Player::Behavior::kJump;
+		if (KeyInput && playerState && player_->GetIsGround()) {
 			player_->SetBehaviorRequest(Player::Behavior::kJump);
 		}
 
