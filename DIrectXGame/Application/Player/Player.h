@@ -38,7 +38,11 @@ public:
 	void Draw(const ViewProjection& viewProjection) override;
 
 	void OnCollision([[maybe_unused]] Collider* other)  override;
-		
+	/// <summary>
+	/// WorldTransformの取得
+	/// </summary>
+	/// <returns></returns>
+	WorldTransform* GetWorldTransform() { return &objectWorldTransform_; }
 public:
 	/// <summary>
 	/// 状態

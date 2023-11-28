@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "ICamera.h"
+#include "WorldTransform.h"
 
 class FocusCamera : public ICamera
 {
@@ -27,11 +28,16 @@ public:
 	
 	void SetIsAnimater(bool isEase) { isEase_ = isEase; }
 
+	void SetParent(WorldTransform* parent) { target_ = parent; }
+
 private:
 	CameraAnimation animater_;
 	Vector3 startRot_ = {};
 	Vector3 endRot_ = {};
 	bool isEase_ = false;
+
+	// ターゲットになるワールド変換データ
+	const WorldTransform* target_ = nullptr;
 
 };
 

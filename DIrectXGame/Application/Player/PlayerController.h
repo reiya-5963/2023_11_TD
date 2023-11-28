@@ -47,8 +47,8 @@ private:
 	std::unique_ptr<Player> player2_;
 
 public:
-	/*Player* GetPlayer1() { return player1_.get(); }
-	Player* GetPlayer2() { return player2_.get(); }*/
+	Player* GetPlayerPtr1() { return player1_.get(); }
+	Player* GetPlayerPtr2() { return player2_.get(); }
 
 private:
 	/// <summary>

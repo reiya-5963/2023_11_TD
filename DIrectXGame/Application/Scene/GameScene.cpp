@@ -44,6 +44,13 @@ void GameScene::Initialize() {
 	gimmickManager_->Initialize();
 	playerController_->SetGimmickManager(gimmickManager_.get());
 
+	if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
+		focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
+	}
+	else {
+		focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
+	}
+
 	//skyModel.reset(Model::CreateFlomObj("skydome"));
 	backTex_ = TextureManager::Load("skydomeTex.png");
 	//back_ = std::make_unique<Skydome>();
@@ -134,7 +141,12 @@ void GameScene::ColliderUpdate() {
 
 void GameScene::CameraUpdate()
 {
-
+	if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
+		focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
+	}
+	else {
+		focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
+	}
 	focusCamera_->Update();
 	viewProjection_.matProjection = focusCamera_->GetView().matProjection;
 	viewProjection_.matView = focusCamera_->GetView().matView;

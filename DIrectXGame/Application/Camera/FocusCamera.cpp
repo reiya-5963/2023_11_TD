@@ -52,6 +52,12 @@ void FocusCamera::Update()
 		animater_.ease_t_ = 0;
 	}
 
+	if (target_) {
+		Vector3 offset = { 0,0,-40.0f };
+		Vector3 WorldPoint = { target_->matWorld_.m[3][0],target_->matWorld_.m[3][1],target_->matWorld_.m[3][2] };
+		viewProjection.translation_ = R_Math::Add(WorldPoint, offset);
+	}
+
 	viewProjection.UpdateMatrix();
 }
 
