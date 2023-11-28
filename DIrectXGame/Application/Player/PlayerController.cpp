@@ -62,7 +62,7 @@ void PlayerController::Update()
 
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
-		bool inputKey = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER);
+		bool inputKey = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B);
 		if (inputKey && !ghostWork_.isDelay_) {
 #pragma region ギミックに憑りつく
 			ghostWork_.isDelay_ = true;
@@ -156,8 +156,9 @@ void PlayerController::ChangeControl()
 		}
 	}
 
+	// 切り替えキー
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
-		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B && !isDelay_) {
+		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X && !isDelay_) {
 			if (this->controlNum_ == ControlNum::kOne) {
 				this->changeRequest_ = ControlNum::kTwo;
 			}

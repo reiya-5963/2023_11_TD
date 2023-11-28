@@ -22,7 +22,7 @@ GimmickManager::EasePointInfo GimmickManager::GenerateEaseStartToEnd(const Vecto
 void GimmickManager::Initialize()
 {
 	EasePointInfo test = {};
-	float value = 0.1f;
+	float value = 0.02f;
 	test.startSquares = { 37.0f,1.0f, 0};
 	test.endSquares = { 37.0f,7.0f, 0};
 	test = GenerateEaseStartToEnd(Vector3{ 37.0f,1.0f,0 }, Vector3{ 37.0f,7.0f,0 }, value);

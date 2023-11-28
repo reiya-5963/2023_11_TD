@@ -8,13 +8,12 @@ void ActiveState::Update()
 	if (player_->GetBehaviorState() != Player::Behavior::kAction) {
 		ActionInput();
 	}
-
+#ifdef _DEBUG
 	if (Input::GetInstance()->TriggerKey(DIK_0) &&
 		player_->GetBehaviorState() != Player::Behavior::kJump) {
 		player_->SetBehaviorRequest(Player::Behavior::kJump);
 	}
-
-
+#endif // _DEBUG
 }
 
 void ActiveState::MoveInputProcess()
@@ -58,7 +57,7 @@ void ActiveState::ActionInput()
 
 		//---ジャンプ入力---//
 		// ジャンプ中でなければ
-		KeyInput = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER;
+		KeyInput = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
 		bool playerState = player_->GetBehaviorState() != Player::Behavior::kJump;
 		if (KeyInput && playerState && player_->GetIsDriveObject()) {
 			player_->SetBehaviorRequest(Player::Behavior::kJump);

@@ -77,6 +77,7 @@ void Player::Update()
 		case Player::Behavior::kRoot:
 			isMapChipCollision_ = true;
 			isDriveObject_ = false;
+			actionState_ = ActionState::kReserve;
 			break;
 		case Player::Behavior::kJump:
 			JumpInitialize();
@@ -128,10 +129,12 @@ void Player::Update()
 void Player::Draw(const ViewProjection& viewProjection)
 {
 
-	BaseCharacter::Draw(viewProjection);
+	if (actionState_ != ActionState::kNow && actionState_ != ActionState::kRelease) {
+		BaseCharacter::Draw(viewProjection);
 
-	if (typeid(*inputState_) == typeid(ActiveState)) {
-		hatModel_->Draw(worldTransformHat_, viewProjection);
+		if (typeid(*inputState_) == typeid(ActiveState)) {
+			hatModel_->Draw(worldTransformHat_, viewProjection);
+		}
 	}
 }
 
