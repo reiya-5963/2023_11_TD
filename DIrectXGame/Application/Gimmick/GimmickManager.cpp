@@ -9,8 +9,11 @@ GimmickManager::GimmickManager()
 
 void GimmickManager::Initialize()
 {
+	const float xCenter = 48 / 2.0f - 0.5f;
+
+	Vector3 tmpPosition = { (10.0f - xCenter) * 2.0f, 4.0f * 2.0f + 1.0f, 0.0f };
 	// ローカル変数
-	Vector3 tmpPosition = { -10.0f,0.0f,0.0f };
+	//Vector3 tmpPosition = { -10.0f,0.0f,0.0f };
 	uint32_t generateNum = 5;
 	Vector3 end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });
 	ParentBlock info;
@@ -19,7 +22,7 @@ void GimmickManager::Initialize()
 	info.number_ = generateNum;
 	AddWallGimmick(tmpPosition, end, info);
 
-	tmpPosition = { 1.0f,20.0f,0.0f };
+	tmpPosition = { (40.0f - xCenter) * 2.0f, 13.0f * 2.0f + 1.0f, 0.0f };
 	generateNum = 2;
 	info.number_ = generateNum;
 	end = R_Math::Add(tmpPosition, Vector3{ 0,10.0f,0 });

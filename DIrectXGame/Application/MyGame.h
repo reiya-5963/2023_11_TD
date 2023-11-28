@@ -30,4 +30,6 @@ public: // メンバ関数
 	void Draw()override;
 
 private: // メンバ変数
+	//
+	AbstractSceneFactory* sceneFactory_ = nullptr;
 };

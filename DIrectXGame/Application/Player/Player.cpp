@@ -58,6 +58,7 @@ void Player::Update()
 	ImGui::End();
 
 #endif // _DEBUG
+
 	// プレイヤーの向き設定
 	if (info_.isLeft_) {
 		objectWorldTransform_.rotation_.y = -info_.defaultRotate_;
