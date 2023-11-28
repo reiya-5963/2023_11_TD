@@ -47,10 +47,12 @@ void WallGimmick::Update()
 			}
 			else {
 				worldTransform_.translation_ = R_Math::EaseOutQuadF(ease_T_, EndPoint_, beginPoint_);
-				if (ease_T_ >= 1.0f) {
-					isSetUp_ = false;
-				}
 			}
+
+			if (!isBeforeStartup && ease_T_ >= 1.0f) {
+				isSetUp_ = false;
+			}
+
 		}
 	}
 
