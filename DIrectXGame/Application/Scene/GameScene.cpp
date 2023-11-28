@@ -49,6 +49,7 @@ void GameScene::Update() {
 	gimmickManager_->Update();
 
 	playerController_->Update();
+	playerController_->InactivePlayerInfo(viewProjection_);
 
 	this->ColliderUpdate();
 

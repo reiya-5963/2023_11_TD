@@ -2,6 +2,7 @@
 #include <limits>
 #include <imgui.h>
 #include "CollisionTypeIdDef.h"
+#include "WinApp.h"
 
 // マクロの停止
 #undef max
@@ -49,7 +50,10 @@ void PlayerController::Initialize()
 
 	uint32_t uiTexture = TextureManager::Load("UI/BButton.png");
 	buttonUi_.reset(Sprite::Create(uiTexture, { 100,100 }, 0.0f, { 1,1,1,1.0f }, { 0.5f,0.5f }));
-	
+	uiTexture = TextureManager::Load("UI/XButton.png");
+	XButtonUi_.reset(Sprite::Create(uiTexture, { 0,0 }, 0.0f, { 1,1,1,1 }, { 0.5f,0.5f }));
+	XButtonUi_->SetSize({ XButtonUi_->GetSize().x / 5,XButtonUi_->GetSize().y / 5 });
+
 	isInArea_ = false;
 
 }
@@ -166,11 +170,20 @@ void PlayerController::ChangeControl()
 	// 切り替えキー
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X && !isDelay_) {
-			if (this->controlNum_ == ControlNum::kOne) {
+			switch (controlNum_)
+			{
+			case PlayerController::ControlNum::kOne:
+				if (player2_->GetBehaviorState() == Player::Behavior::kAction) {
+					break;
+				}
 				this->changeRequest_ = ControlNum::kTwo;
-			}
-			else {
+				break;
+			case PlayerController::ControlNum::kTwo:
+				if (player1_->GetBehaviorState() == Player::Behavior::kAction) {
+					break;
+				}
 				this->changeRequest_ = ControlNum::kOne;
+				break;
 			}
 		}
 	}
@@ -206,9 +219,11 @@ void PlayerController::ActivePlayerArea()
 	// アクティブ中
 	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
 		playerPosition = player1_->GetWorldPosition();
+		inactivePlayer_ = player2_.get();
 	}
 	else {
 		playerPosition = player2_->GetWorldPosition();
+		inactivePlayer_ = player1_.get();
 	}
 	// AABB
 	float playerRadius = 5.0f;
@@ -219,6 +234,23 @@ void PlayerController::ActivePlayerArea()
 	};
 
 	isInArea_ = this->PlayerInGimmick(player);
+}
+
+void PlayerController::InactivePlayerInfo(const ViewProjection& viewProjection)
+{
+	if (inactivePlayer_ == nullptr) {
+		return;
+	}
+	Vector3 offSet = { 1.0f,1.5f,0 };
+
+	Vector3 positionWorld = R_Math::Add(inactivePlayer_->GetWorldPosition(), offSet);
+
+	Vector3 positionScreen = WorldToScreen(positionWorld, viewProjection);
+
+	Vector2 screen = { positionScreen.x,positionScreen.y };
+
+	this->XButtonUi_->SetPosition(screen);
+
 }
 
 bool PlayerController::PlayerInGimmick(Vector2_AABB player)
@@ -251,6 +283,18 @@ void PlayerController::UIDraw()
 	if (isInArea_) {
 		this->buttonUi_->Draw();
 	}
+
+	if (inactivePlayer_->GetBehaviorState() != Player::Behavior::kAction) {
+		this->XButtonUi_->Draw();
+	}
+
+}
+
+Vector2 PlayerController::WorldToScreenPoint(const Vector3& offset)
+{
+	Vector3 result = R_Math::TransformCoord(offset, inactivePlayer_->GetWorldTransform()->matWorld_);
+
+	return Vector2();
 }
 
 Collider* PlayerController::GetPlayer1()
@@ -263,11 +307,17 @@ Collider* PlayerController::GetPlayer2()
 	return player2_.get();
 }
 
-//void PlayerController::SettingPlayer(Player* player, Vector3& position)
-//{
-//	player->Initialize(model_.get());
-//	player->Setting(position, 0);
-//}
+Vector3 PlayerController::WorldToScreen(const Vector3& position, const ViewProjection& viewProjection)
+{
+	// ビューポート行列
+	Matrix4x4 matViewport = R_Math::MakeViewPortMatrix(0, 0,
+		(float)WinApp::kWindowWidth, (float)WinApp::kWindowHeight, 0, 1);
+	// ビュープロジェクション
+	Matrix4x4 matViewProjection = R_Math::Multiply(
+		R_Math::Multiply(viewProjection.matView, viewProjection.matProjection), matViewport);
+
+	return Vector3(R_Math::TransformCoord(position, matViewProjection));
+}
 
 bool PlayerController::IsAABBCollision(const Vector2_AABB& aabb1, const Vector2_AABB& aabb2) {
 	if ((aabb1.min.x <= aabb2.max.x && aabb1.max.x >= aabb2.min.x) &&	// X軸

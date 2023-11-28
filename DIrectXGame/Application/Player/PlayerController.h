@@ -40,13 +40,19 @@ public:
 
 	void ActivePlayerArea();
 
+	void InactivePlayerInfo(const ViewProjection& viewProjection);
+
 	bool PlayerInGimmick(Vector2_AABB player);
 
 	void UIDraw();
 
+	Vector2 WorldToScreenPoint(const Vector3& worldPoint);
+
 	// コライダーとしてのプレイヤーを貸出
 	Collider* GetPlayer1();
 	Collider* GetPlayer2();
+
+	Vector3 WorldToScreen(const Vector3& position, const ViewProjection& viewProjection);
 
 private:
 	Vector2_AABB gim_;
@@ -54,6 +60,9 @@ private:
 	bool isInArea_ = false;
 
 	std::unique_ptr<Sprite> buttonUi_;
+	std::unique_ptr<Sprite> XButtonUi_;
+
+	Player* inactivePlayer_ = nullptr;
 
 private:
 	std::unique_ptr<Player> player1_;
