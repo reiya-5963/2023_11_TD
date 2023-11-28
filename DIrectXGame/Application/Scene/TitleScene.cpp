@@ -1,5 +1,5 @@
 #include "TitleScene.h"
-
+#include "SceneManager.h"
 TitleScene::TitleScene() {
 }
 
@@ -13,6 +13,9 @@ void TitleScene::Finalize() {
 }
 
 void TitleScene::Update() {
+	if (Input::GetInstance()->PushKey(DIK_SPACE)) {
+		sceneManager_->ChangeScene("GAME");
+	}
 }
 
 void TitleScene::Draw() {

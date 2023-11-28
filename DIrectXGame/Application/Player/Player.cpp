@@ -50,6 +50,7 @@ void Player::Update()
 	ImGui::End();
 
 #endif // _DEBUG
+
 	// プレイヤーの向き設定
 	if (info_.isLeft_) {
 		objectWorldTransform_.rotation_.y = -info_.defaultRotate_;
@@ -500,7 +501,7 @@ void Player::RootInitialize()
 void Player::RootUpdate()
 {
 	if (typeid(*inputState_) == typeid(InactiveState)) {
-		velocity_ = {};
+		velocity_.x = {};
 	}
 
 	//inputState_->Update();
@@ -540,7 +541,7 @@ void Player::JumpUpdate()
 	if (isGround_ || isDriveObject_) {
 		request_ = Behavior::kRoot;
 		if (typeid(*inputState_) == typeid(InactiveState)) {
-			velocity_ = {};
+			velocity_.x = {};
 		}
 	}
 
