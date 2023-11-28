@@ -45,13 +45,16 @@ void GameScene::Update() {
 	}
 
 	CameraUpdate();
-	playerController_->Update();
-
+	
 	gimmickManager_->Update();
+
+	playerController_->Update();
 
 	this->ColliderUpdate();
 
 	//back_->Update();
+
+	//goal_->Update();
 
 	Mapchip::GetInstance()->Update(viewProjection_);
 
@@ -91,12 +94,15 @@ void GameScene::Draw() {
 	colliderManager_->Draw(viewProjection_);
 	//back_->Draw(viewProjection_);
 
+	//goal_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
 	Sprite::PreDraw(commandList);
 	//
 
+
+	playerController_->UIDraw();
 	retry_->Draw();
 	
 
