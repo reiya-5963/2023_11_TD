@@ -65,7 +65,7 @@ public:
 	WorldTransform* GetWorldTransform() { return &worldTransform_; }
 
 	// セットアップ用変数
-	bool GetIsSetup() { return isAction_; }
+	bool GetIsSetup() { return isSetUp_; }
 	void SetIsSetup(bool setUp) { isSetUp_ = setUp; }
 #pragma endregion
 protected:
