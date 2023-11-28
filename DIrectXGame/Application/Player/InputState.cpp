@@ -60,7 +60,7 @@ void ActiveState::ActionInput()
 		// ジャンプ中でなければ
 		KeyInput = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER;
 		bool playerState = player_->GetBehaviorState() != Player::Behavior::kJump;
-		if (KeyInput && playerState && player_->GetIsGround()) {
+		if (KeyInput && playerState && player_->GetIsDriveObject()) {
 			player_->SetBehaviorRequest(Player::Behavior::kJump);
 		}
 

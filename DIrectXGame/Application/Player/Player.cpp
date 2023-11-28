@@ -111,6 +111,9 @@ void Player::Update()
 
 		acceleration_ = R_Math::Add(acceleration_, accelerationVector);
 	}
+	if (isGround_) {
+		isDriveObject_ = true;
+	}
 
 	if (behavior_ != Behavior::kAction) {
 		BaseCharacter::Update();

@@ -174,7 +174,7 @@ public: // アクセッサ
 		/// <param name="isLeft"></param>
 		void SetIsLeft(bool isLeft) { info_.isLeft_ = isLeft; }
 
-		bool GetIsGround() { return isGround_; }
+		bool GetIsDriveObject() { return isDriveObject_; }
 
 #pragma endregion
 
