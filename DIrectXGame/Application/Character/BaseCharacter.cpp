@@ -139,7 +139,7 @@ void BaseCharacter::Draw(const ViewProjection& viewProjection) {
 	}
 }
 
-Vector3 BaseCharacter::GetWorldPosition() {
+Vector3 BaseCharacter::GetWorldPosition()  {
 	Vector3 result{};
 	//
 	result.x = objectWorldTransform_.matWorld_.m[3][0];

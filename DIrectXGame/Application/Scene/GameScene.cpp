@@ -4,7 +4,7 @@
 #include "TextureManager.h"
 #include "ImGuiManager.h"
 #include "SceneManager.h"
-
+#include "Player/Player.h"
 /// <summary>
 /// コンストラクタ
 /// </summary>
@@ -40,6 +40,7 @@ void GameScene::Initialize() {
 	map_->Initialize("resources/Level/Level_1_.csv");
 
 	playerController_->Initialize();
+	playerController_->SetFocusCamera(focusCamera_.get());
 	focusCamera_->Initialize();
 	colliderManager_->Initialize();
 	gimmickManager_->Initialize();
@@ -73,7 +74,6 @@ void GameScene::Update()
 	}
 #pragma endregion
 
-	CameraUpdate();
 
 	if (playerController_->GetIsClear()) {
 		//SceneManager::GetInstance()->ChangeScene("TITLE");
@@ -82,6 +82,7 @@ void GameScene::Update()
 		gimmickManager_->Update();
 
 		playerController_->Update(viewProjection_);
+		CameraUpdate();
 
 		this->ColliderUpdate();
 
@@ -199,6 +200,18 @@ void GameScene::CameraUpdate()
 	//else {
 	//	focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
 	//}
+	
+	//Vector3 world1Pos{};
+	//Vector3 world2Pos{};
+
+	/*if(playerController_->)*/
+	
+	
+
+	//world1Pos = playerController_->GetPlayer1()->GetWorldPosition();
+	//world2Pos = playerController_->GetPlayer2()->GetWorldPosition();
+
+	//focusCamera_->SetPlayerWorld2ScreenPos(world1Pos, world2Pos);
 	focusCamera_->Update();
 	viewProjection_.matProjection = focusCamera_->GetView().matProjection;
 	viewProjection_.matView = focusCamera_->GetView().matView;

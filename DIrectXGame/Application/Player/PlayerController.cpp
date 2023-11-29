@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include "CollisionTypeIdDef.h"
 #include "WinApp.h"
+#include "FocusCamera.h"
 #include "AudioManager/AudioManager.h"
 
 // マクロの停止
@@ -69,6 +70,326 @@ void PlayerController::Initialize()
 
 void PlayerController::Update(const ViewProjection& viewProjection)
 {
+	//////////////
+
+	Vector3 world1Pos = player1_->GetWorldPosition();
+	Vector3 world2Pos = player2_->GetWorldPosition();
+	Vector2 player1ScreenPos_ = World2ScreenPos(viewProjection, world1Pos);
+	Vector2 player2ScreenPos_ = World2ScreenPos(viewProjection, world2Pos);
+	ImGui::Text("screen1 %f : %f", player1ScreenPos_.x, player1ScreenPos_.y);
+	ImGui::Text("screen2 %f : %f", player2ScreenPos_.x, player2ScreenPos_.y);
+
+	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
+		focusCamera_->SetIsControlPlayer1(true);
+	}
+	else if (typeid(*player2_->GetInputState()) == typeid(ActiveState)) {
+		focusCamera_->SetIsControlPlayer1(false);
+	}
+
+
+	if (!focusCamera_->IsEase() && focusCamera_->IsControlPlayer1()) {
+
+
+		if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kLeftBottom]) {
+			if (isLeavePlayer_ && player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kRightBottom]) {
+			if (isLeavePlayer_ && player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x < 0.0f &&
+				player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kLeftTop]) {
+			if (isLeavePlayer_ && player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kRightTop]) {
+			if (isLeavePlayer_ && player1ScreenPos_.y < float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x < 0.0f &&
+				player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kMiddleBottom]) {
+			if (player1ScreenPos_.x < 0.0f &&
+				player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kMiddleTop]) {
+			if (player1ScreenPos_.x < 0.0f &&
+				player1ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player1ScreenPos_.y > 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+	}
+	else if (!focusCamera_->IsEase() && !focusCamera_->IsControlPlayer1()) {
+
+		if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kLeftBottom]) {
+			if (isLeavePlayer_ && player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kRightBottom]) {
+			if (isLeavePlayer_ && player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x < 0.0f &&
+				player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kLeftTop]) {
+			if (isLeavePlayer_ && player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kRightTop]) {
+			if (isLeavePlayer_ && player2ScreenPos_.y < float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (isLeavePlayer_) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x < 0.0f &&
+				player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kMiddleBottom]) {
+			if (player2ScreenPos_.x < 0.0f &&
+				player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleTop);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+		else if (focusCamera_->GetView().translation_ == focusCamera_->GetCenters()[FocusCamera::CameraPoint::kMiddleTop]) {
+			if (player2ScreenPos_.x < 0.0f &&
+				player2ScreenPos_.y < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
+				player2ScreenPos_.y > 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightBottom);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x < 0.0f) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kRightTop);
+				focusCamera_->SetIsEase(true);
+			}
+			else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+				focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kMiddleBottom);
+				focusCamera_->SetIsEase(true);
+			}
+		}
+	}
+
+	// もし前フレームで操作プレイヤーが違うなら
+	if (focusCamera_->IsPreControlPlayer1() != focusCamera_->IsControlPlayer1() && !focusCamera_->IsEase()) {
+		focusCamera_->SetIsEase(true);
+		if (std::abs(world2Pos.x - world1Pos.x) > 48.0f) {
+			isLeavePlayer_ = true;
+		}
+		else {
+			isLeavePlayer_ = false;
+		}
+	}
+
+
+	//////////////
+
+
 
 	if (player1_->GetIsGoal() && player2_->GetIsGoal()) {
 		isClear_ = true;
@@ -303,6 +624,19 @@ bool PlayerController::PlayerInGimmick(Player* player)
 	return false;
 }
 
+Vector2 PlayerController::World2ScreenPos(const ViewProjection& viewProjection, Vector3& worldPos1) {
+	Matrix4x4 matViewPort =
+		R_Math::MakeViewPortMatrix(0, 0, WinApp::kWindowWidth, WinApp::kWindowHeight, 0, 1);
+
+	Matrix4x4 matViewProjectionViewPort = R_Math::Multiply(
+		viewProjection.matView, R_Math::Multiply(viewProjection.matProjection, matViewPort));
+
+	Vector3 tmpPlayer1Pos = R_Math::TransformCoord(worldPos1, matViewProjectionViewPort);
+
+	Vector2 player1ScreenPos_ = { tmpPlayer1Pos.x, tmpPlayer1Pos.y };
+	return player1ScreenPos_;
+}
+
 void PlayerController::UIDraw()
 {
 	if (isInArea_) {
@@ -352,12 +686,12 @@ void PlayerController::PtrSetting()
 	}
 }
 
-Collider* PlayerController::GetPlayer1()
+Player* PlayerController::GetPlayer1()
 {
 	return player1_.get();
 }
 
-Collider* PlayerController::GetPlayer2()
+Player* PlayerController::GetPlayer2()
 {
 	return player2_.get();
 }
