@@ -6,7 +6,7 @@ std::vector<uint32_t> AudioManager::soundList_;
 AudioManager::AudioManager()
 {
 	audio_ = Audio::GetInstance();
-	uint32_t sound = audio_->LoadWave("sound/TestM.wav");
+	uint32_t sound = audio_->LoadWave("sound/BGM.wav");
 	soundList_.push_back(sound);
 	sound = audio_->LoadWave("sound/JumpSE.wav");
 	soundList_.push_back(sound);
@@ -14,7 +14,12 @@ AudioManager::AudioManager()
 	soundList_.push_back(sound);
 	sound = audio_->LoadWave("sound/GhostSE.wav");
 	soundList_.push_back(sound);
-
+	sound = audio_->LoadWave("sound/SelectSE.wav");
+	soundList_.push_back(sound);
+	sound = audio_->LoadWave("sound/GimmickSE.wav");
+	soundList_.push_back(sound);
+	sound = audio_->LoadWave("sound/ClearBGM.wav");
+	soundList_.push_back(sound);
 }
 
 AudioManager* AudioManager::GetInstance()

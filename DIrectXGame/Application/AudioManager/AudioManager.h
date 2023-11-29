@@ -51,6 +51,7 @@ public:
 		kSwicth,
 		kGhost,
 		kSelectSE,
+		kGimmickSE,
 		kGoalSE,
 	};
 
