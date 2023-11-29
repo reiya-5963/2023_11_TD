@@ -30,6 +30,9 @@ public:
 
 	void SetParent(WorldTransform* parent) { target_ = parent; }
 
+	void SetPlayerWorld2ScreenPos(Vector3& worldPos1, Vector3& worldPos2);
+	void SetIsControlPlayer1(bool isControl) { isControlPlayer1 = isControl; }
+	//Vector2 GetPlayerScreenPos() { return playerScreenPos_; }
 private:
 	CameraAnimation animater_;
 	Vector3 startRot_ = {};
@@ -40,7 +43,6 @@ private:
 	const WorldTransform* target_ = nullptr;
 
 private:
-
 	std::vector<Vector3>centers_;
 
 	enum CameraPoint {
@@ -52,5 +54,12 @@ private:
 
 	uint32_t cameraPoint_ = kLeftBottom;
 
+
+	Vector2 player1ScreenPos_ = {};
+	Vector2 player2ScreenPos_ = {};
+	bool isControlPlayer1 = true;
+	bool isPreControlPlayer1 = isControlPlayer1;
+	bool isMoveMap_ = false;
+	bool isTogether_ = false;
 };
 

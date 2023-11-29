@@ -192,9 +192,13 @@ public: // アクセッサ
 
 		bool GetIsDriveObject() { return isDriveObject_; }
 
+		void SetIsChangePlayer(bool isChange) {
+			isChangePlayer_ = isChange;
+		}
 #pragma endregion
 private:
 	bool isCollisionObject_ = false;
 	bool isPreCollisionObject = false;
+	bool isChangePlayer_ = false;
 };
 

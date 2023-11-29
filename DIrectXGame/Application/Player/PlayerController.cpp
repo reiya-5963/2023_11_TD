@@ -343,12 +343,12 @@ void PlayerController::PtrSetting()
 	}
 }
 
-Collider* PlayerController::GetPlayer1()
+Player* PlayerController::GetPlayer1()
 {
 	return player1_.get();
 }
 
-Collider* PlayerController::GetPlayer2()
+Player* PlayerController::GetPlayer2()
 {
 	return player2_.get();
 }

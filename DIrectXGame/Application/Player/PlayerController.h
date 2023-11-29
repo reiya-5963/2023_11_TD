@@ -45,8 +45,8 @@ public:
 	void PtrSetting();
 
 	// コライダーとしてのプレイヤーを貸出
-	Collider* GetPlayer1();
-	Collider* GetPlayer2();
+	Player* GetPlayer1();
+	Player* GetPlayer2();
 
 private:
 	/// <summary>

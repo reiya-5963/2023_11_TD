@@ -37,7 +37,7 @@ public:
 		return objectWorldTransform_;
 	}
 
-	virtual Vector3 GetWorldPosition() override;
+	virtual Vector3 GetWorldPosition()  override;
 
 	void  OnCollision([[maybe_unused]] Collider* other)  override = 0;
 protected:
