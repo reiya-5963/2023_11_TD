@@ -14,6 +14,7 @@ GameScene::GameScene() {}
 /// デストラクタ
 /// </summary>
 GameScene::~GameScene() {
+	Audio::GetInstance()->StopWave(audioManager_->GetSoundList(AudioManager::kAllBGM));
 }
 
 void GameScene::Initialize() {
@@ -44,12 +45,18 @@ void GameScene::Initialize() {
 	gimmickManager_->Initialize();
 	Retry();
 	
-	backTex_ = TextureManager::Load("skydomeTex.png");
+	backTex_ = TextureManager::Load("GameSceneSprite/skydomeTex.png");
 	back_.reset(Sprite::Create(backTex_, { 640.0f, 320.0f }, 0.0f, {0.8f, 0.8f, 0.8f, 1.0f}, {0.5f, 0.5f}));
 
 	retryPos_ = { 1280.0f -  0.4f, 0.4f };
-	retryTex_ = TextureManager::Load("resetb.png");
+	retryTex_ = TextureManager::Load("GameSceneSprite/resetb.png");
 	retry_.reset(Sprite::Create(retryTex_, retryPos_, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f }, { 1.0f, 0.0f }));
+
+	Vector2 title = { 1280.0f - 0.4f,0.4f + (retry_->GetSize().y / 1.5f) };
+	retryTex_ = TextureManager::Load("GameSceneSprite/TitleBackUI.png");
+	titleUI_.reset(Sprite::Create(retryTex_, title, 0, { 0.8f,0.8f,0.8f,1.0f }, { 1.0f,0.0f }));
+
+	isBackTitle_ = false;
 }
 
 void GameScene::Finalize() {
@@ -68,7 +75,9 @@ void GameScene::Update()
 		}
 		
 		keyFlag = (joyState.Gamepad.bLeftTrigger && joyState.Gamepad.bRightTrigger);
-		if (keyFlag) {
+		if (keyFlag && !isBackTitle_) {
+			Audio::GetInstance()->StopWave(audioManager_->GetSoundList(AudioManager::kAllBGM));
+			isBackTitle_ = true;
 			transitionmanager_->TransitionSetting();
 		}
 
@@ -100,7 +109,6 @@ void GameScene::Update()
 
 	// 遷移後シーン変更
 	if (transitionmanager_->GetIsBlackOutHalf()) {
-		Audio::GetInstance()->StopWave(audioManager_->GetSoundList(AudioManager::kAllBGM));
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
@@ -140,7 +148,7 @@ void GameScene::Draw() {
 
 	playerController_->UIDraw();
 	retry_->Draw();
-	
+	titleUI_->Draw();
 
 
 	Sprite::PostDraw();

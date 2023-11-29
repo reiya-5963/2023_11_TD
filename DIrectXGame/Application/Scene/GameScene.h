@@ -83,6 +83,8 @@ private: // アニメーション用
 
 	void ClearBGMSetting();
 
+	bool isBackTitle_ = false;
+
 private:
 	Audio* audio_ = nullptr;
 	AudioManager* audioManager_ = nullptr;
@@ -112,6 +114,7 @@ private:
 
 
 	std::unique_ptr<Sprite> retry_ = nullptr;
+	std::unique_ptr<Sprite> titleUI_;
 	Vector2 retryPos_ = { 0.0f, 0.0f };
 	uint32_t retryTex_ = 0u;
 };
