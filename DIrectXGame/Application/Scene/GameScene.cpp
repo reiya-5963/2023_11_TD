@@ -19,6 +19,7 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	audio_ = Audio::GetInstance();
+	transitionmanager_ = TransitionManager::GetInstance();
 	// テクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("sample.png");
 	// ビュープロジェクションの初期化
@@ -89,6 +90,7 @@ void GameScene::Update() {
 	if (playerController_->GetIsClear()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
+	transitionmanager_->Update();
 }
 
 void GameScene::Draw() {
@@ -128,8 +130,9 @@ void GameScene::Draw() {
 	
 
 
-
 	Sprite::PostDraw();
+
+	transitionmanager_->Draw();
 
 	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
 }

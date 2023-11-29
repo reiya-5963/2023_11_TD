@@ -9,7 +9,7 @@ TransitionManager::TransitionManager()
 
 	uint32_t texture = TextureManager::Load("white1x1.png");
 	whiteSprite_.reset(Sprite::Create(texture, { 0,0 }, 0, { 0,0,0,1 }, { 0.5f,0.5f }));
-	blackOut_.endFrame_ = 100;
+	blackOut_.endFrame_ = 60;
 	blackOut_.spriteInfo_.position_ = { (float)WinApp::kWindowWidth / 2,(float)WinApp::kWindowHeight / 2 };
 	blackOut_.spriteInfo_.color_ = { 0,0,0,1.0f };
 	blackOut_.spriteInfo_.size_ = { (float)WinApp::kWindowWidth,(float)WinApp::kWindowHeight };
@@ -28,15 +28,14 @@ TransitionManager* TransitionManager::GetInstance()
 
 void TransitionManager::Update()
 {
-	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
-		TransitionSetting();
-	}
+	//if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
+	//	TransitionSetting();
+	//}
 #ifdef _DEBUG
 	ImGui::Begin("transi");
 	ImGui::DragFloat4("color", &blackOut_.spriteInfo_.color_.x);
 	ImGui::End();
 #endif // _DEBUG
-
 
 	if (blackOut_.isNow_) {
 		BlackOutProcess();
@@ -63,7 +62,7 @@ void TransitionManager::TransitionSetting()
 
 	blackOut_.ease_t_ = 0;
 	blackOut_.isNow_ = true;
-	//blackOut_.alphaValue_=
+	blackOut_.isHalf_ = false;
 
 	blackOut_.spriteInfo_.position_ = { (float)WinApp::kWindowWidth / 2,(float)WinApp::kWindowHeight / 2 };
 	blackOut_.spriteInfo_.color_.w = 1.0f;
@@ -80,9 +79,19 @@ void TransitionManager::BlackOutProcess()
 	blackOut_.ease_t_ += (1.0f / (float)blackOut_.endFrame_);
 	if (blackOut_.ease_t_ >= 1.0f) {
 		blackOut_.ease_t_ = 1.0f;
-		blackOut_.isNow_ = false;
+		if (!blackOut_.isHalf_) {
+			blackOut_.isHalf_ = true;
+			blackOut_.ease_t_ = 0.0f;
+		}
+		else {
+			blackOut_.isNow_ = false;
+		}
 	}
-	blackOut_.spriteInfo_.color_.w = R_Math::EaseInQuadF(blackOut_.ease_t_, 1.0f, 0.0f);
-	//blackOut_.spriteInfo_.color_.w -= (1.0f / (float)blackOut_.endFrame_);
+	if (blackOut_.isHalf_) {
+		blackOut_.spriteInfo_.color_.w = R_Math::EaseInQuadF(blackOut_.ease_t_, 1.0f, 0.0f);
+	}
+	else {
+		blackOut_.spriteInfo_.color_.w = R_Math::EaseInQuadF(blackOut_.ease_t_, 0.0f, 1.0f);
+	}
 	whiteSprite_->SetColor(blackOut_.spriteInfo_.color_);
 }

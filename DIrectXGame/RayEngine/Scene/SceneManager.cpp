@@ -54,10 +54,8 @@ void SceneManager::Update() {
 
 	// 実行中のシーンを更新する
 	scene_->Update();
-	transitionManager_->Update();
 }
 
 void SceneManager::Draw() {
 	scene_->Draw();
-	transitionManager_->Draw();
 }

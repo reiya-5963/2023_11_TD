@@ -48,25 +48,35 @@ public:
 
 private:
 
+
 	std::unique_ptr<Sprite> whiteSprite_;
 
+	/// <summary>
+	/// スプライトの情報を入れる構造体
+	/// </summary>
 	struct SpriteValue 
 	{
-		Vector2 position_;
-		Vector2 size_;
-		float rotate_;
-		Vector4 color_;
+		Vector2 position_;	// 座標
+		Vector2 size_;	// サイズ
+		float rotate_;	// 角度
+		Vector4 color_;	// 色
 	};
 
+	/// <summary>
+	/// 遷移に使う構造体
+	/// </summary>
 	struct TransitionValue {
 		bool isNow_;	// 行っているか
+		bool isHalf_;	// 中間
 		float ease_t_;	// 補間レート
 		int endFrame_;	// 終了フレーム
-		float alphaValue_;	// 画像のアルファ値
 		SpriteValue spriteInfo_;	// スプライトに渡す情報
 	};
 
 	TransitionValue blackOut_;
+
+public:
+	bool GetIsBlackOutHalf() { return blackOut_.isHalf_; }
 
 };
 

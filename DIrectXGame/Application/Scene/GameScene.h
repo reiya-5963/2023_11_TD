@@ -8,6 +8,7 @@
 #include "Gimmick/GimmickManager.h"
 #include "Player/PlayerController.h"
 #include "Collision/CollisionManager.h"
+#include "TransitionManager.h"
 #include "FocusCamera.h"
 #include "Goal.h"
 #include "audio.h"
@@ -67,6 +68,7 @@ private:
 
 private:
 	Audio* audio_ = nullptr;
+	TransitionManager* transitionmanager_ = nullptr;
 
 private:
 	Mapchip* map_;

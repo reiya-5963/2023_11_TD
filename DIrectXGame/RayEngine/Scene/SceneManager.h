@@ -54,6 +54,5 @@ private:
 	BaseScene* nextScene_ = nullptr;
 
 	std::unique_ptr<TransitionManager> transitionManager_;
-	//TransitionManager* transitionManager_ = nullptr;
 };
 
