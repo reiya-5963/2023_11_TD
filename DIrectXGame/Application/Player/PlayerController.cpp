@@ -3,6 +3,7 @@
 #include <imgui.h>
 #include "CollisionTypeIdDef.h"
 #include "WinApp.h"
+#include "AudioManager/AudioManager.h"
 
 // マクロの停止
 #undef max
@@ -188,6 +189,8 @@ void PlayerController::ChangeControl()
 		}
 	}
 
+	float seVolume = 0.1f;
+
 	// 切り替えキー
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
 		if (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_X && !isDelay_) {
@@ -198,14 +201,14 @@ void PlayerController::ChangeControl()
 					break;
 				}
 				this->changeRequest_ = ControlNum::kTwo;
-				audio_->PlayWave(this->switchSE_);
+				AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kSwicth), seVolume);
 				break;
 			case PlayerController::ControlNum::kTwo:
 				if (player1_->GetBehaviorState() == Player::Behavior::kAction) {
 					break;
 				}
 				this->changeRequest_ = ControlNum::kOne;
-				audio_->PlayWave(this->switchSE_);
+				AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kSwicth), seVolume);
 				break;
 			}
 		}
@@ -241,17 +244,8 @@ void PlayerController::ActivePlayerArea(const ViewProjection& viewProjection)
 	// アクティブ中
 	PtrSetting();
 
-	Vector3 worldPosition = activePlayer_->GetWorldPosition();
-
-	// AABB
-	float playerRadius = 5.0f;
-	Vector2_AABB gim = {};
-	Vector2_AABB player = {
-		{worldPosition.x - playerRadius,worldPosition.y - playerRadius},
-		{worldPosition.x + playerRadius,worldPosition.y + playerRadius},
-	};
-
-	isInArea_ = this->PlayerInGimmick(player);
+	isInArea_ = this->PlayerInGimmick(activePlayer_);
+	activePlayer_->SetIsInArea(isInArea_);
 
 	if (isInArea_) {
 		BButtonUi_->SetPosition(GenerateScreenPosition(activePlayer_->GetWorldPosition(), { -0.2f,1.5f,0 }, viewProjection));
@@ -269,8 +263,18 @@ void PlayerController::InactivePlayerInfo(const ViewProjection& viewProjection)
 
 }
 
-bool PlayerController::PlayerInGimmick(Vector2_AABB player)
+bool PlayerController::PlayerInGimmick(Player* player)
 {
+	Vector3 worldPosition = player->GetWorldPosition();
+
+	// AABB
+	float playerRadius = 5.0f;
+	Vector2_AABB gim = {};
+	Vector2_AABB aabb = {
+		{worldPosition.x - playerRadius,worldPosition.y - playerRadius},
+		{worldPosition.x + playerRadius,worldPosition.y + playerRadius},
+	};
+
 	for (IGimmick* gimmick : gimmickManager_->GetGimmickList()) {
 		// 親を所持している場合スキップ
 		if (gimmick->GetWorldTransform()->parent_ != nullptr) {
@@ -281,13 +285,14 @@ bool PlayerController::PlayerInGimmick(Vector2_AABB player)
 			{gimmick->GetWorldPosition().x - 1.0f, gimmick->GetWorldPosition().y - 1.0f},
 			{gimmick->GetWorldPosition().x + 1.0f, gimmick->GetWorldPosition().y + 1.0f},
 		};
-		if (!IsAABBCollision(player, gim_)) {
+		if (!IsAABBCollision(aabb, gim_)) {
 			// No
 			continue;
 		}
 		if (gimmick->GetIsSetup()) {
 			continue;
 		}
+
 		return true;
 	}
 

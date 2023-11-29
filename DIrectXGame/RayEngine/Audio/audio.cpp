@@ -154,7 +154,7 @@ void Audio::Unload(SoundData* soundData) {
 	soundData->wfex = {};
 }
 
-uint32_t Audio::PlayWave(uint32_t soundDataHandle/*, bool loopFlag, float volume*/) {
+uint32_t Audio::PlayWave(uint32_t soundDataHandle, bool loopFlag, float volume) {
 	HRESULT result;
 	assert(soundDataHandle <= soundDatas_.size());
 
@@ -186,22 +186,56 @@ uint32_t Audio::PlayWave(uint32_t soundDataHandle/*, bool loopFlag, float volume
 	buf.pAudioData = soundData.pBuffer;
 	buf.AudioBytes = soundData.bufferSize;
 	buf.Flags = XAUDIO2_END_OF_STREAM;
+	if (loopFlag) {
+		// 無限ループ
+		buf.LoopCount = XAUDIO2_LOOP_INFINITE;
+	}
+
 #pragma endregion
 
 #pragma region 3 再生スタート
 	// 波形データの再生
 	result = pSourceVoice->SubmitSourceBuffer(&buf);
+	pSourceVoice->SetVolume(volume);
 	result = pSourceVoice->Start();
 #pragma endregion
 	return handle;
 }
 
-//void Audio::StopWave(uint32_t voiceHandle) {
-//}
-//
-//bool Audio::IsPlaying(uint32_t voiceHandle) {
-//	return false;
-//}
-//
-//void Audio::SetVolume(uint32_t voiceHandle, float volume) {
-//}
+void Audio::StopWave(uint32_t voiceHandle) {
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) {return voice->handle == voiceHandle; });
+	// 発見
+	if (it != voices_.end()) {
+		(*it)->sourceVoice->DestroyVoice();
+
+		voices_.erase(it);
+	}
+}
+
+bool Audio::IsPlaying(uint32_t voiceHandle) {
+
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) {return voice->handle == voiceHandle; });
+	// 発見の判断
+	if (it != voices_.end()) {
+		XAUDIO2_VOICE_STATE state{};
+		(*it)->sourceVoice->GetState(&state);
+		return state.SamplesPlayed != 0;
+	}
+
+	return false;
+}
+
+void Audio::SetVolume(uint32_t voiceHandle, float volume)
+{
+	// 再生中リストから検索
+	auto it = std::find_if(
+		voices_.begin(), voices_.end(), [&](Voice* voice) { return voice->handle == voiceHandle; });
+	// 発見
+	if (it != voices_.end()) {
+		(*it)->sourceVoice->SetVolume(volume);
+	}
+}

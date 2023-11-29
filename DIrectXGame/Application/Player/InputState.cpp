@@ -2,6 +2,7 @@
 #include "Input.h"
 #include "R_Math.h"
 #include "ImGuiManager.h"
+#include "AudioManager/AudioManager.h"
 
 void ActiveState::Update()
 {
@@ -61,6 +62,7 @@ void ActiveState::ActionInput()
 		bool playerState = player_->GetBehaviorState() != Player::Behavior::kJump;
 		if (KeyInput && playerState && player_->GetIsDriveObject()) {
 			player_->SetBehaviorRequest(Player::Behavior::kJump);
+			AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kJump), 0.1f);
 		}
 
 	}

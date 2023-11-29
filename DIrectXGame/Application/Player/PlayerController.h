@@ -78,7 +78,7 @@ private:
 	/// </summary>
 	/// <param name="player"></param>
 	/// <returns></returns>
-	bool PlayerInGimmick(Vector2_AABB player);
+	bool PlayerInGimmick(Player* player);
 
 private: // UI
 	/// <summary>

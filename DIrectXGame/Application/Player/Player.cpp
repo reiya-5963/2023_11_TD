@@ -3,6 +3,7 @@
 #include "R_Math.h"
 #include "ImGuiManager.h"
 #include "CollisionTypeIdDef.h"
+#include "AudioManager/AudioManager.h"
 
 const Player::ConstAction Player::kConstAction_ = {
 	30,30,180
@@ -34,10 +35,12 @@ void Player::Setting(const Vector3& position, uint32_t color)
 
 	info_.isLeft_ = false;
 	isGoal_ = false;
+	isInArea_ = false;
 }
 
 void Player::Update()
 {
+	isGoal_ = false;
 #ifdef _DEBUG
 
 	ImGui::Begin("Player");
@@ -146,6 +149,10 @@ void Player::Update()
 
 	isCollisionObject_ = false;
 	acceleration_ = {};
+
+	if (isInArea_) {
+		//AudioManager::GetInstance()->PlaySEAudio(AudioManager::kGhost);
+	}
 
 }
 

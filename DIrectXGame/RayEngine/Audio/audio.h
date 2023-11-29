@@ -72,13 +72,13 @@ public:
 
 	void Unload(SoundData *soundData);
 
-	uint32_t PlayWave(uint32_t soundDataHandle/*, bool loopFlag = false, float volume = 1.0f*/);
+	uint32_t PlayWave(uint32_t soundDataHandle, bool loopFlag = false, float volume = 1.0f);
 
-	//void StopWave(uint32_t voiceHandle);
+	void StopWave(uint32_t voiceHandle);
 
-	//bool IsPlaying(uint32_t voiceHandle);
+	bool IsPlaying(uint32_t voiceHandle);
 
-	//void SetVolume(uint32_t voiceHandle, float volume);
+	void SetVolume(uint32_t voiceHandle, float volume);
 
 private:
 	Audio() = default;

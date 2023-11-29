@@ -99,6 +99,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="DIrectXGame\Application\AudioManager\AudioManager.cpp" />
     <ClCompile Include="DIrectXGame\Application\Camera\FollowCamera.cpp" />
     <ClCompile Include="DIrectXGame\Application\Character\BaseCharacter.cpp" />
     <ClCompile Include="DIrectXGame\Application\Gimmick\GimmickState.cpp" />
@@ -163,6 +164,7 @@ copy "$(WindowsSdkDir)bin\$(TargetPlatformVersion)\x64\dxil.dll" "$(TargetDir)dx
     <ClCompile Include="DIrectXGame\Application\Scene\TransitionManager.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="DIrectXGame\Application\AudioManager\AudioManager.h" />
     <ClInclude Include="DIrectXGame\Application\Camera\FollowCamera.h" />
     <ClInclude Include="DIrectXGame\Application\Character\BaseCharacter.h" />
     <ClInclude Include="DIrectXGame\Application\CollisionTypeIdDef.h" />

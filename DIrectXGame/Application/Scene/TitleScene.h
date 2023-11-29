@@ -1,5 +1,6 @@
 ﻿#pragma once
 #include "TransitionManager.h"
+#include "AudioManager/AudioManager.h"
 
 #include "BaseScene.h"
 
@@ -38,6 +39,7 @@ public:
 private:
 
 	TransitionManager* transition_ = nullptr;
+	AudioManager* audioManager_ = nullptr;
 
 };
 

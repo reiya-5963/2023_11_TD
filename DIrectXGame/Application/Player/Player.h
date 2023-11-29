@@ -88,6 +88,10 @@ public:
 	/// <returns></returns>
 	bool GetIsGoal() { return isGoal_; }
 
+	void SetIsInArea(bool inArea) { isInArea_ = inArea; }
+
+	bool GetIsInArea() { return isInArea_; }
+
 private:
 	// プレイヤーの入力状態
 	InputState* inputState_ = nullptr;
@@ -106,6 +110,7 @@ private:
 	static const float kFisrtJumpPower_;
 
 	bool isGoal_ = false;
+	bool isInArea_ = false;
 
 private: // 憑りつきアクション用
 	// アクション定数
