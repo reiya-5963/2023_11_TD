@@ -27,6 +27,11 @@ void PlayerController::Initialize()
 	player1_ = std::make_unique<Player>();
 	player2_ = std::make_unique<Player>();
 
+	uint32_t texture = TextureManager::Load("GameSceneSprite/half.png");
+	playerRestUI_.reset(Sprite::Create(texture, { 0,10.0f }, 0, { 0.8f,0.8f,0.8f,1.0f }, { 0,0 }));
+	texture = TextureManager::Load("GameSceneSprite/hakaka.png");
+	goalUI_.reset(Sprite::Create(texture, { 0,100.0f }, 0, { 0.8f,0.8f,0.8f,1.0f }, { 0,0 }));
+
 	Model* p_model1;
 	p_model1 = Model::CreateFlomObj("ghostWhite");
 	Model* p_model2;
@@ -501,6 +506,7 @@ void PlayerController::Draw(ViewProjection& viewprojection)
 	player2_->Draw(viewprojection);
 }
 
+
 void PlayerController::ChangeControl()
 {
 	XINPUT_STATE joyState;
@@ -649,6 +655,9 @@ void PlayerController::UIDraw()
 	}
 
 	ArrowUi_->Draw();
+
+	playerRestUI_->Draw();
+	goalUI_->Draw();
 
 }
 

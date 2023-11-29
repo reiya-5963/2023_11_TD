@@ -189,6 +189,12 @@ private: // 切り替え用変数
 
 	GhostWork ghostWork_;
 
+	std::unique_ptr<Sprite> playerRestUI_;
+	std::unique_ptr<Sprite> goalUI_;
+
+	Vector2 restPosition_ = {};
+	Vector2 goalUIPosition_ = {};
+
 private:
 	uint32_t jumpSE_ = 0u;
 	uint32_t switchSE_ = 0u;
