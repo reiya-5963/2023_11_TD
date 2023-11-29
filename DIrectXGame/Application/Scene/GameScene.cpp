@@ -161,8 +161,8 @@ void GameScene::Draw() {
 
 void GameScene::Retry() {
 	
-	focusCamera_->SetPosition(Vector3{ 0,15.0f,-34.0f });
-
+	//focusCamera_->SetPosition(Vector3{ 0,15.0f,-34.0f });
+	focusCamera_->SetCameraPoint(FocusCamera::CameraPoint::kLeftBottom);
 	focusCamera_->SettingAnimation(focusCamera_->GetView().translation_, Vector3(10.0f, 15.0f, -50.0f));
 
 	playerController_->Reset();

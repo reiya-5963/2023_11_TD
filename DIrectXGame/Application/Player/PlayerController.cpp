@@ -39,12 +39,12 @@ void PlayerController::Initialize()
 		p_model2
 	};
 
-	Vector3 position = { 0,3,0 };
+	Vector3 position = { -67.0f,3.0f,0.0f };
 	player1_->Initialize(p_models1);
 	player1_->Setting(position, 0);
 	player1_->SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer1));
 
-	position = { 2.5f,3,0 };
+	position = { -63.0f,3.0f,0.0f };
 	player2_->Initialize(p_models2);
 	player2_->Setting(position, 0);
 	player2_->SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer2));
@@ -654,11 +654,11 @@ void PlayerController::UIDraw()
 
 void PlayerController::Reset()
 {
-	Vector3 position = { 0,3,0 };
+	Vector3 position = { -67.0f,3.0f,0.0f };
 	player1_->Setting(position, 0);
 	player1_->SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer1));
 
-	position = { 2.5f,3,0 };
+	position = { -63.0f,3.0f,0.0f };
 	player2_->Setting(position, 0);
 	player2_->SetTypeID(static_cast<uint32_t>(CollisionTypeIdDef::kPlayer2));
 

@@ -8,7 +8,7 @@
 const Player::ConstAction Player::kConstAction_ = {
 	30,30,180
 };
-const float Player::kFirstJumpPower_ = 30.0f;
+const float Player::kFirstJumpPower_ = 40.0f;
 
 void Player::Initialize(const std::vector<Model*>& models)
 {
@@ -22,18 +22,23 @@ void Player::Initialize(const std::vector<Model*>& models)
 	info_.defaultRotate_ = 1.57f;
 	SetRadius({ 1.2f, 1.2f, 1.2f });
 	objectWorldTransform_.scale_ = GetRadius();
-
 }
 
 void Player::Setting(const Vector3& position, uint32_t color)
 {
 	objectWorldTransform_.translation_ = position;
-	color;
+	color;	
+	objectWorldTransform_.translation_.y += 2.3f;
+
 	request_ = Behavior::kRoot;
 	//behavior_ = Behavior::kRoot;
 	SetRadius({ 1.0f, 1.0f, 1.0f });
 	objectWorldTransform_.scale_ = GetRadius();
 	objectWorldTransform_.parent_ = nullptr;
+
+	objectWorldTransform_.translation_ = position;
+
+	objectWorldTransform_.UpdateMatrix();
 
 	info_.isLeft_ = false;
 	isGoal_ = false;

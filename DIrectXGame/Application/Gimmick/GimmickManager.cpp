@@ -11,7 +11,7 @@ GimmickManager::GimmickManager()
 GimmickManager::EasePointInfo GimmickManager::GenerateEaseStartToEnd(const Vector3& start, const Vector3& end, float value)
 {
 	EasePointInfo result = {};
-	const float xCenter = 48 / 2.0f - 0.5f;
+	const float xCenter = 72 / 2.0f - 0.5f;
 	float valueY = value;
 	Vector3 startPoint = { ((start.x - 1.0f) - xCenter) * 2.0f, (start.y * 2.0f + 1.0f) - valueY, 0.0f };
 	Vector3 endPoint = { ((end.x - 1.0f) - xCenter) * 2.0f,(end.y * 2.0f + 1.0f) + valueY, 0.0f };
@@ -25,7 +25,7 @@ void GimmickManager::Initialize()
 	EasePointInfo Start2End = {};
 	float value = 0.0f;
 	// ローカル変数
-	uint32_t generateNum = 3;
+	//uint32_t generateNum = 3;
 	ParentBlock parentInfo;
 
 	this->gimmicks_.clear();
@@ -34,38 +34,52 @@ void GimmickManager::Initialize()
 	// 3_1
 	parentInfo.direction_ = kTop;
 	parentInfo.number_ = 5;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 12.0f,1.0f,0 }, Vector3{ 12.0f,7.0f,0 }, value);
+	Start2End = GenerateEaseStartToEnd(Vector3{ 11.0f,1.0f,0 }, Vector3{ 11.0f,7.0f,0 }, value);
 	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
 	// 3_2
 	parentInfo.direction_ = kRight;
-	parentInfo.number_ = 3;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 29.0f,7.0f,0 }, Vector3{ 29.0f,1.0f,0 }, value);
+	parentInfo.number_ = 5;
+	Start2End = GenerateEaseStartToEnd(Vector3{ 30.0f,1.0f,0 }, Vector3{ 30.0f,7.0f,0 }, value);
 	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
 	// 3_3
 	parentInfo.direction_ = kRight;
-	parentInfo.number_ = generateNum;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 37.0f,1.0f,0 }, Vector3{ 37.0f,7.0f,0 }, value);
+	parentInfo.number_ = 5;
+	Start2End = GenerateEaseStartToEnd(Vector3{ 50.0f,7.0f,0 }, Vector3{ 50.0f,1.0f,0 }, value);
 	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
 	// 3_4
 	parentInfo.direction_ = kRight;
 	parentInfo.number_ = 5;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 6.0f,15.0f,0 }, Vector3{ 12.0f,15.0f,0 }, value);
+	Start2End = GenerateEaseStartToEnd(Vector3{ 62.0f,8.0f,0 }, Vector3{ 62.0f,15.0f,0 }, value);
 	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
 	// 3_5
-	parentInfo.direction_ = kRight;
-	parentInfo.number_ = 3;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 29.0f,16.0f,0 }, Vector3{ 29.0f,22.0f,0 }, value);
+	parentInfo.direction_ = kBottom;
+	parentInfo.number_ = 7;
+	Start2End = GenerateEaseStartToEnd(Vector3{ 25.0f,15.0f,0 }, Vector3{ 25.0f,20.0f,0 }, -0.02f);
 	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
 	// 3_6
-	parentInfo.direction_ = kTop;
+	parentInfo.direction_ = kRight;
 	parentInfo.number_ = 5;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 40.0f,23.0f,0 }, Vector3{ 40.0f,30.0f,0 }, value);
-	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
+	Start2End = GenerateEaseStartToEnd(Vector3{ 7.0f,15.0f,0 }, Vector3{ 7.0f,8.0f,0 }, value);
+	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);	
 	// 3_7
-	parentInfo.direction_ = kLeft;
-	parentInfo.number_ = 3;
-	Start2End = GenerateEaseStartToEnd(Vector3{ 24.0f,22.0f,0 }, Vector3{ 24.0f,16.0f,0 }, value);
+	parentInfo.direction_ = kTop;
+	parentInfo.number_ = 6;
+	Start2End = GenerateEaseStartToEnd(Vector3{ 47.0f,16.0f,0 }, Vector3{ 47.0f,23.0f,0 }, value);
 	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
+
+	//// 3_8
+	//parentInfo.direction_ = kRight;
+	//parentInfo.number_ = 5;
+	//Start2End = GenerateEaseStartToEnd(Vector3{ 37.0f,16.0f,0 }, Vector3{ 37.0f,22.0f,0 }, value);
+	//AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
+
+
+	// 3_9
+	parentInfo.direction_ = kRight;
+	parentInfo.number_ = 5;
+	Start2End = GenerateEaseStartToEnd(Vector3{ 18.0f,22.0f,0 }, Vector3{ 24.0f,22.0f,0 }, value);
+	AddWallGimmick(Start2End.startSquares, Start2End.endSquares, parentInfo);
+
 #pragma endregion
 
 }
