@@ -50,6 +50,8 @@ public:
 		kJump,
 		kSwicth,
 		kGhost,
+		kSelectSE,
+		kGoalSE,
 	};
 
 };
