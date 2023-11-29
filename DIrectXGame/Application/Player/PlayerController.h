@@ -80,14 +80,30 @@ private:
 	/// <returns></returns>
 	bool PlayerInGimmick(Vector2_AABB player);
 
+private: // UI
+	/// <summary>
+	/// Bボタン
+	/// </summary>
+	std::unique_ptr<Sprite> BButtonUi_;
+	/// <summary>
+	/// Xボタン
+	/// </summary>
+	std::unique_ptr<Sprite> XButtonUi_;
+	/// <summary>
+	/// ゴールへの矢印
+	/// </summary>
+	std::unique_ptr<Sprite> ArrowUi_;
+	/// <summary>
+	/// ゴールしていないプレイヤー数
+	/// </summary>
+	std::unique_ptr<Sprite> remainPlayer_;
+
+
+
 private:
 	Vector2_AABB gim_;
 
 	bool isInArea_ = false;
-
-	std::unique_ptr<Sprite> BButtonUi_;
-	std::unique_ptr<Sprite> XButtonUi_;
-	std::unique_ptr<Sprite> ArrowUi_;
 
 	Player* inactivePlayer_ = nullptr;
 	Player* activePlayer_ = nullptr;
