@@ -17,7 +17,7 @@ void TitleScene::Initialize() {
 	sceneManager_ = SceneManager::GetInstance();
 	transition_ = TransitionManager::GetInstance();
 	audioManager_ = new AudioManager();
-	audioManager_->PlayBGMAudio(AudioManager::GetSoundList(AudioManager::kAllBGM), 0.1f);
+	audioManager_->PlayBGMAudio(AudioManager::GetSoundList(AudioManager::kAllBGM), true, 0.1f);
 
 	Vector4 color = { 1,1,1,1 };
 	Vector2 center = { (float)WinApp::kWindowWidth / 2,(float)WinApp::kWindowHeight / 2 };
@@ -48,7 +48,7 @@ void TitleScene::Initialize() {
 	this->AButtonSprite_.reset(Sprite::Create(texture, AButtonPosition_, 0, color, anchor));
 
 	amplitude_ = 0.3f;
-
+	isChange_ = false;
 }
 
 void TitleScene::Finalize() {
@@ -70,16 +70,16 @@ void TitleScene::Update() {
 
 	ImGui::End();
 
+	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
+		SceneManager::GetInstance()->ChangeScene("GAME");
+	}
+
+#endif // _DEBUG
+
 	textSprite_->SetPosition(textPosition_);
 	ghostSprite_->SetPosition(ghostPosition_);
 	AButtonSprite_->SetPosition(AButtonPosition_);
 
-#endif // _DEBUG
-
-
-	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
-		SceneManager::GetInstance()->ChangeScene("GAME");
-	}
 	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 		//transition_->TransitionSetting();
 	}
@@ -90,8 +90,10 @@ void TitleScene::Update() {
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
 		bool KeyInput = joyState.Gamepad.wButtons & XINPUT_GAMEPAD_A;
-		if (KeyInput) {
+		if (KeyInput && !isChange_) {
+			isChange_ = true;
 			transition_->TransitionSetting();
+			AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kSelectSE), 0.05f);
 		}
 	}
 

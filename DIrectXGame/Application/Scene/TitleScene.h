@@ -52,6 +52,8 @@ private:
 	float fre_ = 1.0f;
 	Vector2 waveVelocity_ = {};
 
+	bool isChange_ = false;
+
 private:
 
 	std::unique_ptr<Sprite> backGroundSprite_;

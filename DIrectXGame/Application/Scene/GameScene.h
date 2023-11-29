@@ -81,6 +81,7 @@ private: // アニメーション用
 
 	void ClearAnimationUpdate();
 
+	void ClearBGMSetting();
 
 private:
 	Audio* audio_ = nullptr;

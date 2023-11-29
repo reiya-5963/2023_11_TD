@@ -23,8 +23,6 @@ void GameScene::Initialize() {
 	audioManager_ = AudioManager::GetInstance();
 	transitionmanager_ = TransitionManager::GetInstance();
 
-	// テクスチャの読み込み
-	//textureHandle_ = TextureManager::Load("sample.png");
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
@@ -64,13 +62,21 @@ void GameScene::Update()
 	XINPUT_STATE joyState;
 
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
-		if ((joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) && (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER)) {
+		bool keyFlag = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_RIGHT_SHOULDER) && (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_LEFT_SHOULDER);
+		if (keyFlag) {
 			Retry();
 		}
+		
+		keyFlag = (joyState.Gamepad.bLeftTrigger && joyState.Gamepad.bRightTrigger);
+		if (keyFlag) {
+			transitionmanager_->TransitionSetting();
+		}
+
 	}
 	if (Input::GetInstance()->TriggerKey(DIK_R)) {
 		//Retry();
 		playerController_->SetIsClear(true);
+		ClearBGMSetting();
 	}
 #pragma endregion
 
@@ -92,14 +98,13 @@ void GameScene::Update()
 
 	}
 
-	if (Input::GetInstance()->TriggerKey(DIK_5)) {
-		transitionmanager_->TransitionSetting();
-	}
 	// 遷移後シーン変更
 	if (transitionmanager_->GetIsBlackOutHalf()) {
+		Audio::GetInstance()->StopWave(audioManager_->GetSoundList(AudioManager::kAllBGM));
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
+	// 遷移更新
 	transitionmanager_->Update();
 }
 
@@ -109,7 +114,7 @@ void GameScene::Draw() {
 	Sprite::PreDraw(commandList);
 	////この間に背景スプライトの描画を入れる
 
-
+	// UI表示
 	back_->Draw();
 
 
@@ -125,14 +130,12 @@ void GameScene::Draw() {
 	gimmickManager_->Draw(viewProjection_);
 
 	colliderManager_->Draw(viewProjection_);
-	//back_->Draw(viewProjection_);
 
 	goal_->Draw(viewProjection_);
 
 	Model::PostDraw();
 
 	Sprite::PreDraw(commandList);
-	//
 
 
 	playerController_->UIDraw();
@@ -142,9 +145,9 @@ void GameScene::Draw() {
 
 	Sprite::PostDraw();
 
+	// 遷移描画
 	transitionmanager_->Draw();
 
-	//ParticleManager::Draw(commandList, ParticleManager::BlendMode::kAdd);
 }
 
 void GameScene::Retry() {
@@ -157,12 +160,7 @@ void GameScene::Retry() {
 
 	playerController_->SetGimmickManager(gimmickManager_.get());
 
-	//if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
-	//	focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
-	//}
-	//else {
-	//	focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
-	//}
+	gimmickManager_->Initialize();
 
 	const float xCenter = 48 / 2.0f - 0.5f;
 	Vector3 GoalPosition = { ((47.0f - 1.0f) - xCenter) * 2.0f, (23.0f * 2.0f + 1.0f), 0.0f };
@@ -194,27 +192,15 @@ void GameScene::ColliderUpdate() {
 
 void GameScene::CameraUpdate()
 {
-	//if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
-	//	focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
-	//}
-	//else {
-	//	focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
-	//}
-	
-	//Vector3 world1Pos{};
-	//Vector3 world2Pos{};
-
-	/*if(playerController_->)*/
-	
-	
-
-	//world1Pos = playerController_->GetPlayer1()->GetWorldPosition();
-	//world2Pos = playerController_->GetPlayer2()->GetWorldPosition();
-
-	//focusCamera_->SetPlayerWorld2ScreenPos(world1Pos, world2Pos);
 	focusCamera_->Update();
 	viewProjection_.matProjection = focusCamera_->GetView().matProjection;
 	viewProjection_.matView = focusCamera_->GetView().matView;
 	viewProjection_.TransferMatrix();
 
+}
+
+void GameScene::ClearBGMSetting()
+{
+	AudioManager::GetInstance()->PlayBGMAudio(AudioManager::GetSoundList(AudioManager::kGoalSE), false, 0.1f);
+	Audio::GetInstance()->StopWave(audioManager_->GetSoundList(AudioManager::kAllBGM));
 }
