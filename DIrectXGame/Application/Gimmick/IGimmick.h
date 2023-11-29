@@ -69,6 +69,8 @@ public:
 	// セットアップ用変数
 	bool GetIsSetup() { return isSetUp_; }
 	void SetIsSetup(bool setUp) { isSetUp_ = setUp; }
+
+	Vector3 GetEndPoint() { return EndPoint_; }
 #pragma endregion
 protected:
 	/// <summary>

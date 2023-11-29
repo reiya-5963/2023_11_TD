@@ -95,12 +95,24 @@ uint32_t Audio::LoadWave(const std::string& filename) {
 	// Dataチャンク読み込み
 	ChunkHeader data;
 	file.read((char*)&data, sizeof(data));
+	//// JUNKチャンクを検出した場合
+	//if (strncmp(data.id, "JUNK", 4) == 0) {
+	//	// 読み取り位置をJUNKチャンクの終わりまで進める
+	//	file.seekg(data.size, std::ios_base::cur);
+	//	// 最読み込み
+	//	file.read((char*)&data, sizeof(data));
+	//}
 	// JUNKチャンクを検出した場合
-	if (strncmp(data.id, "JUNK", 4) == 0) {
+	while (_strnicmp(data.id, "junk", 4) == 0 || _strnicmp(data.id, "PAD ", 4) == 0 ||
+		_strnicmp(data.id, "Fake", 4) == 0 || _strnicmp(data.id, "FLLR", 4) == 0 ||
+		_strnicmp(data.id,"bext",4) == 0 ) {
 		// 読み取り位置をJUNKチャンクの終わりまで進める
 		file.seekg(data.size, std::ios_base::cur);
-		// 最読み込み
+		// 再読み込み
 		file.read((char*)&data, sizeof(data));
+	}
+	if (_strnicmp(data.id, "data", 4) != 0) {
+		assert(0);
 	}
 
 	// data部かチェック

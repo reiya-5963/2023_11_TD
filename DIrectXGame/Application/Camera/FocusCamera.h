@@ -39,5 +39,18 @@ private:
 	// ターゲットになるワールド変換データ
 	const WorldTransform* target_ = nullptr;
 
+private:
+
+	std::vector<Vector3>centers_;
+
+	enum CameraPoint {
+		kLeftBottom,
+		kRightBottom,
+		kLeftTop,
+		kRightTop,
+	};
+
+	uint32_t cameraPoint_ = kLeftBottom;
+
 };
 

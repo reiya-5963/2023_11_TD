@@ -54,8 +54,8 @@ void GimmickManager::Initialize()
 	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 	info.direction_ = kTop;
-	info.number_ = 6;
-	test = GenerateEaseStartToEnd(Vector3{ 40.0f,22.0f,0 }, Vector3{ 40.0f,30.0f,0 }, value);
+	info.number_ = 5;
+	test = GenerateEaseStartToEnd(Vector3{ 40.0f,23.0f,0 }, Vector3{ 40.0f,30.0f,0 }, value);
 	AddWallGimmick(test.startSquares, test.endSquares, info);
 
 }

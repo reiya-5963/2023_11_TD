@@ -133,9 +133,10 @@ private: // 憑りつきアクション用
 		Vector3 endPoint_;
 		uint32_t timer_;
 		float ease_t_;
+		Vector3 objEndPoint_;
 	};
 
-	ActionValue tmpValue_;
+	ActionValue actionValue_;
 
 	IGimmick* iGimmickPtr_;
 

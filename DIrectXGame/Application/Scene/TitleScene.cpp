@@ -8,7 +8,6 @@ TitleScene::~TitleScene() {
 
 void TitleScene::Initialize() {
 	sceneManager_ = SceneManager::GetInstance();
-
 }
 
 void TitleScene::Finalize() {
@@ -20,5 +19,7 @@ void TitleScene::Update() {
 	}
 }
 
-void TitleScene::Draw() {
+void TitleScene::Draw() 
+{
+
 }

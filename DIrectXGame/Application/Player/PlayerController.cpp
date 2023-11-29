@@ -11,7 +11,7 @@ PlayerController::PlayerController()
 {
 	jumpSE_ = Audio::GetInstance()->LoadWave("sound/JumpSE.wav");
 	ghostSE_ = Audio::GetInstance()->LoadWave("sound/GhostSE.wav");
-	//switchSE_ = Audio::GetInstance()->LoadWave("sound/SwitchSE.wav");
+	switchSE_ = Audio::GetInstance()->LoadWave("sound/SwitchSE.wav");
 }
 
 PlayerController::~PlayerController()
@@ -82,7 +82,7 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
-		bool inputKey = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B);
+		bool inputKey = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B && (inactivePlayer_->GetBehaviorState() != Player::Behavior::kAction));
 		if (inputKey && !ghostWork_.isDelay_) {
 #pragma region ギミックに憑りつく
 			ghostWork_.isDelay_ = true;
@@ -198,14 +198,14 @@ void PlayerController::ChangeControl()
 					break;
 				}
 				this->changeRequest_ = ControlNum::kTwo;
-				audio_->PlayWave(this->jumpSE_);
+				audio_->PlayWave(this->switchSE_);
 				break;
 			case PlayerController::ControlNum::kTwo:
 				if (player1_->GetBehaviorState() == Player::Behavior::kAction) {
 					break;
 				}
 				this->changeRequest_ = ControlNum::kOne;
-				audio_->PlayWave(jumpSE_);
+				audio_->PlayWave(this->switchSE_);
 				break;
 			}
 		}

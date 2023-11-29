@@ -54,7 +54,7 @@ void Player::Update()
 	ImGui::DragFloat3("hat", &worldTransformHat_.translation_.x, 0.01f, -100, 100);
 
 	if (ImGui::TreeNode("ActionV")) {
-		ImGui::Text("timer : %d", tmpValue_.timer_);
+		ImGui::Text("timer : %d", actionValue_.timer_);
 		ImGui::Text("const S : %d E : %d R : %d", kConstAction_.startTime_, kConstAction_.endTime_, kConstAction_.releaseTime_);
 		ImGui::TreePop();
 	}
@@ -132,7 +132,7 @@ void Player::Update()
 void Player::Draw(const ViewProjection& viewProjection)
 {
 
-	if (actionState_ != ActionState::kNow && actionState_ != ActionState::kRelease) {
+	if (actionState_ != ActionState::kNow /*&& actionState_ != ActionState::kRelease*/) {
 		BaseCharacter::Draw(viewProjection);
 
 		if (typeid(*inputState_) == typeid(ActiveState)) {
@@ -426,7 +426,7 @@ void Player::ActionInitialize()
 	isMapChipCollision_ = false;
 	// ステート選択
 	actionState_ = ActionState::kReserve;
-	tmpValue_.timer_ = 0;
+	actionValue_.timer_ = 0;
 }
 
 void Player::ActionUpdate()
@@ -434,29 +434,29 @@ void Player::ActionUpdate()
 	// 毎フレーム更新
 	objectWorldTransform_.parent_ = nullptr;
 	velocity_ = {};
-	tmpValue_.timer_++;
+	actionValue_.timer_++;
 	// ステートに合わせた処理
 	switch (actionState_)
 	{
 	// 憑りつくまでの動き
 	case Player::ActionState::kReserve:
 		// 終了
-		if (tmpValue_.timer_ > kConstAction_.startTime_) {
+		if (actionValue_.timer_ > kConstAction_.startTime_) {
 			actionState_ = ActionState::kNow;
-			tmpValue_.timer_ = 0;
-			tmpValue_.ease_t_ = 0;
+			actionValue_.timer_ = 0;
+			actionValue_.ease_t_ = 0;
 		}
 		// 移動中
 		else {
-			tmpValue_.ease_t_ += 1.0f / (float)kConstAction_.startTime_;
-			if (tmpValue_.ease_t_ >= 1.0f) {
-				tmpValue_.ease_t_ = 1.0f;
+			actionValue_.ease_t_ += 1.0f / (float)kConstAction_.startTime_;
+			if (actionValue_.ease_t_ >= 1.0f) {
+				actionValue_.ease_t_ = 1.0f;
 			}
-			Vector3 WorldPosition = R_Math::lerp(tmpValue_.ease_t_, tmpValue_.startPoint_, tmpValue_.endPoint_);
+			Vector3 WorldPosition = R_Math::lerp(actionValue_.ease_t_, actionValue_.startPoint_, actionValue_.endPoint_);
 			objectWorldTransform_.translation_ = WorldPosition;
 		}
 		// 向きの設定
-		if (tmpValue_.startPoint_.x > tmpValue_.endPoint_.x) {
+		if (actionValue_.startPoint_.x > actionValue_.endPoint_.x) {
 			info_.isLeft_ = true;
 		}
 		else {
@@ -465,39 +465,39 @@ void Player::ActionUpdate()
 		break;
 	// 憑りつき中
 	case Player::ActionState::kNow:
-		if (iGimmickPtr_ != nullptr && tmpValue_.timer_ < 10) {
+		if (iGimmickPtr_ != nullptr && actionValue_.timer_ < 10) {
 			iGimmickPtr_->StartSetting(float(kConstAction_.releaseTime_) / 2.0f);
 		}
 
-		if (tmpValue_.timer_ > kConstAction_.releaseTime_) {
+		if (actionValue_.timer_ > kConstAction_.releaseTime_) {
 			actionState_ = ActionState::kRelease;
-			tmpValue_.timer_ = 0;
+			actionValue_.timer_ = 0;
 		}
 
 		break;
 	// 解除中
 	case Player::ActionState::kRelease:
 		// 開始
-		if (iGimmickPtr_ != nullptr && tmpValue_.timer_ < 10) {
+		if (iGimmickPtr_ != nullptr && actionValue_.timer_ < 10) {
 			iGimmickPtr_->ReturnSetting(float(kConstAction_.endTime_));
 			iGimmickPtr_ = nullptr;
 		}
 		// 終了
-		if (tmpValue_.timer_ > kConstAction_.endTime_) {
-			tmpValue_.timer_ = 0;
+		if (actionValue_.timer_ > kConstAction_.endTime_) {
+			actionValue_.timer_ = 0;
 			request_ = Behavior::kRoot;
 		}
 		// 移動中
 		else {
-			tmpValue_.ease_t_ += 1.0f / (float)kConstAction_.endTime_;
-			if (tmpValue_.ease_t_ >= 1.0f) {
-				tmpValue_.ease_t_ = 1.0f;
+			actionValue_.ease_t_ += 1.0f / (float)kConstAction_.endTime_;
+			if (actionValue_.ease_t_ >= 1.0f) {
+				actionValue_.ease_t_ = 1.0f;
 			}
-			Vector3 WorldPosition = R_Math::lerp(tmpValue_.ease_t_, tmpValue_.endPoint_, tmpValue_.startPoint_);
+			Vector3 WorldPosition = R_Math::EaseOutQuadF(actionValue_.ease_t_, actionValue_.objEndPoint_, actionValue_.startPoint_);
 			objectWorldTransform_.translation_ = WorldPosition;
 		}
 		// プレイヤーの向きの設定
-		if (tmpValue_.startPoint_.x > tmpValue_.endPoint_.x) {
+		if (actionValue_.startPoint_.x > actionValue_.endPoint_.x) {
 			info_.isLeft_ = false;
 		}
 		else {
@@ -513,8 +513,8 @@ void Player::ActionUpdate()
 void Player::GhostSetting()
 {
 	// 移動用の座標設定
-	tmpValue_ = {};
-	tmpValue_.startPoint_ = GetWorldPosition();
-	tmpValue_.endPoint_ = iGimmickPtr_->GetWorldPosition();
-	
+	actionValue_ = {};
+	actionValue_.startPoint_ = GetWorldPosition();
+	actionValue_.endPoint_ = iGimmickPtr_->GetWorldPosition();
+	actionValue_.objEndPoint_ = iGimmickPtr_->GetEndPoint();
 }

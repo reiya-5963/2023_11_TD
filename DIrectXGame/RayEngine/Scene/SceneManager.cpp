@@ -11,8 +11,9 @@ SceneManager* SceneManager::GetInstance() {
 void SceneManager::Initialize() {	
 	//BaseScene* scene = new GameScene();
 	sceneFactory_ = new SceneFactory();
-	scene_ = sceneFactory_->CreateScene("GAME");
+	scene_ = sceneFactory_->CreateScene("TITLE");
 	scene_->Initialize();
+	transitionManager_ = std::make_unique<TransitionManager>();
 }
 
 void SceneManager::Finalize() {
@@ -53,8 +54,10 @@ void SceneManager::Update() {
 
 	// 実行中のシーンを更新する
 	scene_->Update();
+	transitionManager_->Update();
 }
 
 void SceneManager::Draw() {
 	scene_->Draw();
+	transitionManager_->Draw();
 }

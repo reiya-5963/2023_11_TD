@@ -1,6 +1,9 @@
 ﻿#pragma once
 #include "BaseScene.h"
 #include "AbstractSceneFactory.h"
+#include "TransitionManager.h"
+#include <memory>
+
 class SceneManager {
 public:
 
@@ -49,5 +52,8 @@ private:
 	
 	// 次のシーン
 	BaseScene* nextScene_ = nullptr;
+
+	std::unique_ptr<TransitionManager> transitionManager_;
+	//TransitionManager* transitionManager_ = nullptr;
 };
 

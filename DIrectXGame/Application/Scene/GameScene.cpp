@@ -142,12 +142,12 @@ void GameScene::Retry() {
 
 	playerController_->SetGimmickManager(gimmickManager_.get());
 
-	if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
-		focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
-	}
-	else {
-		focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
-	}
+	//if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
+	//	focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
+	//}
+	//else {
+	//	focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
+	//}
 
 	const float xCenter = 48 / 2.0f - 0.5f;
 	Vector3 GoalPosition = { ((47.0f - 1.0f) - xCenter) * 2.0f, (23.0f * 2.0f + 1.0f), 0.0f };
@@ -179,12 +179,12 @@ void GameScene::ColliderUpdate() {
 
 void GameScene::CameraUpdate()
 {
-	if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
-		focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
-	}
-	else {
-		focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
-	}
+	//if (typeid(*playerController_->GetPlayerPtr1()->GetInputState()) == typeid(ActiveState)) {
+	//	focusCamera_->SetParent(playerController_->GetPlayerPtr1()->GetWorldTransform());
+	//}
+	//else {
+	//	focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
+	//}
 	focusCamera_->Update();
 	viewProjection_.matProjection = focusCamera_->GetView().matProjection;
 	viewProjection_.matView = focusCamera_->GetView().matView;

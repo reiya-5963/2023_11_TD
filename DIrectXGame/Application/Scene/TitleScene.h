@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "TransitionManager.h"
 
 #include "BaseScene.h"
 
@@ -35,6 +36,8 @@ public:
 	/// </summary>
 	void Draw() override;
 private:
+
+	TransitionManager* transition_ = nullptr;
 
 };
 
