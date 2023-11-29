@@ -18,28 +18,38 @@ void FocusCamera::Initialize()
 	ApplyGlobalVariables();
 	//animater_.frame_ = 120;
 
-	const float xCenter = 48 / 2.0f - 0.5f;
+	const float xCenter = 72 / 2.0f - 0.5f;
 
 	// 左下
 	Vector2 squares = {12.0f,8.5f};
 
-	Vector3 map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f + 1.0f), -40.0f };
+	Vector3 map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f) - 0.5f, -38.0f };
 	viewProjection.translation_ = map_CenterPoint;
 	centers_.push_back(map_CenterPoint);
 
-	// 右下
+	// 中下
 	squares = { 36.0f,8.5f };
-	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f + 1.0f), -40.0f };
+	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f) - 0.5f, -38.0f };
 	centers_.push_back(map_CenterPoint);
 
+	// 右下
+	squares = { 60.0f,8.5f };
+	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f) - 0.5f, -38.0f };
+	centers_.push_back(map_CenterPoint);
+	
 	// 左上
-	squares = { 12.0f,22.5f };
-	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f + 1.0f), -40.0f };
+	squares = { 12.0f, 22.5f };
+	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f) - 0.5f, -38.0f };
+	centers_.push_back(map_CenterPoint);
+
+	// 中上
+	squares = { 36.0f, 22.5f };
+	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f) - 0.5f, -38.0f };
 	centers_.push_back(map_CenterPoint);
 
 	// 右上
-	squares = { 36.0f,22.5f };
-	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f + 1.0f), -40.0f };
+	squares = { 60.0f, 22.5f };
+	map_CenterPoint = { ((squares.x - 1.0f) - xCenter) * 2.0f, (squares.y * 2.0f) - 0.5f, -38.0f };
 	centers_.push_back(map_CenterPoint);
 
 	cameraPoint_ = kLeftBottom;
@@ -61,6 +71,8 @@ void FocusCamera::Update()
 		ImGui::DragFloat3("l1", &centers_[1].x);
 		ImGui::DragFloat3("l2", &centers_[2].x);
 		ImGui::DragFloat3("l3", &centers_[3].x);
+		ImGui::DragFloat3("l3", &centers_[4].x);
+		ImGui::DragFloat3("l3", &centers_[5].x);
 		ImGui::TreePop();
 	}
 
@@ -68,8 +80,6 @@ void FocusCamera::Update()
 	ImGui::Text("cameraPoint : %d", cameraPoint_);
 	ImGui::Text("isMoveCam : %d", isMoveMap_);
 	ImGui::Text("isEase : %d", isEase_);
-	ImGui::Text("screen1 %f : %f", player1ScreenPos_.x, player1ScreenPos_.y);
-	ImGui::Text("screen2 %f : %f", player2ScreenPos_.x, player2ScreenPos_.y);
 	ImGui::Text("isPlayer1 : %d", isControlPlayer1);
 	ImGui::Text("isprePlayer1 : %d", isPreControlPlayer1);
 	ImGui::End();
@@ -91,182 +101,142 @@ void FocusCamera::Update()
 #endif // _DEBUG^
 
 
-	//// もし操作が1の方なら
-	//if (isControlPlayer1) {
-	//	// 1が画面外にでたら移動
-	//	if ((player1ScreenPos_.x < 0 || player1ScreenPos_.x > WinApp::kWindowWidth ||
-	//		player1ScreenPos_.y < 0 || player1ScreenPos_.y > WinApp::kWindowHeight) && !isMoveMap_) {
-	//		isMoveMap_ = true;
-	//		isEase_ = true;
+	//if (!isEase_ && isControlPlayer1) {
+	//	if (viewProjection.translation_ == centers_[kLeftBottom]) {
+	//		if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
+	//			player1ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kRightTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.x > float(WinApp::kWindowWidth) ) {
+	//			cameraPoint_ = kRightBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kLeftTop;
+	//			isEase_ = true;
+	//		}
+	//	}
+	//	else if (viewProjection.translation_ == centers_[kRightBottom]) {
+	//		if (player1ScreenPos_.x < 0.0f &&
+	//			player1ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kLeftTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.x < 0.0f) {
+	//			cameraPoint_ = kLeftBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kRightTop;
+	//			isEase_ = true;
+	//		}
+	//	}
+	//	else if (viewProjection.translation_ == centers_[kLeftTop]) {
+	//		if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
+	//			player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kRightBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.x > float(WinApp::kWindowWidth)) {
+	//			cameraPoint_ = kRightTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kLeftBottom;
+	//			isEase_ = true;
+	//		}
+	//	}
+	//	else if (viewProjection.translation_ == centers_[kRightTop]) {
+	//		if (player1ScreenPos_.x < 0.0f &&
+	//			player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kLeftBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.x < 0.0f) {
+	//			cameraPoint_ = kLeftTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kRightBottom;
+	//			isEase_ = true;
+	//		}
 	//	}
 	//}
-	//// 2の方なら
-	//else {
-	//	// 2が画面外にでたら移動
-	//	if ((player2ScreenPos_.x < 0 || player2ScreenPos_.x > WinApp::kWindowWidth ||
-	//		player2ScreenPos_.y < 0 || player2ScreenPos_.y > WinApp::kWindowHeight) && !isMoveMap_) {
-	//		isMoveMap_ = true;
-	//		isEase_ = true;
+	//else if (!isEase_ && !isControlPlayer1) {
+	//	if (viewProjection.translation_ == centers_[kLeftBottom]) {
+	//		if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
+	//			player2ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kRightTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
+	//			cameraPoint_ = kRightBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kLeftTop;
+	//			isEase_ = true;
+	//		}
+	//	}
+	//	else if (viewProjection.translation_ == centers_[kRightBottom]) {
+	//		if (player2ScreenPos_.x < 0.0f &&
+	//			player2ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kLeftTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.x < 0.0f) {
+	//			cameraPoint_ = kLeftBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.y < 0.0f) {
+	//			cameraPoint_ = kRightTop;
+	//			isEase_ = true;
+	//		}
+	//	}
+	//	else if (viewProjection.translation_ == centers_[kLeftTop]) {
+	//		if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
+	//			player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kRightBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
+	//			cameraPoint_ = kRightTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kLeftBottom;
+	//			isEase_ = true;
+	//		}
+	//	}
+	//	else if (viewProjection.translation_ == centers_[kRightTop]) {
+	//		if (player2ScreenPos_.x < 0.0f &&
+	//			player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kLeftBottom;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.x < 0.0f) {
+	//			cameraPoint_ = kLeftTop;
+	//			isEase_ = true;
+	//		}
+	//		else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
+	//			cameraPoint_ = kRightBottom;
+	//			isEase_ = true;
+	//		}
 	//	}
 	//}
-
-	// もし画面外なら
-	if ((player1ScreenPos_.x < 0 || player1ScreenPos_.x > WinApp::kWindowWidth ||
-		player1ScreenPos_.y < 0 || player1ScreenPos_.y > WinApp::kWindowHeight) && !isMoveMap_) {
-		
-		if ((player2ScreenPos_.x < 0 || player2ScreenPos_.x > WinApp::kWindowWidth ||
-			player2ScreenPos_.y < 0 || player2ScreenPos_.y > WinApp::kWindowHeight) && !isMoveMap_) {
-			
-			isTogether_ = true;
-		}
-		else {
-			isTogether_ = false;
-		}
-	}
-	else {
-		isTogether_ = false;
-	}
-
-	if (!isEase_ && isControlPlayer1) {
-		if (viewProjection.translation_ == centers_[kLeftBottom]) {
-			if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
-				player1ScreenPos_.y < 0.0f) {
-
-				cameraPoint_ = kRightTop;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth) ) {
-				cameraPoint_ = kRightBottom;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.y < 0.0f) {
-				cameraPoint_ = kLeftTop;
-				isEase_ = true;
-			}
-		}
-		else if (viewProjection.translation_ == centers_[kRightBottom]) {
-			if (player1ScreenPos_.x < 0.0f &&
-				player1ScreenPos_.y < 0.0f) {
-				cameraPoint_ = kLeftTop;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.x < 0.0f) {
-				cameraPoint_ = kLeftBottom;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.y < 0.0f) {
-				cameraPoint_ = kRightTop;
-				isEase_ = true;
-			}
-		}
-		else if (viewProjection.translation_ == centers_[kLeftTop]) {
-			if (player1ScreenPos_.x > float(WinApp::kWindowWidth) &&
-				player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kRightBottom;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.x > float(WinApp::kWindowWidth)) {
-				cameraPoint_ = kRightTop;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kLeftBottom;
-				isEase_ = true;
-			}
-		}
-		else if (viewProjection.translation_ == centers_[kRightTop]) {
-			if (player1ScreenPos_.x < 0.0f &&
-				player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kLeftBottom;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.x < 0.0f) {
-				cameraPoint_ = kLeftTop;
-				isEase_ = true;
-			}
-			else if (player1ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kRightBottom;
-				isEase_ = true;
-			}
-		}
-
-	}
-	else if (!isEase_ && !isControlPlayer1) {
-		if (viewProjection.translation_ == centers_[kLeftBottom]) {
-			if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
-				player2ScreenPos_.y < 0.0f) {
-
-				cameraPoint_ = kRightTop;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
-				cameraPoint_ = kRightBottom;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.y < 0.0f) {
-				cameraPoint_ = kLeftTop;
-				isEase_ = true;
-			}
-		}
-		else if (viewProjection.translation_ == centers_[kRightBottom]) {
-			if (player2ScreenPos_.x < 0.0f &&
-				player2ScreenPos_.y < 0.0f) {
-				cameraPoint_ = kLeftTop;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.x < 0.0f) {
-				cameraPoint_ = kLeftBottom;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.y < 0.0f) {
-				cameraPoint_ = kRightTop;
-				isEase_ = true;
-			}
-		}
-		else if (viewProjection.translation_ == centers_[kLeftTop]) {
-			if (player2ScreenPos_.x > float(WinApp::kWindowWidth) &&
-				player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kRightBottom;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.x > float(WinApp::kWindowWidth)) {
-				cameraPoint_ = kRightTop;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kLeftBottom;
-				isEase_ = true;
-			}
-		}
-		else if (viewProjection.translation_ == centers_[kRightTop]) {
-			if (player2ScreenPos_.x < 0.0f &&
-				player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kLeftBottom;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.x < 0.0f) {
-				cameraPoint_ = kLeftTop;
-				isEase_ = true;
-			}
-			else if (player2ScreenPos_.y > float(WinApp::kWindowHeight)) {
-				cameraPoint_ = kRightBottom;
-				isEase_ = true;
-			}
-		}
-
-	}
 
 	// もし前フレームで操作プレイヤーが違うなら
-	if (isPreControlPlayer1 != isControlPlayer1 && !isEase_) {
-		isEase_ = true;
-	}
+	//if (isPreControlPlayer1 != isControlPlayer1 && !isEase_) {
+	//	isEase_ = true;
+	//}
 
 	ApplyGlobalVariables();
 
 	if (isEase_) {
 
-		animater_.ease_t_ += 1.0f / static_cast<float>(animater_.frame_);
-	
+		//animater_.ease_t_ += 1.0f / static_cast<float>(animater_.frame_);
+		animater_.ease_t_ = 1.0f;
 		if (animater_.ease_t_ >= 1.0f) {
 			isEase_ = false;
 			isMoveMap_ = false;
@@ -277,16 +247,21 @@ void FocusCamera::Update()
 		if (cameraPoint_ == kLeftBottom) {
 			i = 0;
 		}
-		else if (cameraPoint_ == kRightBottom) {
+		else if (cameraPoint_ == kMiddleBottom) {
 			i = 1;
 		}
-		else if (cameraPoint_ == kLeftTop) {
+		else if (cameraPoint_ == kRightBottom) {
 			i = 2;
 		}
-		else if (cameraPoint_ == kRightTop) {
+		else if (cameraPoint_ == kLeftTop) {
 			i = 3;
 		}
-
+		else if (cameraPoint_ == kMiddleTop) {
+			i = 4;
+		}
+		else if (cameraPoint_ == kRightTop) {
+			i = 5;
+		}
 
 		viewProjection.translation_ = R_Math::EaseOutQuadF(animater_.ease_t_, viewProjection.translation_, centers_[i]);
 	}

@@ -8,6 +8,9 @@
 #include "Gimmick/GimmickManager.h"
 #include "Sprite.h"
 
+
+class FocusCamera;
+
 struct Vector2_AABB{
 	Vector2 min;
 	Vector2 max;
@@ -48,6 +51,8 @@ public:
 	Player* GetPlayer1();
 	Player* GetPlayer2();
 
+	void SetFocusCamera(FocusCamera* camera) { focusCamera_ = camera; }
+
 private:
 	/// <summary>
 	/// スクリーン座標に変換
@@ -80,6 +85,7 @@ private:
 	/// <returns></returns>
 	bool PlayerInGimmick(Vector2_AABB player);
 
+	Vector2 World2ScreenPos(const ViewProjection& viewProjection, Vector3& worldPos1);
 private:
 	Vector2_AABB gim_;
 
@@ -105,6 +111,8 @@ private:
 
 	bool isClear_ = false;
 
+	FocusCamera* focusCamera_;
+	bool isLeavePlayer_ = false;
 public:
 	Player* GetPlayerPtr1() { return player1_.get(); }
 	Player* GetPlayerPtr2() { return player2_.get(); }

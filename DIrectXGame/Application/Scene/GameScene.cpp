@@ -36,6 +36,7 @@ void GameScene::Initialize() {
 	map_->Initialize("resources/Level/Level_1_.csv");
 
 	playerController_->Initialize();
+	playerController_->SetFocusCamera(focusCamera_.get());
 	focusCamera_->Initialize();
 	colliderManager_->Initialize();
 	gimmickManager_->Initialize();
@@ -59,12 +60,12 @@ void GameScene::Update() {
 		focusCamera_->SetIsAnimater(true);
 	}
 
-	CameraUpdate();
 
-
+	
 	gimmickManager_->Update();
 
 	playerController_->Update(viewProjection_);
+	CameraUpdate();
 
 	this->ColliderUpdate();
 
@@ -188,22 +189,17 @@ void GameScene::CameraUpdate()
 	//	focusCamera_->SetParent(playerController_->GetPlayerPtr2()->GetWorldTransform());
 	//}
 	
-	Vector3 world1Pos{};
-	Vector3 world2Pos{};
+	//Vector3 world1Pos{};
+	//Vector3 world2Pos{};
 
 	/*if(playerController_->)*/
 	
-	if (typeid(*playerController_->GetPlayer1()->GetInputState()) == typeid(ActiveState)) {
-		focusCamera_->SetIsControlPlayer1(true);
-	}
-	else if (typeid(*playerController_->GetPlayer2()->GetInputState()) == typeid(ActiveState)) {
-		focusCamera_->SetIsControlPlayer1(false);
-	}
+	
 
-	world1Pos = playerController_->GetPlayer1()->GetWorldPosition();
-	world2Pos = playerController_->GetPlayer2()->GetWorldPosition();
+	//world1Pos = playerController_->GetPlayer1()->GetWorldPosition();
+	//world2Pos = playerController_->GetPlayer2()->GetWorldPosition();
 
-	focusCamera_->SetPlayerWorld2ScreenPos(world1Pos, world2Pos);
+	//focusCamera_->SetPlayerWorld2ScreenPos(world1Pos, world2Pos);
 	focusCamera_->Update();
 	viewProjection_.matProjection = focusCamera_->GetView().matProjection;
 	viewProjection_.matView = focusCamera_->GetView().matView;

@@ -91,7 +91,7 @@ private:
 	inline static const int kChipSize = 32;
 	inline static const float scale_ = 2.0f;
 
-	static const uint32_t width_ = 48;
+	static const uint32_t width_ = 72;
 
 	static const uint32_t height_ = 30;
 

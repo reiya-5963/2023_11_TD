@@ -5,7 +5,16 @@
 class FocusCamera : public ICamera
 {
 public:
+	enum CameraPoint {
+		kLeftBottom,
+		kMiddleBottom,
+		kRightBottom,
+		kLeftTop,
+		kMiddleTop,
+		kRightTop,
+	};
 
+public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -33,6 +42,15 @@ public:
 	void SetPlayerWorld2ScreenPos(Vector3& worldPos1, Vector3& worldPos2);
 	void SetIsControlPlayer1(bool isControl) { isControlPlayer1 = isControl; }
 	//Vector2 GetPlayerScreenPos() { return playerScreenPos_; }
+
+	void SetIsEase(bool isEase) { isEase_ = isEase; }
+	bool IsEase() { return isEase_; }
+	bool IsControlPlayer1() { return isControlPlayer1; }
+	bool IsPreControlPlayer1() { return isPreControlPlayer1; }
+
+	std::vector<Vector3> GetCenters() { return centers_; }
+	void SetCameraPoint(uint32_t point) { cameraPoint_ = point; }
+
 private:
 	CameraAnimation animater_;
 	Vector3 startRot_ = {};
@@ -45,12 +63,7 @@ private:
 private:
 	std::vector<Vector3>centers_;
 
-	enum CameraPoint {
-		kLeftBottom,
-		kRightBottom,
-		kLeftTop,
-		kRightTop,
-	};
+	
 
 	uint32_t cameraPoint_ = kLeftBottom;
 
