@@ -126,7 +126,6 @@ void GameScene::Draw() {
 	// UI表示
 	back_->Draw();
 
-
 	Sprite::PostDraw();
 
 	dxCommon_->ClearDepthBuffer();
