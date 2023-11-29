@@ -191,6 +191,7 @@ private:
 	uint32_t jumpSE_ = 0u;
 	uint32_t switchSE_ = 0u;
 	uint32_t ghostSE_ = 0u;
+	bool isGoalAnimation_ = false;
 
 };
 

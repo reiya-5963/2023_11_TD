@@ -385,7 +385,10 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 #pragma endregion
 
 	if (player1_->GetIsGoal() && player2_->GetIsGoal()) {
-		isClear_ = true;
+		isGoalAnimation_ = true;
+		player1_->SetIsGoalAnimation(isGoalAnimation_);
+		player2_->SetIsGoalAnimation(isGoalAnimation_);
+		//isClear_ = true;
 	}
 
 	// 遅延（バグ防止の仮
@@ -470,11 +473,17 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 	}
 
 	ChangeControl();
+	
 	player1_->Update();
 	player2_->Update();
 	// ボタン表示
 	ActivePlayerArea(viewProjection);
 	InactivePlayerInfo(viewProjection);
+
+	if (!player1_->IsGoalAnimation() && !player2_->IsGoalAnimation() &&
+		player1_->GetIsGoal() && player2_->GetIsGoal()) {
+		isClear_ = true;
+	}
 
 	// ゴールへの矢印
 	Vector3 arrowWorld = R_Math::Subtract(goalPosition_, activePlayer_->GetWorldPosition());

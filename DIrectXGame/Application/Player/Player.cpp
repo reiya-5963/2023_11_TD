@@ -67,6 +67,7 @@ void Player::Update()
 #endif // _DEBUG
 
 	isGoal_ = false;
+	isInArea_ = false;
 
 	if (isGround_) {
 		isDriveObject_ = true;
@@ -139,6 +140,25 @@ void Player::Update()
 	worldTransformHat_.UpdateMatrix();
 
 
+	if (isGoalAnimation_) {
+		Vector3 startScale_ = { 1.2f, 1.2f , 1.2f};
+		Vector3 endScale_ = {0.01f, 0.01f , 0.01f};
+
+		objectWorldTransform_.scale_.x = R_Math::EaseInCubicF(goalAni_t_, startScale_.x, endScale_.x);
+		objectWorldTransform_.scale_.y = R_Math::EaseInCubicF(goalAni_t_, startScale_.y, endScale_.y);
+		objectWorldTransform_.scale_.z = R_Math::EaseInCubicF(goalAni_t_, startScale_.z, endScale_.z);
+
+
+		if (goalAni_t_ > 1.0f) {
+			goalAni_t_ = 1.0f;
+			isGoalAnimation_ = false;
+		}
+		else {
+			goalAni_t_ += 0.01f;
+		}
+	}
+
+
 	if (isCollisionObject_ && isPreCollisionObject && isDriveObject_) {
 		if (objectWorldTransform_.parent_) {
 			Vector3 parentPos = { objectWorldTransform_.parent_->matWorld_.m[3][0], objectWorldTransform_.parent_->matWorld_.m[3][1], objectWorldTransform_.parent_->matWorld_.m[3][2] };
@@ -152,11 +172,7 @@ void Player::Update()
 
 	isCollisionObject_ = false;
 	acceleration_ = {};
-
-	if (isInArea_) {
-		//AudioManager::GetInstance()->PlaySEAudio(AudioManager::kGhost);
-	}
-
+	//isGoal_ = false;
 }
 
 void Player::Draw(const ViewProjection& viewProjection)
@@ -183,11 +199,11 @@ void Player::OnCollision([[maybe_unused]] Collider* other) {
 	Vector3 direction = otherWorldPos - myWorldPos;
 
 	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kGoal)) {
-		isGoal_ = true;
+		isGoal_ = true;	
 		return;
 	}
 
-
+	
 	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kMoveGimmick)) {
 		R_Math::Normalize(direction);
 

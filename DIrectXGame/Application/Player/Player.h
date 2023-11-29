@@ -88,6 +88,8 @@ public:
 	/// <returns></returns>
 	bool GetIsGoal() { return isGoal_; }
 
+	bool IsGoalAnimation() { return isGoalAnimation_; }
+	void SetIsGoalAnimation(bool isGoalAnimation) { isGoalAnimation_ = isGoalAnimation; }
 	void SetIsInArea(bool inArea) { isInArea_ = inArea; }
 
 	bool GetIsInArea() { return isInArea_; }
@@ -110,8 +112,9 @@ private:
 	static const float kFirstJumpPower_;
 
 	bool isGoal_ = false;
+	bool isGoalAnimation_ = false;
 	bool isInArea_ = false;
-
+	float goalAni_t_ = 0.0f;
 private: // 憑りつきアクション用
 	// アクション定数
 	struct ConstAction {

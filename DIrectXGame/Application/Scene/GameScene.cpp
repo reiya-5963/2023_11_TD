@@ -27,7 +27,7 @@ void GameScene::Initialize() {
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
 
-	goalModel_.reset(Model::CreateFlomObj("cube"));
+	goalModel_.reset(Model::CreateFlomObj("haka"));
 	goal_ = std::make_unique<Goal>();
 	goal_->Initialize(goalModel_.get());
 
