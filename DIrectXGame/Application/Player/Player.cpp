@@ -40,7 +40,6 @@ void Player::Setting(const Vector3& position, uint32_t color)
 
 void Player::Update()
 {
-	isGoal_ = false;
 #ifdef _DEBUG
 
 	ImGui::Begin("Player");
@@ -64,6 +63,9 @@ void Player::Update()
 	ImGui::End();
 
 #endif // _DEBUG
+
+	isGoal_ = false;
+
 	if (isGround_) {
 		isDriveObject_ = true;
 	}

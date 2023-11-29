@@ -130,6 +130,8 @@ public:
 	/// </summary>
 	bool GetIsClear() { return isClear_; }
 
+	void SetIsClear(bool isClear) { isClear_ = isClear; }
+
 	void SetGoalPosition(const Vector3& goalPosition) { goalPosition_ = goalPosition; }
 
 private:

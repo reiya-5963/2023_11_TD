@@ -51,13 +51,15 @@ void PlayerController::Initialize()
 	player1_->SetState(new ActiveState());
 	player2_->SetState(new InactiveState());
 
+	float uiScale = 6.0f;
+
 	uint32_t uiTexture = TextureManager::Load("UI/BButton.png");
 	BButtonUi_.reset(Sprite::Create(uiTexture, { 100,100 }, 0.0f, { 1,1,1,1.0f }, { 0.5f,0.5f }));
-	BButtonUi_->SetSize({ BButtonUi_->GetSize().x / 5.0f,BButtonUi_->GetSize().y / 5.0f });
+	BButtonUi_->SetSize({ BButtonUi_->GetSize().x / uiScale,BButtonUi_->GetSize().y / uiScale });
 
 	uiTexture = TextureManager::Load("UI/XButton.png");
 	XButtonUi_.reset(Sprite::Create(uiTexture, { 0,0 }, 0.0f, { 1,1,1,1 }, { 0.5f,0.5f }));
-	XButtonUi_->SetSize({ XButtonUi_->GetSize().x / 5,XButtonUi_->GetSize().y / 5 });
+	XButtonUi_->SetSize({ XButtonUi_->GetSize().x / uiScale,XButtonUi_->GetSize().y / uiScale });
 
 	uiTexture = TextureManager::Load("UI/Arrow.png");
 	ArrowUi_.reset(Sprite::Create(uiTexture, { 0,0 }, 0.0f, { 1,1,1,1 }, { 0.5f,0.5f }));
@@ -248,7 +250,8 @@ void PlayerController::ActivePlayerArea(const ViewProjection& viewProjection)
 	activePlayer_->SetIsInArea(isInArea_);
 
 	if (isInArea_) {
-		BButtonUi_->SetPosition(GenerateScreenPosition(activePlayer_->GetWorldPosition(), { -0.2f,1.5f,0 }, viewProjection));
+		Vector3 offset = { 0.0f,2.0f,0.0f };
+		BButtonUi_->SetPosition(GenerateScreenPosition(activePlayer_->GetWorldPosition(), offset, viewProjection));
 	}
 
 }
@@ -259,7 +262,8 @@ void PlayerController::InactivePlayerInfo(const ViewProjection& viewProjection)
 		return;
 	}
 
-	this->XButtonUi_->SetPosition(GenerateScreenPosition(inactivePlayer_->GetWorldPosition(), Vector3{ 1.0f,1.5f,0 }, viewProjection));
+	Vector3 offset = { 1.0f,1.5f,0.0f };
+	this->XButtonUi_->SetPosition(GenerateScreenPosition(inactivePlayer_->GetWorldPosition(), offset, viewProjection));
 
 }
 
