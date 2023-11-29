@@ -68,6 +68,7 @@ private:
 	struct TransitionValue {
 		bool isNow_;	// 行っているか
 		bool isHalf_;	// 中間
+		bool isChange_; // シーン変更タイミング
 		float ease_t_;	// 補間レート
 		int endFrame_;	// 終了フレーム
 		SpriteValue spriteInfo_;	// スプライトに渡す情報
@@ -76,7 +77,7 @@ private:
 	TransitionValue blackOut_;
 
 public:
-	bool GetIsBlackOutHalf() { return blackOut_.isHalf_; }
+	bool GetIsBlackOutHalf() { return blackOut_.isChange_; }
 
 };
 

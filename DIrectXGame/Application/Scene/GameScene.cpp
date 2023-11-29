@@ -90,6 +90,14 @@ void GameScene::Update() {
 	if (playerController_->GetIsClear()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
+
+	if (Input::GetInstance()->TriggerKey(DIK_5)) {
+		transitionmanager_->TransitionSetting();
+	}
+	if (transitionmanager_->GetIsBlackOutHalf()) {
+		SceneManager::GetInstance()->ChangeScene("TITLE");
+	}
+
 	transitionmanager_->Update();
 }
 

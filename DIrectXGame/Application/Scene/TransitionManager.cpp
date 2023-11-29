@@ -75,11 +75,13 @@ void TransitionManager::TransitionSetting()
 
 void TransitionManager::BlackOutProcess()
 {
-
+	// 変更フラグ
+	blackOut_.isChange_ = false;
 	blackOut_.ease_t_ += (1.0f / (float)blackOut_.endFrame_);
 	if (blackOut_.ease_t_ >= 1.0f) {
 		blackOut_.ease_t_ = 1.0f;
 		if (!blackOut_.isHalf_) {
+			blackOut_.isChange_ = true;
 			blackOut_.isHalf_ = true;
 			blackOut_.ease_t_ = 0.0f;
 		}
