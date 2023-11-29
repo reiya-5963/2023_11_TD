@@ -28,10 +28,10 @@ AudioManager* AudioManager::GetInstance()
 	return &instance;
 }
 
-void AudioManager::PlayBGMAudio(uint32_t soundHandle, float volume)
+void AudioManager::PlayBGMAudio(uint32_t soundHandle, bool isLoop, float volume)
 {
 	if (!Audio::GetInstance()->IsPlaying(soundHandle)) {
-		Audio::GetInstance()->PlayWave(soundHandle, true, volume);
+		Audio::GetInstance()->PlayWave(soundHandle, isLoop, volume);
 		Audio::GetInstance()->SetVolume(soundHandle, volume);
 	}
 }

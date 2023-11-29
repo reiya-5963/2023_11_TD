@@ -13,7 +13,7 @@ public:
 	/// BGM用の再生
 	/// </summary>
 	/// <param name="soundHandle"></param>
-	void PlayBGMAudio(uint32_t soundHandle, float volume);
+	void PlayBGMAudio(uint32_t soundHandle, bool isLoop, float volume);
 	/// <summary>
 	/// SE用の再生
 	/// </summary>
