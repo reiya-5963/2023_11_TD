@@ -9,6 +9,7 @@
 #include "Player/PlayerController.h"
 #include "Collision/CollisionManager.h"
 #include "TransitionManager.h"
+#include "AudioManager/AudioManager.h"
 #include "FocusCamera.h"
 #include "Goal.h"
 #include "audio.h"
@@ -66,8 +67,24 @@ private:
 	/// </summary>
 	void CameraUpdate();
 
+private: // アニメーション用
+	struct Animation
+	{
+		bool isNow_;
+		int maxFrame_;
+		int nowFrame_;
+	};
+
+	Animation clearAnimation_;
+
+	void ClearAnimationSetting();
+
+	void ClearAnimationUpdate();
+
+
 private:
 	Audio* audio_ = nullptr;
+	AudioManager* audioManager_ = nullptr;
 	TransitionManager* transitionmanager_ = nullptr;
 
 private:

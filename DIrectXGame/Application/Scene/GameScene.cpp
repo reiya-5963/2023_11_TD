@@ -17,9 +17,12 @@ GameScene::~GameScene() {
 }
 
 void GameScene::Initialize() {
+	// インスタンス
 	dxCommon_ = DirectXCommon::GetInstance();
 	audio_ = Audio::GetInstance();
+	audioManager_ = AudioManager::GetInstance();
 	transitionmanager_ = TransitionManager::GetInstance();
+
 	// テクスチャの読み込み
 	//textureHandle_ = TextureManager::Load("sample.png");
 	// ビュープロジェクションの初期化
@@ -46,7 +49,7 @@ void GameScene::Initialize() {
 	back_.reset(Sprite::Create(backTex_, { 640.0f, 320.0f }, 0.0f, {0.8f, 0.8f, 0.8f, 1.0f}, {0.5f, 0.5f}));
 
 	retryPos_ = { 1280.0f -  0.4f, 0.4f };
-	retryTex_ = TextureManager::Load("Rretry.png");
+	retryTex_ = TextureManager::Load("resetb.png");
 	retry_.reset(Sprite::Create(retryTex_, retryPos_, 0.0f, { 0.8f, 0.8f, 0.8f, 1.0f }, { 1.0f, 0.0f }));
 }
 
@@ -54,28 +57,9 @@ void GameScene::Finalize() {
 	
 }
 
-void GameScene::Update() {
-	
-	if (Input::GetInstance()->TriggerKey(DIK_9)) {
-		focusCamera_->SetIsAnimater(true);
-	}
-
-	CameraUpdate();
-
-
-	gimmickManager_->Update();
-
-	playerController_->Update(viewProjection_);
-
-	this->ColliderUpdate();
-
-
-	//back_->Update();
-
-	goal_->Update();
-
-	Mapchip::GetInstance()->Update(viewProjection_);
-
+void GameScene::Update() 
+{
+#pragma region リトライ処理
 	XINPUT_STATE joyState;
 
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
@@ -83,17 +67,34 @@ void GameScene::Update() {
 			Retry();
 		}
 	}
-	else if (Input::GetInstance()->TriggerKey(DIK_R)) {
-		Retry();
+	if (Input::GetInstance()->TriggerKey(DIK_R)) {
+		//Retry();
+		playerController_->SetIsClear(true);
 	}
+#pragma endregion
+
+	CameraUpdate();
 
 	if (playerController_->GetIsClear()) {
-		SceneManager::GetInstance()->ChangeScene("TITLE");
+		//SceneManager::GetInstance()->ChangeScene("TITLE");
+	}
+	else {
+		gimmickManager_->Update();
+
+		playerController_->Update(viewProjection_);
+
+		this->ColliderUpdate();
+
+		goal_->Update();
+
+		Mapchip::GetInstance()->Update(viewProjection_);
+
 	}
 
 	if (Input::GetInstance()->TriggerKey(DIK_5)) {
 		transitionmanager_->TransitionSetting();
 	}
+	// 遷移後シーン変更
 	if (transitionmanager_->GetIsBlackOutHalf()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
