@@ -88,6 +88,8 @@ public:
 	/// <returns></returns>
 	bool GetIsGoal() { return isGoal_; }
 
+	bool IsGoalAnimation() { return isGoalAnimation_; }
+	void SetIsGoalAnimation(bool isGoalAnimation) { isGoalAnimation_ = isGoalAnimation; }
 private:
 	// プレイヤーの入力状態
 	InputState* inputState_ = nullptr;
@@ -106,7 +108,8 @@ private:
 	static const float kFisrtJumpPower_;
 
 	bool isGoal_ = false;
-
+	bool isGoalAnimation_ = false;
+	float goalAni_t_ = 0.0f;
 private: // 憑りつきアクション用
 	// アクション定数
 	struct ConstAction {
