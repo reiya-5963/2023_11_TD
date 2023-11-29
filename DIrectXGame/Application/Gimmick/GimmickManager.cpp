@@ -28,6 +28,8 @@ void GimmickManager::Initialize()
 	uint32_t generateNum = 3;
 	ParentBlock parentInfo;
 
+	this->gimmicks_.clear();
+
 #pragma region ギミック
 	// 3_1
 	parentInfo.direction_ = kTop;

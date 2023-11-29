@@ -1,4 +1,5 @@
 ﻿#include "IGimmick.h"
+#include "AudioManager/AudioManager.h"
 
 void IGimmick::StartSetting(float maxFrame)
 {
@@ -7,6 +8,8 @@ void IGimmick::StartSetting(float maxFrame)
 		ease_T_ = 0;
 
 		isBeforeStartup = true;
+
+		AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kGimmickSE), 0.1f);
 
 		// フレーム数
 		maxFrame_ = maxFrame;
@@ -20,6 +23,8 @@ void IGimmick::ReturnSetting(float maxFrame)
 		ease_T_ = 0;
 
 		isBeforeStartup = false;
+
+		AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kGimmickSE), 0.1f);
 
 		// フレーム数
 		maxFrame_ = maxFrame;
