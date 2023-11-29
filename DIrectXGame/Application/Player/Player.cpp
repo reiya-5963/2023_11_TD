@@ -29,8 +29,8 @@ void Player::Setting(const Vector3& position, uint32_t color)
 	objectWorldTransform_.translation_ = position;
 	color;
 	behavior_ = Behavior::kRoot;
-	objectWorldTransform_.parent_ = nullptr;
-	objectWorldTransform_.UpdateMatrix();
+	SetRadius({ 1.0f, 1.0f, 1.0f });
+	objectWorldTransform_.scale_ = GetRadius();
 
 	info_.isLeft_ = false;
 	isGoal_ = false;
@@ -38,7 +38,6 @@ void Player::Setting(const Vector3& position, uint32_t color)
 
 void Player::Update()
 {
-
 #ifdef _DEBUG
 
 	ImGui::Begin("Player");
@@ -62,6 +61,15 @@ void Player::Update()
 	ImGui::End();
 
 #endif // _DEBUG
+	if (isGround_) {
+		isDriveObject_ = true;
+	}
+	else if (objectWorldTransform_.parent_) {
+		isDriveObject_ = true;
+	}
+	else if (objectWorldTransform_.parent_ == nullptr) {
+		isDriveObject_ = false;
+	}
 
 	// プレイヤーの向き設定
 	if (info_.isLeft_) {
@@ -108,7 +116,7 @@ void Player::Update()
 		break;
 	}
 
-	if (!isDriveObject_) {
+	if (!isDriveObject_ || !isCollisionObject_) {
 		const float kGravity = 9.8f;
 
 		const float deltaTime = 10.0f / 60.0f;
@@ -117,16 +125,28 @@ void Player::Update()
 
 		acceleration_ = R_Math::Add(acceleration_, accelerationVector);
 	}
-	if (isGround_) {
-		isDriveObject_ = true;
-	}
 
 	if (behavior_ != Behavior::kAction) {
 		BaseCharacter::Update();
 	}
 	worldTransformHat_.UpdateMatrix();
-	//ImGui::Text("%d", isGround_);
+	ImGui::Text("isDrive : %d", isDriveObject_);
+
+
+	if (isCollisionObject_ && isPreCollisionObject && isDriveObject_) {
+		if (objectWorldTransform_.parent_) {
+			Vector3 parentPos = { objectWorldTransform_.parent_->matWorld_.m[3][0], objectWorldTransform_.parent_->matWorld_.m[3][1], objectWorldTransform_.parent_->matWorld_.m[3][2] };
+			objectWorldTransform_.parent_ = nullptr;
+			objectWorldTransform_.translation_ += parentPos;
+			objectWorldTransform_.UpdateMatrix();
+		}
+	}
+
+	isPreCollisionObject = isCollisionObject_;
+
+	isCollisionObject_ = false;
 	acceleration_ = {};
+
 }
 
 void Player::Draw(const ViewProjection& viewProjection)
@@ -143,229 +163,86 @@ void Player::Draw(const ViewProjection& viewProjection)
 
 void Player::OnCollision([[maybe_unused]] Collider* other) {
 
+
+
+	ImGui::Text("isDrive : %d", isDriveObject_);
+	ImGui::Text("my : %f, %f", GetWorldPosition().x, GetWorldPosition().y);
+	ImGui::Text("other : %f, %f", other->GetWorldPosition().x, other->GetWorldPosition().y);
+
 	if (behavior_ == Behavior::kAction) {
 		return;
 	}
+	
+	Vector3 myWorldPos = { objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1],objectWorldTransform_.matWorld_.m[3][2] };
+	Vector3 beforePos = myWorldPos - velocity_;
+	Vector3 otherWorldPos = other->GetWorldPosition();
+	Vector3 direction = otherWorldPos - myWorldPos;
 
 	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kGoal)) {
 		isGoal_ = true;
 		return;
 	}
 
-	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kMoveGimmick)) {
 
-		const float kError = 0.2f;
-		Vector3 direction = velocity_;
+	if (other->GetTypeID() == static_cast<uint32_t>(CollisionTypeIdDef::kMoveGimmick)) {
 		R_Math::Normalize(direction);
 
-
-		if (objectWorldTransform_.parent_ != nullptr) {
-			Vector3 parentWorldPos = { objectWorldTransform_.parent_->matWorld_.m[3][0], objectWorldTransform_.parent_->matWorld_.m[3][1] ,objectWorldTransform_.parent_->matWorld_.m[3][2] };
-
-			Vector3 worldPos = { objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1],objectWorldTransform_.matWorld_.m[3][2] };
-			// 左下に向かってる時
-			if (direction.x < 0) {
-				if (worldPos.x + GetRadius().x < other->GetMin().x) {
-					isDriveObject_ = false;
-					objectWorldTransform_.translation_ = objectWorldTransform_.translation_ + parentWorldPos;
-					objectWorldTransform_.parent_ = nullptr;
-				}
-				//ImGui::Text("%d :left down", typeID_);
-			}
-			// 右下に向かってる時
-			else if (direction.x > 0) {
-				if (other->GetMax().x > worldPos.x + GetRadius().x) {
-					velocity_.y = {};
-					acceleration_.y = {};
-					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y - parentWorldPos.y;
-					isDriveObject_ = true;
-
-				}
-				if (worldPos.x - GetRadius().x > other->GetMax().x) {
-					isDriveObject_ = false;
-					objectWorldTransform_.translation_ = objectWorldTransform_.translation_ + parentWorldPos;
-					objectWorldTransform_.parent_ = nullptr;
-				}
-			//	ImGui::Text("%d :right down", typeID_);
-			}
-			else if ((GetMin().x <= other->GetMax().x && GetMax().x >= other->GetMin().x) &&
+		if (objectWorldTransform_.parent_) {
+			if ((GetMin().x <= other->GetMax().x && GetMax().x >= other->GetMin().x) &&
 				(GetMin().y <= other->GetMax().y && GetMax().y >= other->GetMin().y) &&
 				(GetMin().z <= other->GetMax().z && GetMax().z >= other->GetMin().z)) {
-				isDriveObject_ = true;
+				objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y - otherWorldPos.y;
 			}
+			
 		}
 		else if ((GetMin().x <= other->GetMax().x && GetMax().x >= other->GetMin().x) &&
 			(GetMin().y <= other->GetMax().y && GetMax().y >= other->GetMin().y) &&
 			(GetMin().z <= other->GetMax().z && GetMax().z >= other->GetMin().z)) {
-			// 左下に向かってる時
-			if (direction.y < 0 && direction.x < 0) {
-				// p右端がo右端より左にいたら
-				if (other->GetMax().x > GetMax().x) {
-					// 上に乗ってます
-					velocity_.y = {};
-					acceleration_.y = {};
-					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
-					isDriveObject_ = true;
 
-				}
-				// p上端がo上端より下にいたら
-				else if (other->GetMax().y > GetMax().y) {
-					// 横にぶち当たってます
-					isDriveObject_ = false;
-					objectWorldTransform_.parent_ = nullptr;
-					velocity_.x = {};
-					acceleration_.x = {};
-					objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
-				}
-				// そうでないとき
-				else {
-					// ど
-					if (other->GetMax().x - GetMin().x > other->GetMax().y - GetMin().y) {
-						velocity_.y = {};
-						acceleration_.y = {};
-						objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
-						isDriveObject_ = true;
-					}
-					else if (other->GetMax().x - GetMin().x <= other->GetMax().y - GetMin().y) {
-						isDriveObject_ = false;
-						objectWorldTransform_.parent_ = nullptr;
-						velocity_.x = {};
-						acceleration_.x = {};
-						objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
-					}
-				}
-			//	ImGui::Text("%d :left down", typeID_);
-			}
-			// 右下に向かってる時
-			else if (direction.y < 0 && direction.x > 0) {
-				if (other->GetMin().x < GetMin().x) {
-					velocity_.y = {};
-					acceleration_.y = {};
-					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
-					isDriveObject_ = true;
-				}
-				else if (other->GetMax().y > GetMax().y) {
-					isDriveObject_ = false;
-					objectWorldTransform_.parent_ = nullptr;
-					velocity_.x = {};
-					acceleration_.x = {};
-					objectWorldTransform_.translation_.x = other->GetMin().x - GetRadius().x;
-				}
-				else {
-					if (GetMax().x - other->GetMin().x > other->GetMax().y - GetMin().y) {
-						velocity_.y = {};
-						acceleration_.y = {};
-						objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
-						isDriveObject_ = true;
-					}
-					else if (GetMax().x - other->GetMin().x <= other->GetMax().y - GetMin().y) {
-						isDriveObject_ = false;
-						objectWorldTransform_.parent_ = nullptr;
-						velocity_.x = {};
-						acceleration_.x = {};
-						objectWorldTransform_.translation_.x = other->GetMin().x - GetRadius().x;
-					}
-				}
-			//	ImGui::Text("%d :right down", typeID_);
-			}
-			// 左上に向かってる時
-			else if (direction.y > 0 && direction.x < 0) {
-				if (other->GetMax().x > GetMax().x) {
-					velocity_.y = {};
-					acceleration_.y = {};
-					isDriveObject_ = false;
-					objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
-				}
-				else if (other->GetMin().y < GetMin().y) {
-					objectWorldTransform_.parent_ = nullptr;
-					velocity_.x = {};
-					acceleration_.x = {};
+			if (std::abs(direction.x) > std::abs(direction.y)) {
+				
+				if (direction.x < 0) {
 					isDriveObject_ = false;
 					objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
+
 				}
-				else {
-					if (other->GetMax().x - GetMin().x > GetMax().y - other->GetMin().y) {
-						velocity_.y = {};
-						isDriveObject_ = false;
-						acceleration_.y = {};
-						objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
-					}
-					else if (other->GetMax().x - GetMin().x <= GetMax().y - other->GetMin().y) {
-						objectWorldTransform_.parent_ = nullptr;
-						velocity_.x = {};
-						isDriveObject_ = false;
-						acceleration_.x = {};
-						objectWorldTransform_.translation_.x = other->GetMax().x + GetRadius().x;
-					}
-				}
-				//ImGui::Text("%d :left up", typeID_);
-			}
-			// 右上に向かってる時
-			else if (direction.y > 0 && direction.x > 0) {
-				if (other->GetMin().x < GetMin().x) {
-					velocity_.y = {};
-					acceleration_.y = {};
-					isDriveObject_ = false;
-					objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
-				}
-				else if (other->GetMin().y < GetMin().y) {
-					objectWorldTransform_.parent_ = nullptr;
-					velocity_.x = {};
-					acceleration_.x = {};
+				else if (direction.x > 0) {
 					isDriveObject_ = false;
 					objectWorldTransform_.translation_.x = other->GetMin().x - GetRadius().x;
+
 				}
-				else {
-					if (GetMax().x - other->GetMin().x > GetMax().y - other->GetMin().y) {
-						velocity_.y = {};
-						acceleration_.y = {};
-						isDriveObject_ = false;
-						objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
-					}
-					else if (GetMax().x - other->GetMin().x <= GetMax().y - other->GetMin().y) {
-						objectWorldTransform_.parent_ = nullptr;
-						velocity_.x = {};
-						acceleration_.x = {};
-						isDriveObject_ = false;
-						objectWorldTransform_.translation_.x = other->GetMin().x - GetRadius().x;
-					}
-				}
-				//ImGui::Text("%d :right up", typeID_);
+				velocity_.x = {};
+				acceleration_.x = {};
+
 			}
-			// 下に向かってる時
-			else if (direction.y < 0) {
-				if ((GetMax().x > other->GetMin().x + kError && GetMin().x < other->GetMax().x) || (GetMin().x < other->GetMax().x - kError && GetMax().x > other->GetMin().x)) {
-					velocity_.y = {};
-					acceleration_.y = {};
-					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y;
+			else if (std::abs(direction.x) < std::abs(direction.y) - 0.17f) {
+				if (direction.y < 0) {
 					isDriveObject_ = true;
-					//ImGui::Text("%d : down", typeID_);
-				}
+					objectWorldTransform_.translation_.y = other->GetMax().y + GetRadius().y - velocity_.y;
 
-			}
-			// 上に向かってる時
-			else if (direction.y > 0) {
-				if ((GetMax().x > other->GetMin().x + kError && GetMin().x < other->GetMax().x) || (GetMin().x < other->GetMax().x - kError && GetMax().x > other->GetMin().x)) {
+				}
+				else if (direction.y > 0) {
+					isDriveObject_ = false;
+					objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
 					velocity_.y = {};
 					acceleration_.y = {};
-					objectWorldTransform_.translation_.y = other->GetMin().y - GetRadius().y;
-					isDriveObject_ = false;
 
-					//ImGui::Text("%d : up", typeID_);
 				}
-
 			}
-
 
 			if (isDriveObject_) {
 				Vector3 selfWorldPos = { objectWorldTransform_.matWorld_.m[3][0], objectWorldTransform_.matWorld_.m[3][1],objectWorldTransform_.matWorld_.m[3][2] };
 
 				objectWorldTransform_.translation_ = selfWorldPos - other->GetWorldPosition();
 				objectWorldTransform_.parent_ = other->GetParent();
+
 			}
-			objectWorldTransform_.UpdateMatrix();
 		}
+		isCollisionObject_ = true;
+
 	}
+	objectWorldTransform_.UpdateMatrix();
+
 }
 
 void Player::SetState(InputState* state)
@@ -438,7 +315,7 @@ void Player::ActionUpdate()
 	// ステートに合わせた処理
 	switch (actionState_)
 	{
-	// 憑りつくまでの動き
+		// 憑りつくまでの動き
 	case Player::ActionState::kReserve:
 		// 終了
 		if (actionValue_.timer_ > kConstAction_.startTime_) {
@@ -463,7 +340,7 @@ void Player::ActionUpdate()
 			info_.isLeft_ = false;
 		}
 		break;
-	// 憑りつき中
+		// 憑りつき中
 	case Player::ActionState::kNow:
 		if (iGimmickPtr_ != nullptr && actionValue_.timer_ < 10) {
 			iGimmickPtr_->StartSetting(float(kConstAction_.releaseTime_) / 2.0f);
@@ -475,7 +352,7 @@ void Player::ActionUpdate()
 		}
 
 		break;
-	// 解除中
+		// 解除中
 	case Player::ActionState::kRelease:
 		// 開始
 		if (iGimmickPtr_ != nullptr && actionValue_.timer_ < 10) {

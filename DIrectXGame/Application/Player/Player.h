@@ -193,6 +193,8 @@ public: // アクセッサ
 		bool GetIsDriveObject() { return isDriveObject_; }
 
 #pragma endregion
-
+private:
+	bool isCollisionObject_ = false;
+	bool isPreCollisionObject = false;
 };
 

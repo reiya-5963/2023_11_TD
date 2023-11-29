@@ -60,12 +60,14 @@ void GameScene::Update() {
 	}
 
 	CameraUpdate();
-	
+
+
 	gimmickManager_->Update();
 
 	playerController_->Update(viewProjection_);
 
 	this->ColliderUpdate();
+
 
 	//back_->Update();
 
