@@ -22,7 +22,7 @@ void GameScene::Initialize() {
 	dxCommon_ = DirectXCommon::GetInstance();
 	audio_ = Audio::GetInstance();
 	audioManager_ = AudioManager::GetInstance();
-	transitionmanager_ = TransitionManager::GetInstance();
+	transitionManager_ = TransitionManager::GetInstance();
 
 	// ビュープロジェクションの初期化
 	viewProjection_.Initialize();
@@ -57,6 +57,7 @@ void GameScene::Initialize() {
 	titleUI_.reset(Sprite::Create(retryTex_, title, 0, { 0.8f,0.8f,0.8f,1.0f }, { 1.0f,0.0f }));
 
 	isBackTitle_ = false;
+	isClear_ = false;
 }
 
 void GameScene::Finalize() {
@@ -78,13 +79,13 @@ void GameScene::Update()
 		if (keyFlag && !isBackTitle_) {
 			Audio::GetInstance()->StopWave(audioManager_->GetSoundList(AudioManager::kAllBGM));
 			isBackTitle_ = true;
-			transitionmanager_->TransitionSetting();
+			transitionManager_->TransitionSetting();
 		}
 
 	}
-	if (Input::GetInstance()->TriggerKey(DIK_R)) {
-		//Retry();
-		playerController_->SetIsClear(true);
+	if (playerController_->GetIsGoalAnimation() && !isClear_) {
+		isClear_ = true;
+		transitionManager_->TransitionSetting();
 		ClearBGMSetting();
 	}
 #pragma endregion
@@ -108,12 +109,12 @@ void GameScene::Update()
 	}
 
 	// 遷移後シーン変更
-	if (transitionmanager_->GetIsBlackOutHalf()) {
+	if (transitionManager_->GetIsBlackOutHalf()) {
 		SceneManager::GetInstance()->ChangeScene("TITLE");
 	}
 
 	// 遷移更新
-	transitionmanager_->Update();
+	transitionManager_->Update();
 }
 
 void GameScene::Draw() {
@@ -154,7 +155,7 @@ void GameScene::Draw() {
 	Sprite::PostDraw();
 
 	// 遷移描画
-	transitionmanager_->Draw();
+	transitionManager_->Draw();
 
 }
 
@@ -171,9 +172,9 @@ void GameScene::Retry() {
 	gimmickManager_->Initialize();
 
 	const float xCenter = 48 / 2.0f - 0.5f;
-	Vector3 GoalPosition = { ((47.0f - 1.0f) - xCenter) * 2.0f, (23.0f * 2.0f + 1.0f), 0.0f };
+	Vector3 GoalPosition = { ((51.0f - 1.0f) - xCenter) * 2.0f, (23.0f * 2.0f + 1.0f), 0.0f };
 
-	goal_->SetPosition(GoalPosition);
+	//goal_->SetPosition(GoalPosition);
 	playerController_->SetGoalPosition(GoalPosition);
 
 }

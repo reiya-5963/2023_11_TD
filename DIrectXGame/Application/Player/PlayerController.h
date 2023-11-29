@@ -53,6 +53,8 @@ public:
 
 	void SetFocusCamera(FocusCamera* camera) { focusCamera_ = camera; }
 
+	bool GetIsGoalAnimation() { return isGoalAnimation_; }
+
 private:
 	/// <summary>
 	/// スクリーン座標に変換

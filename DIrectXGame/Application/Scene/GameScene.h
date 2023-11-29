@@ -88,8 +88,9 @@ private: // アニメーション用
 private:
 	Audio* audio_ = nullptr;
 	AudioManager* audioManager_ = nullptr;
-	TransitionManager* transitionmanager_ = nullptr;
+	TransitionManager* transitionManager_ = nullptr;
 
+	bool isClear_ = false;
 private:
 	Mapchip* map_;
 	//std::unique_ptr<TmpObject> player_;

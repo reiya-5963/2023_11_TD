@@ -42,6 +42,11 @@ public:
 	void TransitionSetting();
 
 	/// <summary>
+	/// クリア時用の設定
+	/// </summary>
+	void ClearTransitionSetting();
+
+	/// <summary>
 	/// ブラックアウト処理
 	/// </summary>
 	void BlackOutProcess();

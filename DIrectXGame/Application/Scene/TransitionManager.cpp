@@ -63,6 +63,7 @@ void TransitionManager::TransitionSetting()
 	blackOut_.ease_t_ = 0;
 	blackOut_.isNow_ = true;
 	blackOut_.isHalf_ = false;
+	blackOut_.endFrame_ = 60;
 
 	blackOut_.spriteInfo_.position_ = { (float)WinApp::kWindowWidth / 2,(float)WinApp::kWindowHeight / 2 };
 	blackOut_.spriteInfo_.color_.w = 1.0f;
@@ -71,6 +72,23 @@ void TransitionManager::TransitionSetting()
 	whiteSprite_->SetPosition(blackOut_.spriteInfo_.position_);
 	whiteSprite_->SetSize(blackOut_.spriteInfo_.size_);
 	whiteSprite_->SetColor(blackOut_.spriteInfo_.color_);
+}
+
+void TransitionManager::ClearTransitionSetting()
+{
+	blackOut_.ease_t_ = 0;
+	blackOut_.isNow_ = true;
+	blackOut_.isHalf_ = false;
+	blackOut_.endFrame_ = 350;
+
+	blackOut_.spriteInfo_.position_ = { (float)WinApp::kWindowWidth / 2,(float)WinApp::kWindowHeight / 2 };
+	blackOut_.spriteInfo_.color_.w = 1.0f;
+	blackOut_.spriteInfo_.size_ = { (float)WinApp::kWindowWidth,(float)WinApp::kWindowHeight };
+
+	whiteSprite_->SetPosition(blackOut_.spriteInfo_.position_);
+	whiteSprite_->SetSize(blackOut_.spriteInfo_.size_);
+	whiteSprite_->SetColor(blackOut_.spriteInfo_.color_);
+
 }
 
 void TransitionManager::BlackOutProcess()
