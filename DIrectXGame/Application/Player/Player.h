@@ -107,7 +107,7 @@ private:
 	WorldTransform worldTransformHat_;
 	std::unique_ptr<Model> hatModel_;
 
-	static const float kFisrtJumpPower_;
+	static const float kFirstJumpPower_;
 
 	bool isGoal_ = false;
 	bool isInArea_ = false;

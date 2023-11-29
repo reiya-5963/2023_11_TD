@@ -70,14 +70,11 @@ void PlayerController::Initialize()
 
 void PlayerController::Update(const ViewProjection& viewProjection)
 {
-	//////////////
 
 	Vector3 world1Pos = player1_->GetWorldPosition();
 	Vector3 world2Pos = player2_->GetWorldPosition();
 	Vector2 player1ScreenPos_ = World2ScreenPos(viewProjection, world1Pos);
 	Vector2 player2ScreenPos_ = World2ScreenPos(viewProjection, world2Pos);
-	ImGui::Text("screen1 %f : %f", player1ScreenPos_.x, player1ScreenPos_.y);
-	ImGui::Text("screen2 %f : %f", player2ScreenPos_.x, player2ScreenPos_.y);
 
 	if (typeid(*player1_->GetInputState()) == typeid(ActiveState)) {
 		focusCamera_->SetIsControlPlayer1(true);
@@ -86,7 +83,7 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 		focusCamera_->SetIsControlPlayer1(false);
 	}
 
-
+#pragma region カメラ
 	if (!focusCamera_->IsEase() && focusCamera_->IsControlPlayer1()) {
 
 
@@ -385,11 +382,7 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 			isLeavePlayer_ = false;
 		}
 	}
-
-
-	//////////////
-
-
+#pragma endregion
 
 	if (player1_->GetIsGoal() && player2_->GetIsGoal()) {
 		isClear_ = true;
@@ -456,10 +449,9 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 
 			}
 
-
 			// 見つかれば呼び出し
 			if (tmpGimmick != nullptr && !tmpGimmick->GetIsSetup()) {
-
+				AudioManager::GetInstance()->PlaySEAudio(AudioManager::GetSoundList(AudioManager::kSwicth), 0.1f);
 				tmpPlayer->SetGimmickPtr(tmpGimmick);
 				tmpPlayer->SetBehaviorRequest(Player::Behavior::kAction);
 				tmpPlayer->GhostSetting();

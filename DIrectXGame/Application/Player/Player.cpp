@@ -8,7 +8,7 @@
 const Player::ConstAction Player::kConstAction_ = {
 	30,30,180
 };
-const float Player::kFisrtJumpPower_ = 45.0f;
+const float Player::kFirstJumpPower_ = 30.0f;
 
 void Player::Initialize(const std::vector<Model*>& models)
 {
@@ -29,9 +29,11 @@ void Player::Setting(const Vector3& position, uint32_t color)
 {
 	objectWorldTransform_.translation_ = position;
 	color;
-	behavior_ = Behavior::kRoot;
+	request_ = Behavior::kRoot;
+	//behavior_ = Behavior::kRoot;
 	SetRadius({ 1.0f, 1.0f, 1.0f });
 	objectWorldTransform_.scale_ = GetRadius();
+	objectWorldTransform_.parent_ = nullptr;
 
 	info_.isLeft_ = false;
 	isGoal_ = false;
@@ -135,7 +137,6 @@ void Player::Update()
 		BaseCharacter::Update();
 	}
 	worldTransformHat_.UpdateMatrix();
-	ImGui::Text("isDrive : %d", isDriveObject_);
 
 
 	if (isCollisionObject_ && isPreCollisionObject && isDriveObject_) {
@@ -171,12 +172,6 @@ void Player::Draw(const ViewProjection& viewProjection)
 }
 
 void Player::OnCollision([[maybe_unused]] Collider* other) {
-
-
-
-	ImGui::Text("isDrive : %d", isDriveObject_);
-	ImGui::Text("my : %f, %f", GetWorldPosition().x, GetWorldPosition().y);
-	ImGui::Text("other : %f, %f", other->GetWorldPosition().x, other->GetWorldPosition().y);
 
 	if (behavior_ == Behavior::kAction) {
 		return;
@@ -290,7 +285,7 @@ void Player::JumpInitialize()
 	}
 	//const float kFirstSpeed = 30.0f;
 
-	velocity_.y = kFisrtJumpPower_;
+	velocity_.y = kFirstJumpPower_;
 
 	isMapChipCollision_ = true;
 }
