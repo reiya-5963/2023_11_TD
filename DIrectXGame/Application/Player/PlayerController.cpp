@@ -83,7 +83,7 @@ void PlayerController::Update(const ViewProjection& viewProjection)
 	XINPUT_STATE joyState;
 	if (Input::GetInstance()->GetJoyStickState(0, joyState)) {
 		bool inputKey = (joyState.Gamepad.wButtons & XINPUT_GAMEPAD_B && (inactivePlayer_->GetBehaviorState() != Player::Behavior::kAction));
-		if (inputKey && !ghostWork_.isDelay_) {
+		if (inputKey && !ghostWork_.isDelay_ && activePlayer_->GetBehaviorState() != Player::Behavior::kJump) {
 #pragma region ギミックに憑りつく
 			ghostWork_.isDelay_ = true;
 
