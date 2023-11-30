@@ -28,9 +28,9 @@ void PlayerController::Initialize()
 	player2_ = std::make_unique<Player>();
 
 	uint32_t texture = TextureManager::Load("GameSceneSprite/half.png");
-	playerRestUI_.reset(Sprite::Create(texture, { 50.0f,100.0f }, 0, { 0.8f,0.8f,0.8f,1.0f }, { 0,0 }));
+	playerRestUI_.reset(Sprite::Create(texture, { 235.0f,32.0f }, 0, { 0.8f,0.8f,0.8f,1.0f }, { 0,0 }));
 	texture = TextureManager::Load("GameSceneSprite/hakaka.png");
-	goalUI_.reset(Sprite::Create(texture, { 0,0.0f }, 0, { 0.8f,0.8f,0.8f,1.0f }, { 0,0 }));
+	goalUI_.reset(Sprite::Create(texture, { 35.0f, 35.0f}, 0, { 0.8f,0.8f,0.8f,1.0f }, { 0,0 }));
 	goalUI_->SetSize({ goalUI_->GetSize().x / 2,goalUI_->GetSize().y / 2 });
 
 	Model* p_model1;
